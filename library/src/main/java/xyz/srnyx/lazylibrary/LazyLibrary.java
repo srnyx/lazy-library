@@ -95,6 +95,9 @@ public class LazyLibrary {
         }).start();
     }
 
+    /**
+     * Starts the bot with the default settings file name
+     */
     public LazyLibrary() {
         this(null);
     }
