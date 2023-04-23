@@ -1,0 +1,19 @@
+# REQUIRED
+# Token to run the bot with
+token: "PUT_BOT_TOKEN_HERE"
+
+# RECOMMENDED
+# Database to use for components (THIS IS NOT FOR THE BOT'S DATA)
+# Supports: MariaDB, SQLite, PostgreSQL, H2
+database: "PUT_CONNECTION_STRING_HERE"
+
+# RECOMMENDED
+# Owner IDs of the bot
+owners:
+  # This one will be DMed when an error occurs
+  primary: 000000000000000000
+  # These will just be able to use owner commands
+  other:
+    - 000000000000000000
+    - 000000000000000000
+    - 000000000000000000
