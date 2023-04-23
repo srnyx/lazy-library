@@ -26,6 +26,11 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("EmptyMethod")
 public class LazySettings {
+    /**
+     * The file to load settings from
+     */
+    @NotNull public final LazyFile file;
+
     // Settings from file
     /**
      * The bot token, used for {@link JDABuilder}
@@ -72,7 +77,7 @@ public class LazySettings {
      * @param   fileName    the name of the file to load settings from
      */
     public LazySettings(@NotNull String fileName) {
-        final LazyFile file = new LazyFile(fileName, NodeStyle.BLOCK, true);
+        file = new LazyFile(fileName, NodeStyle.BLOCK, true);
         token = file.yaml.node("token").getString();
         database = file.yaml.node("database").getString();
 
@@ -91,7 +96,7 @@ public class LazySettings {
      * Creates a new {@link LazySettings} instance from the {@code settings.yml} file
      */
     public LazySettings() {
-        this("settings");
+        this("config");
     }
 
     /**
