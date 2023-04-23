@@ -13,20 +13,21 @@ import xyz.srnyx.lazylibrary.events.GuildVoiceLeaveEvent;
  * A modified {@link ListenerAdapter} that provides a few extra utilities and events
  */
 @SuppressWarnings("EmptyMethod")
-public class LazyListener extends ListenerAdapter {
+public abstract class LazyListener extends ListenerAdapter {
     /**
-     * The {@link LazyLibrary bot} instance
+     * {@link LazyListener}
      */
-    @NotNull protected final LazyLibrary lazyLibrary;
+    public LazyListener() {
+        // Exists to add a Javadoc
+    }
 
     /**
-     * Creates a new {@link LazyListener}
+     * The {@link LazyLibrary bot's} instance
      *
-     * @param   lazyLibrary the {@link LazyLibrary bot} instance
+     * @return  the {@link LazyLibrary bot's} instance
      */
-    public LazyListener(@NotNull LazyLibrary lazyLibrary) {
-        this.lazyLibrary = lazyLibrary;
-    }
+    @NotNull
+    public abstract LazyLibrary getBot();
 
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
