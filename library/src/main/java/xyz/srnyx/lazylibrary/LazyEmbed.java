@@ -12,10 +12,8 @@ import java.awt.*;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -23,22 +21,72 @@ import java.util.Map;
  */
 @SuppressWarnings("UnusedReturnValue")
 public class LazyEmbed {
-    @NotNull private final EmbedBuilder embed = new EmbedBuilder();
-    @NotNull private final Map<String, String> replacements = new HashMap<>();
+    /**
+     * Default values if a value is {@code null} in an {@link LazyEmbed embed}
+     */
+    @NotNull public static final Map<Key, Object> DEFAULTS = new EnumMap<>(Key.class);
 
-    private int color;
-    @Nullable private String authorName;
-    @Nullable private String authorUrl;
-    @Nullable private String authorIcon;
-    @Nullable private String titleText;
-    @Nullable private String titleUrl;
-    @Nullable private String description;
-    @Nullable private String thumbnail;
-    @Nullable private String image;
-    @NotNull private final List<MessageEmbed.Field> fields = new ArrayList<>();
-    @Nullable private String footerText;
-    @Nullable private String footerIcon;
-    @Nullable private TemporalAccessor timestamp;
+    /**
+     * The {@link EmbedBuilder embed builder} that is used to build the {@link MessageEmbed}
+     */
+    @NotNull protected final EmbedBuilder embed = new EmbedBuilder();
+    /**
+     * Replacements for all values that will be replaced when building the {@link MessageEmbed}
+     */
+    @NotNull protected final Map<String, String> replacements = new HashMap<>();
+
+    /**
+     * The color of the embed
+     */
+    protected int color;
+    /**
+     * The author of the embed
+     */
+    @Nullable protected String authorName;
+    /**
+     * The URL of the author
+     */
+    @Nullable protected String authorUrl;
+    /**
+     * The icon of the author
+     */
+    @Nullable protected String authorIcon;
+    /**
+     * The title of the embed
+     */
+    @Nullable protected String titleText;
+    /**
+     * The URL of the title
+     */
+    @Nullable protected String titleUrl;
+    /**
+     * The description of the embed
+     */
+    @Nullable protected String description;
+    /**
+     * The thumbnail of the embed (right)
+     */
+    @Nullable protected String thumbnail;
+    /**
+     * The image of the embed (below)
+     */
+    @Nullable protected String image;
+    /**
+     * The fields of the embed
+     */
+    @NotNull protected final List<MessageEmbed.Field> fields = new ArrayList<>();
+    /**
+     * The footer of the embed
+     */
+    @Nullable protected String footerText;
+    /**
+     * The icon of the footer
+     */
+    @Nullable protected String footerIcon;
+    /**
+     * The timestamp of the embed
+     */
+    @Nullable protected TemporalAccessor timestamp;
 
     /**
      * Constructs a new {@link LazyEmbed}
@@ -113,32 +161,42 @@ public class LazyEmbed {
     @NotNull
     public Map<String, Object> toMap() {
         final Map<String, Object> map = new HashMap<>();
-        map.put("color", color);
-        final HashMap<String, String> authorMap = new HashMap<>();
-        authorMap.put("name", authorName);
-        authorMap.put("url", authorUrl);
-        authorMap.put("icon", authorIcon);
-        map.put("author", authorMap);
-        final HashMap<String, String> titleMap = new HashMap<>();
-        titleMap.put("text", titleText);
-        titleMap.put("url", titleUrl);
-        map.put("title", titleMap);
-        map.put("description", description);
-        map.put("fields", fields.stream()
+        if (color != 0) map.put("color", color);
+        if (authorName != null) {
+            final Map<String, String> authorMap = new HashMap<>();
+            authorMap.put("name", authorName);
+            if (authorUrl != null) authorMap.put("url", authorUrl);
+            if (authorIcon != null) authorMap.put("icon", authorIcon);
+            map.put("author", authorMap);
+        }
+        if (titleText != null) {
+            final Map<String, String> titleMap = new HashMap<>();
+            titleMap.put("text", titleText);
+            if (titleUrl != null) titleMap.put("url", titleUrl);
+            map.put("title", titleMap);
+        }
+        if (description != null) map.put("description", description);
+        if (!fields.isEmpty()) map.put("fields", fields.stream()
                 .map(field -> {
+                    final String name = field.getName();
+                    if (name == null) return null;
+                    final String value = field.getValue();
                     final Map<String, Object> fieldMap = new HashMap<>();
-                    fieldMap.put("name", field.getName());
-                    fieldMap.put("value", field.getValue());
+                    fieldMap.put("name", name);
+                    if (value != null) fieldMap.put("value", value);
                     fieldMap.put("inline", field.isInline());
                     return fieldMap;
                 })
+                .filter(Objects::nonNull)
                 .toList());
-        map.put("thumbnail", thumbnail);
-        map.put("image", image);
-        final HashMap<String, String> footerMap = new HashMap<>();
-        footerMap.put("text", footerText);
-        footerMap.put("icon", footerIcon);
-        map.put("footer", footerMap);
+        if (thumbnail != null) map.put("thumbnail", thumbnail);
+        if (image != null) map.put("image", image);
+        if (footerText != null) {
+            final Map<String, String> footerMap = new HashMap<>();
+            footerMap.put("text", footerText);
+            if (footerIcon != null) footerMap.put("icon", footerIcon);
+            map.put("footer", footerMap);
+        }
         if (timestamp != null) map.put("timestamp", timestamp.getLong(ChronoField.INSTANT_SECONDS) * 1000 + timestamp.getLong(ChronoField.MILLI_OF_SECOND));
         return map;
     }
@@ -200,6 +258,50 @@ public class LazyEmbed {
 
             // Add the new field
             if (name != null && value != null) addField(name, value, field.isInline());
+        }
+        
+        // Set defaults
+        for (final Key key : Key.values()) {
+            final Object value = DEFAULTS.get(key);
+            if (value != null) switch (key) {
+                case COLOR -> {
+                    if (color == 0) color = (int) value;
+                }
+                case AUTHOR_NAME -> {
+                    if (authorName != null) authorName = (String) value;
+                } 
+                case AUTHOR_URL -> {
+                    if (authorUrl != null) authorUrl = (String) value;
+                }
+                case AUTHOR_ICON -> {
+                    if (authorIcon != null) authorIcon = (String) value;
+                }
+                case TITLE_TEXT -> {
+                    if (titleText != null) titleText = (String) value;
+                }
+                case TITLE_URL -> {
+                    if (titleUrl != null) titleUrl = (String) value;
+                }
+                case DESCRIPTION -> {
+                    if (description != null) description = (String) value;
+                }
+                case THUMBNAIL -> {
+                    if (thumbnail != null) thumbnail = (String) value;
+                }
+                case IMAGE -> {
+                    if (image != null) image = (String) value;
+                }
+                case FOOTER_TEXT -> {
+                    if (footerText != null) footerText = (String) value;
+                }
+                case FOOTER_ICON -> {
+                    if (footerIcon != null) footerIcon = (String) value;
+                }
+                case TIMESTAMP -> {
+                    if (timestamp != null) timestamp = (TemporalAccessor) value;
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + key);
+            }
         }
 
         return embed.build();
@@ -401,5 +503,59 @@ public class LazyEmbed {
         embed.setTimestamp(timestamp);
         this.timestamp = timestamp;
         return this;
+    }
+
+    /**
+     * All possible (defaultable) keys an {@link LazyEmbed embed} can have ({@link LazyEmbed#DEFAULTS})
+     */
+    public enum Key {
+        /**
+         * {@link LazyEmbed#color}
+         */
+        COLOR,
+        /**
+         * {@link LazyEmbed#authorName}
+         */
+        AUTHOR_NAME,
+        /**
+         * {@link LazyEmbed#authorUrl}
+         */
+        AUTHOR_URL,
+        /**
+         * {@link LazyEmbed#authorIcon}
+         */
+        AUTHOR_ICON,
+        /**
+         * {@link LazyEmbed#titleText}
+         */
+        TITLE_TEXT,
+        /**
+         * {@link LazyEmbed#titleUrl}
+         */
+        TITLE_URL,
+        /**
+         * {@link LazyEmbed#description}
+         */
+        DESCRIPTION,
+        /**
+         * {@link LazyEmbed#fields}
+         */
+        THUMBNAIL,
+        /**
+         * {@link LazyEmbed#image}
+         */
+        IMAGE,
+        /**
+         * {@link LazyEmbed#footerText}
+         */
+        FOOTER_TEXT,
+        /**
+         * {@link LazyEmbed#footerIcon}
+         */
+        FOOTER_ICON,
+        /**
+         * {@link LazyEmbed#timestamp}
+         */
+        TIMESTAMP
     }
 }
