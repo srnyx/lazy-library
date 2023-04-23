@@ -20,7 +20,13 @@ java {
     withJavadocJar()
 }
 
-// Add the shadowJar to the artifacts
-artifacts {
-    archives("shadowJar")
+// Maven publishing for Jitpack
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.srnyx"
+            artifact(tasks["shadowJar"])
+            artifact(tasks["javadocJar"])
+        }
+    }
 }
