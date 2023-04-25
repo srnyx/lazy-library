@@ -36,4 +36,6 @@ jobs:
         uses: "actions/upload-artifact@v3.1.1"
         with:
           name: Lazy Library
-          path: build/libs
+          path: |
+            library/build/libs/*.jar
+            example-bot/build/libs/*.jar
