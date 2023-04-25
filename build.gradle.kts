@@ -24,7 +24,7 @@ tasks {
 }
 
 subprojects {
-    version = "1.0.0"
+    version = "1.0.1"
 
     apply(plugin = "application")
     apply(plugin = "com.github.johnrengelman.shadow")
