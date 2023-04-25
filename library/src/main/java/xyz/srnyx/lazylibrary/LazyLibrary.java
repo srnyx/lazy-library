@@ -24,18 +24,17 @@ import java.util.Scanner;
 @SuppressWarnings("EmptyMethod")
 public class LazyLibrary {
     /**
-     * The {@link Logger} used for the bot
-     */
-    @NotNull public static Logger LOGGER = LoggerFactory.getLogger("LazyLibrary");
-    /**
      * The {@link LazySettings settings} for the bot
      */
-    public static LazySettings SETTINGS;
-
+    @NotNull public final LazySettings settings;
     /**
      * The {@link JDA} instance
      */
     public JDA jda;
+    /**
+     * The {@link Logger} used for the bot
+     */
+    @NotNull public final Logger logger;
 
     /**
      * Starts the bot
@@ -43,13 +42,13 @@ public class LazyLibrary {
      * @param   settingsFileName    the name of the settings file (without {@code .yml}), or {@code null} to use the default
      */
     public LazyLibrary(@Nullable String settingsFileName) {
-        SETTINGS = settingsFileName == null ? new LazySettings() : new LazySettings(settingsFileName);
+        settings = settingsFileName == null ? new LazySettings() : new LazySettings(settingsFileName);
         onStart();
-        LOGGER = LoggerFactory.getLogger(SETTINGS.loggerName);
+        logger = LoggerFactory.getLogger(settings.loggerName);
 
         // Start bot
         try {
-            jda = JDABuilder.create(SETTINGS.gatewayIntents).disableCache(SETTINGS.disabledCacheFlags).setToken(SETTINGS.token).build().awaitReady();
+            jda = JDABuilder.create(settings.gatewayIntents).disableCache(settings.disabledCacheFlags).setToken(settings.token).build().awaitReady();
         } catch (final InterruptedException | IllegalArgumentException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -59,17 +58,17 @@ public class LazyLibrary {
         onReady();
 
         // BotCommands
-        final CommandsBuilder builder = (SETTINGS.ownersPrimary == null ? CommandsBuilder.newBuilder() : CommandsBuilder.newBuilder(SETTINGS.ownersPrimary))
+        final CommandsBuilder builder = (settings.ownersPrimary == null ? CommandsBuilder.newBuilder() : CommandsBuilder.newBuilder(settings.ownersPrimary))
                 .textCommandBuilder(textCommands -> textCommands.disableHelpCommand(true));
         // Owners, search paths, and command dependency
-        if (SETTINGS.ownersOther != null) SETTINGS.ownersOther.forEach(builder::addOwners);
-        for (final String path : SETTINGS.searchPaths) builder.addSearchPath(path);
-        if (SETTINGS.extensionsBuilder != null) builder.extensionsBuilder(SETTINGS.extensionsBuilder);
+        if (settings.ownersOther != null) settings.ownersOther.forEach(builder::addOwners);
+        for (final String path : settings.searchPaths) builder.addSearchPath(path);
+        if (settings.extensionsBuilder != null) builder.extensionsBuilder(settings.extensionsBuilder);
         // Database
-        if (SETTINGS.database != null) {
+        if (settings.database != null) {
             //noinspection resource
             final HikariDataSource dataSource = new HikariDataSource();
-            dataSource.setJdbcUrl(SETTINGS.database);
+            dataSource.setJdbcUrl(settings.database);
             dataSource.setMaximumPoolSize(3);
             dataSource.setLeakDetectionThreshold(5000);
             builder.setComponentManager(new DefaultComponentManager(() -> {

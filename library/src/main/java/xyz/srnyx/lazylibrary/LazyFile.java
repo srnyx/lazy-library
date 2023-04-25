@@ -61,7 +61,6 @@ public class LazyFile {
         try {
             this.yaml = loader.load();
         } catch (final IOException e) {
-            LazyLibrary.LOGGER.warn(String.format("Failed to load file with path: %s", pathString));
             e.printStackTrace();
         }
     }
@@ -75,7 +74,6 @@ public class LazyFile {
                 Files.createDirectories(file.toPath().getParent());
                 Files.createFile(file.toPath());
             } catch (final IOException e) {
-                LazyLibrary.LOGGER.warn(String.format("Failed to create file with path: %s", pathString));
                 e.printStackTrace();
             }
             return;
@@ -101,7 +99,6 @@ public class LazyFile {
             try {
                 Files.delete(file.toPath());
             } catch (final IOException e) {
-                LazyLibrary.LOGGER.warn(String.format("Failed to delete file with path: %s", pathString));
                 e.printStackTrace();
             }
             return;
@@ -111,7 +108,6 @@ public class LazyFile {
         try {
             loader.save(yaml);
         } catch (final IOException e) {
-            LazyLibrary.LOGGER.warn(String.format("Failed to save file with path: %s", pathString));
             e.printStackTrace();
         }
     }
