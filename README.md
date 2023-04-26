@@ -1,4 +1,4 @@
-# Lazy Library
+# Lazy Library [![Release](https://jitpack.io/v/srnyx/lazy-library.svg)](https://jitpack.io/#xyz.srnyx/lazy-library)
 
 A Discord bot library for srnyx's JDA Discord bots ([Cobalt](https://github.com/Venox-Network/cobalt), [srnyx's Bot](https://github.com/srnyx/srnyx-bot), [Creator Laser Tag](https://github.com/Venox-Network/laser-tag-bot), etc...)
 
