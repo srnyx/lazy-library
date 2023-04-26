@@ -2,7 +2,13 @@ package xyz.srnyx.lazylibrary.utility;
 
 import com.freya02.botcommands.api.application.slash.autocomplete.AutocompleteAlgorithms;
 
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
+import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
@@ -100,6 +106,22 @@ public class LazyUtilities {
         } catch (final IOException e) {
             if (!silentFail) e.printStackTrace();
         }
+    }
+
+    /**
+     * Checks if the executing {@link User user} has the given {@link Permission permissions} in the executing {@link GuildChannel channel}
+     *
+     * @param   interaction the {@link Interaction} to get the {@link Member member} and {@link GuildChannel channel} from
+     * @param   permissions the {@link Permission permissions} to check for
+     *
+     * @return              true if the {@link Member member} has the {@link Permission permissions} in the {@link GuildChannel channel}, false if not, or null if the {@link Member member} or {@link GuildChannel channel} is null (not executed in a {@link Guild} and/or {@link GuildChannel})
+     */
+    @Nullable
+    public static Boolean userHasChannelPermission(@NotNull Interaction interaction, @NotNull Permission... permissions) {
+        final Member member = interaction.getMember();
+        final GuildChannel channel = handleException(() -> (GuildChannel) interaction.getChannel());
+        if (member == null || channel == null) return null;
+        return member.hasPermission(channel, permissions);
     }
 
     /**
