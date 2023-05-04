@@ -1,5 +1,5 @@
 application.mainClass.set("xyz.srnyx.lazyexample.LazyExample")
 
 dependencies {
-    implementation(project(":LazyLibrary"))
+    implementation(project(path = ":LazyLibrary", configuration = "shadow"))
 }
