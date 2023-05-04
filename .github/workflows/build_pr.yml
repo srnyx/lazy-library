@@ -6,7 +6,8 @@ on:
   pull_request:
     paths:
       - 'gradle/**'
-      - 'src/**'
+      - 'library/**'
+      - 'example-bot/**'
       - 'build.gradle.kts'
       - 'settings.gradle.kts'
       - 'gradlew'
