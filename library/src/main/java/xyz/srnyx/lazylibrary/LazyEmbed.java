@@ -29,7 +29,7 @@ public class LazyEmbed {
     /**
      * The {@link EmbedBuilder embed builder} that is used to build the {@link MessageEmbed}
      */
-    @NotNull protected final EmbedBuilder embed = new EmbedBuilder();
+    @NotNull public final EmbedBuilder builder = new EmbedBuilder();
     /**
      * Replacements for all values that will be replaced when building the {@link MessageEmbed}
      */
@@ -304,7 +304,7 @@ public class LazyEmbed {
             }
         }
 
-        return embed.build();
+        return builder.build();
     }
 
     /**
@@ -328,7 +328,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setColor(int color) {
-        embed.setColor(color);
+        builder.setColor(color);
         this.color = color;
         return this;
     }
@@ -369,7 +369,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setAuthor(@Nullable String name, @Nullable String url, @Nullable String iconUrl) {
-        embed.setAuthor(name, url, iconUrl);
+        builder.setAuthor(name, url, iconUrl);
         authorName = name;
         authorUrl = url;
         authorIcon = iconUrl;
@@ -398,7 +398,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setTitle(@Nullable String text, @Nullable String url) {
-        embed.setTitle(text, url);
+        builder.setTitle(text, url);
         this.titleText = text;
         this.titleUrl = url;
         return this;
@@ -413,7 +413,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setDescription(@Nullable String description) {
-        embed.setDescription(description);
+        builder.setDescription(description);
         this.description = description;
         return this;
     }
@@ -427,7 +427,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setThumbnail(@Nullable String url) {
-        embed.setThumbnail(url);
+        builder.setThumbnail(url);
         this.thumbnail = url;
         return this;
     }
@@ -441,7 +441,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setImage(@Nullable String url) {
-        embed.setImage(url);
+        builder.setImage(url);
         this.image = url;
         return this;
     }
@@ -458,7 +458,7 @@ public class LazyEmbed {
     @NotNull
     public LazyEmbed addField(@NotNull String name, @NotNull String value, boolean inline) {
         final MessageEmbed.Field field = new MessageEmbed.Field(name, value, inline);
-        embed.addField(field);
+        builder.addField(field);
         fields.add(field);
         return this;
     }
@@ -470,7 +470,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed clearFields() {
-        embed.clearFields();
+        builder.clearFields();
         fields.clear();
         return this;
     }
@@ -485,7 +485,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setFooter(@Nullable String text, @Nullable String iconUrl) {
-        embed.setFooter(text, iconUrl);
+        builder.setFooter(text, iconUrl);
         this.footerText = text;
         this.footerIcon = iconUrl;
         return this;
@@ -500,7 +500,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setTimestamp(@Nullable TemporalAccessor timestamp) {
-        embed.setTimestamp(timestamp);
+        builder.setTimestamp(timestamp);
         this.timestamp = timestamp;
         return this;
     }
