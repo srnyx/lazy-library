@@ -5,6 +5,7 @@ import com.freya02.botcommands.api.utils.ButtonContent;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -150,7 +151,7 @@ public enum LazyEmoji {
      * @return          the {@link ButtonContent} constructed
      */
     @NotNull
-    public ButtonContent getButtonContent(@NotNull String text) {
+    public ButtonContent getButtonContent(@Nullable String text) {
         return new ButtonContent(text, getEmoji());
     }
 

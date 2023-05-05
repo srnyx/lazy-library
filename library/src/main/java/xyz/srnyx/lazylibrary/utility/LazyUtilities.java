@@ -1,6 +1,7 @@
 package xyz.srnyx.lazylibrary.utility;
 
 import com.freya02.botcommands.api.application.slash.autocomplete.AutocompleteAlgorithms;
+import com.freya02.botcommands.api.pagination.paginator.PaginatorBuilder;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -14,6 +15,8 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import xyz.srnyx.lazylibrary.LazyEmoji;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +78,18 @@ public class LazyUtilities {
     @NotNull
     public static String shorten(@NotNull String string, int length) {
         return string.length() + 3 > length ? string.substring(0, length - 3) + "..." : string;
+    }
+
+    /**
+     * Get a {@link PaginatorBuilder} with {@link LazyEmoji#LEFT_CLEAR_DARK} and {@link LazyEmoji#RIGHT_CLEAR_DARK} as the previous and next buttons respectively
+     *
+     * @return  the {@link PaginatorBuilder}
+     */
+    @NotNull
+    public static PaginatorBuilder getDefaultPaginator() {
+        return new PaginatorBuilder()
+                .setPreviousContent(LazyEmoji.LEFT_CLEAR_DARK.getButtonContent(null))
+                .setNextContent(LazyEmoji.RIGHT_CLEAR_DARK.getButtonContent(null));
     }
 
     /**
