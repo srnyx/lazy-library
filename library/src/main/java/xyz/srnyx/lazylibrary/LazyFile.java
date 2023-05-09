@@ -28,7 +28,7 @@ public class LazyFile {
     /**
      * The {@link File} of the file
      */
-    @NotNull private final File file;
+    @NotNull public final File file;
     /**
      * The {@link YamlConfigurationLoader loader} for the file
      */
