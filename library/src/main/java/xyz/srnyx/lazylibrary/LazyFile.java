@@ -94,9 +94,9 @@ public class LazyFile {
      * Saves the file
      */
     public void save() {
-        // Delete file and cancel if it isn't a resource, is empty, and exists
-        if (!isResource && yaml.empty() && file.exists()) {
-            try {
+        // Cancel if it isn't a resource and is empty (delete if it exists)
+        if (!isResource && yaml.empty()) {
+            if (file.exists()) try {
                 Files.delete(file.toPath());
             } catch (final IOException e) {
                 e.printStackTrace();
