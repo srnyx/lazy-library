@@ -473,9 +473,9 @@ public class LazyEmbed {
     /**
      * Adds multiple fields to the embed
      *
-     * @param   fields  the fields to add
+     * @param   newFields   the fields to add
      *
-     * @return          this
+     * @return              this
      */
     @NotNull
     public LazyEmbed addFields(@NotNull Collection<MessageEmbed.Field> newFields) {
