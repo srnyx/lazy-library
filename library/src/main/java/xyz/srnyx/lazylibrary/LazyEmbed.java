@@ -449,6 +449,20 @@ public class LazyEmbed {
     /**
      * Adds a field to the embed
      *
+     * @param   field   the field to add
+     *
+     * @return          this
+     */
+    @NotNull
+    public LazyEmbed addField(@NotNull MessageEmbed.Field field) {
+        builder.addField(field);
+        fields.add(field);
+        return this;
+    }
+
+    /**
+     * Adds a field to the embed
+     *
      * @param   name    the name/title of the field
      * @param   value   the value of the field
      * @param   inline  whether the field should be inline or not
@@ -457,9 +471,20 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed addField(@NotNull String name, @NotNull String value, boolean inline) {
-        final MessageEmbed.Field field = new MessageEmbed.Field(name, value, inline);
-        builder.addField(field);
-        fields.add(field);
+        return addField(new MessageEmbed.Field(name, value, inline));
+    }
+
+    /**
+     * Adds multiple fields to the embed
+     *
+     * @param   fields  the fields to add
+     *
+     * @return          this
+     */
+    @NotNull
+    public LazyEmbed addFields(@NotNull Collection<MessageEmbed.Field> newFields) {
+        newFields.forEach(builder::addField);
+        fields.addAll(newFields);
         return this;
     }
 
