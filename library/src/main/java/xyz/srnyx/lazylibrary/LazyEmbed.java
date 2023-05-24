@@ -142,11 +142,7 @@ public class LazyEmbed {
         if (newAuthor != null) setAuthor(newAuthor.getName(), newAuthor.getUrl(), newAuthor.getIconUrl());
         setTitle(msgEmbed.getTitle(), msgEmbed.getUrl());
         setDescription(msgEmbed.getDescription());
-        for (final MessageEmbed.Field field : msgEmbed.getFields()) {
-            final String name = field.getName();
-            final String value = field.getValue();
-            if (name != null && value != null) addField(name, value, field.isInline());
-        }
+        addFields(msgEmbed.getFields());
         if (newThumbnail != null) setThumbnail(newThumbnail.getUrl());
         if (newImage != null) setImage(newImage.getUrl());
         if (newFooter != null) setFooter(newFooter.getText(), newFooter.getIconUrl());
