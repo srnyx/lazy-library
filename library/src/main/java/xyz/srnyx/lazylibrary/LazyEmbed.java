@@ -153,6 +153,7 @@ public class LazyEmbed {
 
     /**
      * Constructs a new {@link LazyEmbed} from a JSON string
+     * <p><i>Only if the JSON is from {@link MessageEmbed#toData()}</i>
      *
      * @param   json    the JSON string to construct from
      */
