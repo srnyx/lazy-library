@@ -74,9 +74,10 @@ public class LazySettings {
     /**
      * Creates a new LazySettings instance from a file
      *
-     * @param   fileName    the name of the file to load settings from
+     * @param   fileName    the name of the file to load settings from (without {@code .yml}), defaults to {@code config}
      */
-    public LazySettings(@NotNull String fileName) {
+    public LazySettings(@Nullable String fileName) {
+        if (fileName == null) fileName = "config";
         file = new LazyFile(fileName, NodeStyle.BLOCK, true);
         token = file.yaml.node("token").getString();
         database = file.yaml.node("database").getString();
@@ -93,10 +94,10 @@ public class LazySettings {
     }
 
     /**
-     * Creates a new {@link LazySettings} instance from the {@code settings.yml} file
+     * Creates a new {@link LazySettings} instance from the {@code config.yml} file
      */
     public LazySettings() {
-        this("config");
+        this(null);
     }
 
     /**
