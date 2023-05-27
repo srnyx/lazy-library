@@ -1,5 +1,7 @@
 package xyz.srnyx.lazylibrary;
 
+import com.google.gson.*;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -147,6 +149,84 @@ public class LazyEmbed {
         if (newImage != null) setImage(newImage.getUrl());
         if (newFooter != null) setFooter(newFooter.getText(), newFooter.getIconUrl());
         setTimestamp(msgEmbed.getTimestamp());
+    }
+
+    /**
+     * Constructs a new {@link LazyEmbed} from a JSON string
+     *
+     * @param   json    the JSON string to construct from
+     */
+    public LazyEmbed(@NotNull String json) {
+        final JsonObject object;
+        try {
+            object = JsonParser.parseString(json).getAsJsonObject();
+        } catch (final JsonParseException | IllegalStateException e) {
+            return;
+        }
+
+        // Color
+        final JsonPrimitive newColor = object.getAsJsonPrimitive("color");
+        if (newColor != null) setColor(newColor.getAsInt());
+
+        // Author
+        final JsonObject author = object.getAsJsonObject("author");
+        if (author != null) {
+            final JsonPrimitive name = author.getAsJsonPrimitive("name");
+            if (name != null) {
+                final JsonPrimitive url = author.getAsJsonPrimitive("url");
+                final JsonPrimitive iconUrl = author.getAsJsonPrimitive("icon_url");
+                setAuthor(name.getAsString(), url == null ? null : url.getAsString(), iconUrl == null ? null : iconUrl.getAsString());
+            }
+        }
+
+        // Title
+        final JsonPrimitive title = object.getAsJsonPrimitive("title");
+        if (title != null) {
+            final JsonPrimitive url = object.getAsJsonPrimitive("url");
+            setTitle(title.getAsString(), url == null ? null : url.getAsString());
+        }
+
+        // Description
+        final JsonPrimitive newDescription = object.getAsJsonPrimitive("description");
+        setDescription(newDescription == null ? null : newDescription.getAsString());
+
+        // Fields
+        final JsonArray newFields = object.getAsJsonArray("fields");
+        if (newFields != null) for (final JsonElement field : newFields) {
+            if (!field.isJsonObject()) continue;
+            final JsonObject fieldObject = field.getAsJsonObject();
+            final JsonPrimitive name = fieldObject.getAsJsonPrimitive("name");
+            final JsonPrimitive value = fieldObject.getAsJsonPrimitive("value");
+            if (name == null || value == null) continue;
+            final JsonPrimitive inline = fieldObject.getAsJsonPrimitive("inline");
+            addField(name.getAsString(), value.getAsString(), inline != null && inline.getAsBoolean());
+        }
+
+        // Thumbnail
+        final JsonObject newThumbnail = object.getAsJsonObject("thumbnail");
+        if (newThumbnail != null) {
+            final JsonPrimitive thumbnailUrl = newThumbnail.getAsJsonPrimitive("url");
+            setThumbnail(thumbnailUrl == null ? null : thumbnailUrl.getAsString());
+        }
+
+        // Image
+        final JsonObject newImage = object.getAsJsonObject("image");
+        if (newImage != null) {
+            final JsonPrimitive imageUrl = newImage.getAsJsonPrimitive("url");
+            setImage(imageUrl == null ? null : imageUrl.getAsString());
+        }
+
+        // Footer
+        final JsonObject footer = object.getAsJsonObject("footer");
+        if (footer != null) {
+            final JsonPrimitive newFooterText = footer.getAsJsonPrimitive("text");
+            final JsonPrimitive footerIconUrl = footer.getAsJsonPrimitive("icon_url");
+            setFooter(newFooterText == null ? null : newFooterText.getAsString(), footerIconUrl == null ? null : footerIconUrl.getAsString());
+        }
+
+        // Timestamp
+        final JsonPrimitive newTimestamp = object.getAsJsonPrimitive("timestamp");
+        if (newTimestamp != null) setTimestamp(Instant.ofEpochMilli(newTimestamp.getAsLong()));
     }
 
     /**
