@@ -453,6 +453,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setDescription(@Nullable String description) {
+        if (description != null && description.length() == 0) description = null;
         builder.setDescription(description);
         this.description = description;
         return this;
@@ -577,51 +578,75 @@ public class LazyEmbed {
         /**
          * {@link LazyEmbed#color}
          */
-        COLOR((embed, value) -> embed.setColor((int) value)),
+        COLOR((embed, value) -> {
+            if (embed.color == 0) embed.setColor((int) value);
+        }),
         /**
          * {@link LazyEmbed#authorName}
          */
-        AUTHOR_NAME((embed, value) -> embed.setAuthor((String) value, embed.authorUrl, embed.authorIcon)),
+        AUTHOR_NAME((embed, value) -> {
+            if (embed.authorName == null) embed.setAuthor((String) value, embed.authorUrl, embed.authorIcon);
+        }),
         /**
          * {@link LazyEmbed#authorUrl}
          */
-        AUTHOR_URL((embed, value) -> embed.setAuthor(embed.authorName, (String) value, embed.authorIcon)),
+        AUTHOR_URL((embed, value) -> {
+            if (embed.authorUrl == null) embed.setAuthor(embed.authorName, (String) value, embed.authorIcon);
+        }),
         /**
          * {@link LazyEmbed#authorIcon}
          */
-        AUTHOR_ICON((embed, value) -> embed.setAuthor(embed.authorName, embed.authorUrl, (String) value)),
+        AUTHOR_ICON((embed, value) -> {
+            if (embed.authorIcon == null) embed.setAuthor(embed.authorName, embed.authorUrl, (String) value);
+        }),
         /**
          * {@link LazyEmbed#titleText}
          */
-        TITLE_TEXT((embed, value) -> embed.setTitle((String) value, embed.titleUrl)),
+        TITLE_TEXT((embed, value) -> {
+            if (embed.titleText == null) embed.setTitle((String) value, embed.titleUrl);
+        }),
         /**
          * {@link LazyEmbed#titleUrl}
          */
-        TITLE_URL((embed, value) -> embed.setTitle(embed.titleText, (String) value)),
+        TITLE_URL((embed, value) -> {
+            if (embed.titleUrl == null) embed.setTitle(embed.titleText, (String) value);
+        }),
         /**
          * {@link LazyEmbed#description}
          */
-        DESCRIPTION((embed, value) -> embed.setDescription((String) value)),
+        DESCRIPTION((embed, value) -> {
+            if (embed.description == null) embed.setDescription((String) value);
+        }),
         /**
          * {@link LazyEmbed#fields}
          */
-        THUMBNAIL((embed, value) -> embed.setThumbnail((String) value)),
+        THUMBNAIL((embed, value) -> {
+            if (embed.thumbnail == null) embed.setThumbnail((String) value);
+        }),
         /**
          * {@link LazyEmbed#image}
          */
-        IMAGE((embed, value) -> embed.setImage((String) value)),
+        IMAGE((embed, value) -> {
+            if (embed.image == null) embed.setImage((String) value);
+        }),
         /**
          * {@link LazyEmbed#footerText}
          */
-        FOOTER_TEXT((embed, value) -> embed.setFooter((String) value, embed.footerIcon)),
+        FOOTER_TEXT((embed, value) -> {
+            if (embed.footerText == null) embed.setFooter((String) value, embed.footerIcon);
+        }),
         /**
          * {@link LazyEmbed#footerIcon}
          */
-        FOOTER_ICON((embed, value) -> embed.setFooter(embed.footerText, (String) value)),
+        FOOTER_ICON((embed, value) -> {
+            if (embed.footerIcon == null) embed.setFooter(embed.footerText, (String) value);
+        }),
         /**
          * {@link LazyEmbed#timestamp}
          */
-        TIMESTAMP((embed, value) -> embed.setTimestamp((TemporalAccessor) value));
+        TIMESTAMP((embed, value) -> {
+            if (embed.timestamp == null) embed.setTimestamp((TemporalAccessor) value);
+        });
 
         /**
          * The setter for the key
