@@ -71,14 +71,18 @@ public class LazyLibrary {
             dataSource.setJdbcUrl(settings.database);
             dataSource.setMaximumPoolSize(3);
             dataSource.setLeakDetectionThreshold(5000);
-            builder.setComponentManager(new DefaultComponentManager(() -> {
-                try {
-                    return dataSource.getConnection();
-                } catch (final SQLException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }));
+            try {
+                builder.setComponentManager(new DefaultComponentManager(() -> {
+                    try {
+                        return dataSource.getConnection();
+                    } catch (final SQLException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }));
+            } catch (final RuntimeException e) {
+                e.printStackTrace();
+            }
         }
         // Build
         builder.build(jda);
