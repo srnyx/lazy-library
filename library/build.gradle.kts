@@ -1,3 +1,5 @@
+import me.dkim19375.dkimgradle.util.setLanguageVersion
+
 plugins {
     `java-library`
     `maven-publish`
@@ -13,10 +15,10 @@ dependencies {
     api("ch.qos.logback", "logback-classic", "1.4.7") // Logging
 }
 
+setLanguageVersion("19")
+
 // Javadoc JAR task
 java {
-    sourceCompatibility = JavaVersion.VERSION_19
-    targetCompatibility = JavaVersion.VERSION_19
     withJavadocJar()
 }
 
@@ -25,8 +27,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.github.srnyx"
-            artifact(tasks["shadowJar"])
-            artifact(tasks["javadocJar"])
+            from(components["java"])
         }
     }
 }
