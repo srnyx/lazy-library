@@ -16,6 +16,7 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 
 /**
@@ -338,47 +339,9 @@ public class LazyEmbed {
         }
         
         // Set defaults
-        for (final Key key : Key.values()) {
-            final Object value = DEFAULTS.get(key);
-            if (value != null) switch (key) {
-                case COLOR -> {
-                    if (color == 0) color = (int) value;
-                }
-                case AUTHOR_NAME -> {
-                    if (authorName != null) authorName = (String) value;
-                } 
-                case AUTHOR_URL -> {
-                    if (authorUrl != null) authorUrl = (String) value;
-                }
-                case AUTHOR_ICON -> {
-                    if (authorIcon != null) authorIcon = (String) value;
-                }
-                case TITLE_TEXT -> {
-                    if (titleText != null) titleText = (String) value;
-                }
-                case TITLE_URL -> {
-                    if (titleUrl != null) titleUrl = (String) value;
-                }
-                case DESCRIPTION -> {
-                    if (description != null) description = (String) value;
-                }
-                case THUMBNAIL -> {
-                    if (thumbnail != null) thumbnail = (String) value;
-                }
-                case IMAGE -> {
-                    if (image != null) image = (String) value;
-                }
-                case FOOTER_TEXT -> {
-                    if (footerText != null) footerText = (String) value;
-                }
-                case FOOTER_ICON -> {
-                    if (footerIcon != null) footerIcon = (String) value;
-                }
-                case TIMESTAMP -> {
-                    if (timestamp != null) timestamp = (TemporalAccessor) value;
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + key);
-            }
+        for (final Map.Entry<Key, Object> entry : DEFAULTS.entrySet()) {
+            final Object value = entry.getValue();
+            if (value != null) entry.getKey().setter.accept(this, value);
         }
 
         return builder.build();
@@ -614,50 +577,64 @@ public class LazyEmbed {
         /**
          * {@link LazyEmbed#color}
          */
-        COLOR,
+        COLOR((embed, value) -> embed.setColor((int) value)),
         /**
          * {@link LazyEmbed#authorName}
          */
-        AUTHOR_NAME,
+        AUTHOR_NAME((embed, value) -> embed.setAuthor((String) value, embed.authorUrl, embed.authorIcon)),
         /**
          * {@link LazyEmbed#authorUrl}
          */
-        AUTHOR_URL,
+        AUTHOR_URL((embed, value) -> embed.setAuthor(embed.authorName, (String) value, embed.authorIcon)),
         /**
          * {@link LazyEmbed#authorIcon}
          */
-        AUTHOR_ICON,
+        AUTHOR_ICON((embed, value) -> embed.setAuthor(embed.authorName, embed.authorUrl, (String) value)),
         /**
          * {@link LazyEmbed#titleText}
          */
-        TITLE_TEXT,
+        TITLE_TEXT((embed, value) -> embed.setTitle((String) value, embed.titleUrl)),
         /**
          * {@link LazyEmbed#titleUrl}
          */
-        TITLE_URL,
+        TITLE_URL((embed, value) -> embed.setTitle(embed.titleText, (String) value)),
         /**
          * {@link LazyEmbed#description}
          */
-        DESCRIPTION,
+        DESCRIPTION((embed, value) -> embed.setDescription((String) value)),
         /**
          * {@link LazyEmbed#fields}
          */
-        THUMBNAIL,
+        THUMBNAIL((embed, value) -> embed.setThumbnail((String) value)),
         /**
          * {@link LazyEmbed#image}
          */
-        IMAGE,
+        IMAGE((embed, value) -> embed.setImage((String) value)),
         /**
          * {@link LazyEmbed#footerText}
          */
-        FOOTER_TEXT,
+        FOOTER_TEXT((embed, value) -> embed.setFooter((String) value, embed.footerIcon)),
         /**
          * {@link LazyEmbed#footerIcon}
          */
-        FOOTER_ICON,
+        FOOTER_ICON((embed, value) -> embed.setFooter(embed.footerText, (String) value)),
         /**
          * {@link LazyEmbed#timestamp}
          */
-        TIMESTAMP
+        TIMESTAMP((embed, value) -> embed.setTimestamp((TemporalAccessor) value));
+
+        /**
+         * The setter for the key
+         */
+        @NotNull public final BiConsumer<LazyEmbed, Object> setter;
+
+        /**
+         * Creates a new key
+         *
+         * @param   setter  {@link #setter}
+         */
+        Key(@NotNull BiConsumer<LazyEmbed, Object> setter) {
+            this.setter = setter;
+        }
     }
 }
