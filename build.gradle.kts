@@ -1,44 +1,27 @@
-import me.dkim19375.dkimgradle.enums.Repository
-import me.dkim19375.dkimgradle.enums.maven
-import me.dkim19375.dkimgradle.util.addBuildShadowTask
-import me.dkim19375.dkimgradle.util.setTextEncoding
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import xyz.srnyx.gradlegalaxy.enums.Repository
+import xyz.srnyx.gradlegalaxy.enums.repository
+import xyz.srnyx.gradlegalaxy.utility.addCompilerArgs
+import xyz.srnyx.gradlegalaxy.utility.setupJava
+
 
 plugins {
     application
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("io.github.dkim19375.dkim-gradle") version "1.2.1"
+    id("xyz.srnyx.gradle-galaxy") version "1.1.2" apply false
+    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
-// This doesn't actually do anything, but it's required for the application plugin
-application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
-
 subprojects {
-    version = "1.0.1"
-
     apply(plugin = "application")
+    apply(plugin = "xyz.srnyx.gradle-galaxy")
     apply(plugin = "com.github.johnrengelman.shadow")
-    apply(plugin = "io.github.dkim19375.dkim-gradle")
 
-    repositories {
-        maven(Repository.MAVEN_CENTRAL, Repository.JITPACK)
-    }
+    setupJava("xyz.srnyx", "1.0.1", javaVersion = JavaVersion.VERSION_19)
+    addCompilerArgs("-parameters")
+    repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
+    dependencies.implementation("net.dv8tion", "JDA", "5.0.0-beta.10")
 
-    dependencies {
-        implementation("net.dv8tion", "JDA", "5.0.0-beta.10") // JDA
-    }
-
-    addBuildShadowTask()
-    setTextEncoding()
-
-    tasks {
-        // Remove '-all' from the JAR file name
-        shadowJar {
-            archiveClassifier.set("")
-        }
-
-        // Parameter names
-        compileJava {
-            options.compilerArgs.plusAssign("-parameters")
-        }
+    tasks.withType<ShadowJar> {
+        dependsOn("distTar", "distZip")
     }
 }

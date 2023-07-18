@@ -1,8 +1,10 @@
-import me.dkim19375.dkimgradle.util.setLanguageVersion
+import xyz.srnyx.gradlegalaxy.data.pom.DeveloperData
+import xyz.srnyx.gradlegalaxy.data.pom.LicenseData
+import xyz.srnyx.gradlegalaxy.utility.setupPublishing
+
 
 plugins {
     `java-library`
-    `maven-publish`
 }
 
 application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
@@ -15,19 +17,8 @@ dependencies {
     api("ch.qos.logback", "logback-classic", "1.4.7") // Logging
 }
 
-setLanguageVersion("19")
-
-// Javadoc JAR task
-java {
-    withJavadocJar()
-}
-
-// Maven publishing for Jitpack
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.github.srnyx"
-            from(components["java"])
-        }
-    }
-}
+setupPublishing(
+    artifactId = "lazy-library",
+    url = "https://lazy-library.srnyx.com",
+    licenses = listOf(LicenseData.MIT),
+    developers = listOf(DeveloperData.srnyx))
