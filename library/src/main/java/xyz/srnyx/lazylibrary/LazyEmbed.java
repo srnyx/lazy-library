@@ -545,6 +545,18 @@ public class LazyEmbed {
      * Sets the footer of the embed
      *
      * @param   text    the text of the footer
+     *
+     * @return          this
+     */
+    @NotNull
+    public LazyEmbed setFooter(@Nullable String text) {
+        return setFooter(text, null);
+    }
+
+    /**
+     * Sets the footer of the embed
+     *
+     * @param   text    the text of the footer
      * @param   iconUrl the icon url of the footer
      *
      * @return          this
