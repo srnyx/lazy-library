@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.sql.SQLException;
@@ -41,6 +42,7 @@ public class LazyLibrary {
      * Starts the bot
      */
     public LazyLibrary() {
+        settings.dependencies(new ApplicationDependency<>((Class<? super LazyLibrary>) getClass(), () -> this));
         getSettings().accept(settings);
         LOGGER = LoggerFactory.getLogger(settings.loggerName);
         onStart();

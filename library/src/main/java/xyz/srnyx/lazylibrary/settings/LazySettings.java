@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import xyz.srnyx.lazylibrary.LazyLibrary;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -25,10 +26,6 @@ public class LazySettings {
      */
     @NotNull public String loggerName = getClass().getSimpleName();
     /**
-     * A {@link Consumer} for the {@link CommandsBuilder} for BotCommands
-     */
-    @NotNull public Consumer<CommandsBuilder> builder = empty -> {};
-    /**
      * A set of {@link GatewayIntent gateway intents} to enable
      */
     @NotNull public final Set<GatewayIntent> gatewayIntents = new HashSet<>();
@@ -41,8 +38,48 @@ public class LazySettings {
      */
     @NotNull public final Set<String> searchPaths = new HashSet<>();
     @NotNull public final Set<ApplicationDependency<?>> dependencies = new HashSet<>();
+    /**
+     * A {@link Consumer} for the {@link CommandsBuilder} for BotCommands
+     */
+    @NotNull public Consumer<CommandsBuilder> builder = empty -> {};
 
     public LazySettings(@NotNull String fileName) {
     	fileSettings = new FileSettings(fileName);
+    }
+
+    @NotNull
+    public LazySettings loggerName(@NotNull String loggerName) {
+    	this.loggerName = loggerName;
+    	return this;
+    }
+
+    @NotNull
+    public LazySettings gatewayIntents(@NotNull GatewayIntent... gatewayIntents) {
+        Collections.addAll(this.gatewayIntents, gatewayIntents);
+    	return this;
+    }
+
+    @NotNull
+    public LazySettings disabledCacheFlags(@NotNull CacheFlag... disabledCacheFlags) {
+        Collections.addAll(this.disabledCacheFlags, disabledCacheFlags);
+    	return this;
+    }
+
+    @NotNull
+    public LazySettings searchPaths(@NotNull String... searchPaths) {
+        Collections.addAll(this.searchPaths, searchPaths);
+    	return this;
+    }
+
+    @NotNull
+    public LazySettings dependencies(@NotNull ApplicationDependency<?>... dependencies) {
+        Collections.addAll(this.dependencies, dependencies);
+    	return this;
+    }
+
+    @NotNull
+    public LazySettings builder(@NotNull Consumer<CommandsBuilder> builder) {
+    	this.builder = builder;
+    	return this;
     }
 }
