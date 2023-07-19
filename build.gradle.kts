@@ -19,7 +19,7 @@ subprojects {
     setupJava("xyz.srnyx", "1.0.1", javaVersion = JavaVersion.VERSION_19)
     addCompilerArgs("-parameters")
     repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
-    dependencies.implementation("net.dv8tion", "JDA", "5.0.0-beta.10")
+    dependencies.implementation("net.dv8tion", "JDA", "5.0.0-beta.12")
 
     tasks.withType<ShadowJar> {
         dependsOn("distTar", "distZip")
