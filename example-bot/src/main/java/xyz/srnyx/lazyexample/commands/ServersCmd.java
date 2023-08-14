@@ -32,7 +32,7 @@ public class ServersCmd extends ApplicationCommand {
             description = "Lists all servers the bot is in")
     public void serversCommand(@NotNull GlobalSlashEvent event) {
         if (!bot.isOwner(event.getUser().getIdLong())) {
-            event.replyEmbeds(new LazyEmbed()
+            event.replyEmbeds(new LazyEmbed(bot)
                             .setColor(Color.RED)
                             .setTitle("No permission!")
                             .setDescription("You don't have permission to use this command")
@@ -50,7 +50,7 @@ public class ServersCmd extends ApplicationCommand {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
 
         // Send embed
-        final LazyEmbed embed = new LazyEmbed()
+        final LazyEmbed embed = new LazyEmbed(bot)
                 .setTitle(jda.getSelfUser().getName() + " servers")
                 .setDescription("**Total servers:** " + guildsMap.size() + "\n**Total members:** " + guildsMap.values().stream()
                         .mapToInt(Integer::intValue)

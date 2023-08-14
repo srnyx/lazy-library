@@ -13,12 +13,16 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 
 import xyz.srnyx.lazylibrary.LazyFile;
+import xyz.srnyx.lazylibrary.LazyLibrary;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 
+/**
+ * A class to hold the settings defined in the settings file
+ */
 public class FileSettings {
     /**
      * The file to load settings from
@@ -42,8 +46,13 @@ public class FileSettings {
      */
     @NotNull public Set<Long> ownersOther = new HashSet<>();
 
-    public FileSettings(@NotNull String fileName) {
-        file = new LazyFile(fileName, NodeStyle.BLOCK, true);
+    /**
+     * Creates a new {@link FileSettings} for the given {@link LazyLibrary}
+     *
+     * @param   library the {@link LazyLibrary} to create the {@link FileSettings} for
+     */
+    public FileSettings(@NotNull LazyLibrary library) {
+        file = new LazyFile(library, library.getSettingsFileName(), NodeStyle.BLOCK, true);
         token = file.yaml.node("token").getString();
         database = file.yaml.node("database").getString();
 

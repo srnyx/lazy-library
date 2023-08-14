@@ -18,6 +18,10 @@ import java.nio.file.Files;
  */
 public class LazyFile {
     /**
+     * The {@link LazyLibrary} instance
+     */
+    @NotNull private final LazyLibrary library;
+    /**
      * The path to the file
      */
     @NotNull private final String pathString;
@@ -41,11 +45,13 @@ public class LazyFile {
     /**
      * Creates a new {@link LazyFile}
      *
-     * @param   pathString  the path to the file
+     * @param   library     {@link #library}
+     * @param   pathString  {@link #pathString}
      * @param   style       the {@link NodeStyle YML style} of the file
-     * @param   isResource  whether the file is a resource to be loaded from the JAR file
+     * @param   isResource  {@link #isResource}
      */
-    public LazyFile(@NotNull String pathString, @NotNull NodeStyle style, boolean isResource) {
+    public LazyFile(@NotNull LazyLibrary library, @NotNull String pathString, @NotNull NodeStyle style, boolean isResource) {
+        this.library = library;
         this.pathString = pathString + ".yml";
         this.isResource = isResource;
         this.file = new File(this.pathString);
@@ -121,6 +127,6 @@ public class LazyFile {
      */
     @NotNull
     public LazyEmbed getEmbed(@NotNull Object... path) {
-        return new LazyEmbed(yaml.node(path));
+        return new LazyEmbed(library, yaml.node(path));
     }
 }

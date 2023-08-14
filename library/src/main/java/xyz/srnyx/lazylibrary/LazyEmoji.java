@@ -118,9 +118,7 @@ public enum LazyEmoji {
     CHAT_CLEAR("vnchatclear", 1096272196864835584L);
 
     @NotNull private final String name;
-
     private final long id;
-
     private final boolean animated;
 
     LazyEmoji(@NotNull String name, long id, boolean animated) {

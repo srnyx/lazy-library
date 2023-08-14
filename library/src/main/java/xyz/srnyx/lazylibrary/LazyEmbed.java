@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.spongepowered.configurate.ConfigurationNode;
+import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.awt.*;
 import java.time.Instant;
@@ -25,10 +26,9 @@ import java.util.function.BiConsumer;
 @SuppressWarnings("UnusedReturnValue")
 public class LazyEmbed {
     /**
-     * Default values if a value is {@code null} in an {@link LazyEmbed embed}
+     * The {@link LazyLibrary} instance for this {@link LazyEmbed}
      */
-    @NotNull public static final Map<Key, Object> DEFAULTS = new EnumMap<>(Key.class);
-
+    @NotNull private final LazyLibrary library;
     /**
      * The {@link EmbedBuilder embed builder} that is used to build the {@link MessageEmbed}
      */
@@ -93,15 +93,21 @@ public class LazyEmbed {
 
     /**
      * Constructs a new {@link LazyEmbed}
+     *
+     * @param   library {@link #library}
      */
-    public LazyEmbed() {}
+    public LazyEmbed(@NotNull LazyLibrary library) {
+        this.library = library;
+    }
 
     /**
      * Constructs a new {@link LazyEmbed} from a {@link ConfigurationNode}
      *
+     * @param   library {@link #library}
      * @param   node    the {@link ConfigurationNode} to construct from
      */
-    public LazyEmbed(@NotNull ConfigurationNode node) {
+    public LazyEmbed(@NotNull LazyLibrary library, @NotNull ConfigurationNode node) {
+        this.library = library;
         if (node.empty()) return;
 
         // Get some values/nodes
@@ -131,9 +137,12 @@ public class LazyEmbed {
     /**
      * Constructs a new {@link LazyEmbed} from a {@link MessageEmbed}
      *
+     * @param   library     {@link #library}
      * @param   msgEmbed    the {@link MessageEmbed} to copy
      */
-    public LazyEmbed(@NotNull MessageEmbed msgEmbed) {
+    public LazyEmbed(@NotNull LazyLibrary library, @NotNull MessageEmbed msgEmbed) {
+        this.library = library;
+
         // Get some values
         final Color colorValue = msgEmbed.getColor();
         final MessageEmbed.AuthorInfo newAuthor = msgEmbed.getAuthor();
@@ -156,9 +165,12 @@ public class LazyEmbed {
      * Constructs a new {@link LazyEmbed} from a JSON string
      * <p><i>Only if the JSON is from {@link MessageEmbed#toData()}</i>
      *
+     * @param   library {@link #library}
      * @param   json    the JSON string to construct from
      */
-    public LazyEmbed(@NotNull String json) {
+    public LazyEmbed(@NotNull LazyLibrary library, @NotNull String json) {
+        this.library = library;
+
         final JsonObject object;
         try {
             object = JsonParser.parseString(json).getAsJsonObject();
@@ -339,7 +351,7 @@ public class LazyEmbed {
         }
         
         // Set defaults
-        for (final Map.Entry<Key, Object> entry : DEFAULTS.entrySet()) {
+        for (final Map.Entry<Key, Object> entry : library.settings.embedDefaults.entrySet()) {
             final Object value = entry.getValue();
             if (value != null) entry.getKey().setter.accept(this, value);
         }
@@ -584,7 +596,7 @@ public class LazyEmbed {
     }
 
     /**
-     * All possible (defaultable) keys an {@link LazyEmbed embed} can have ({@link LazyEmbed#DEFAULTS})
+     * All possible (defaultable) keys an {@link LazyEmbed embed} can have ({@link LazySettings#embedDefaults})
      */
     public enum Key {
         /**

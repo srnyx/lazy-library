@@ -29,11 +29,12 @@ public class LazyMessage {
     /**
      * Constructs a new {@link LazyMessage} from the given {@link Message}
      *
+     * @param   library the {@link LazyLibrary} to construct the {@link LazyMessage} with
      * @param   message the {@link Message} to construct the {@link LazyMessage} from
      */
-    public LazyMessage(@NotNull Message message) {
+    public LazyMessage(@NotNull LazyLibrary library, @NotNull Message message) {
         this(message.getContentRaw(), message.getEmbeds().stream()
-                .map(LazyEmbed::new)
+                .map(embed -> new LazyEmbed(library, embed))
                 .toList());
     }
 
