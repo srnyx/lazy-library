@@ -24,7 +24,7 @@ public class LazySettings {
     /**
      * The name of the logger to use
      */
-    @NotNull public String loggerName = getClass().getSimpleName();
+    @NotNull public String loggerName;
     /**
      * A set of {@link GatewayIntent gateway intents} to enable
      */
@@ -43,8 +43,9 @@ public class LazySettings {
      */
     @NotNull public Consumer<CommandsBuilder> builder = empty -> {};
 
-    public LazySettings(@NotNull String fileName) {
-    	fileSettings = new FileSettings(fileName);
+    public LazySettings(@NotNull LazyLibrary library) {
+    	fileSettings = new FileSettings(library.getSettingsFileName());
+        loggerName = library.getClass().getSimpleName();
     }
 
     @NotNull

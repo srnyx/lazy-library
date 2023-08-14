@@ -35,7 +35,7 @@ public class LazyLibrary {
     /**
      * The {@link LazySettings settings} for the bot
      */
-    @NotNull public final LazySettings settings = new LazySettings(getSettingsFileName());
+    @NotNull public final LazySettings settings = new LazySettings(this);
     /**
      * The {@link JDA} instance
      */
