@@ -10,7 +10,7 @@ dependencies {
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Data storage
     implementation("org.postgresql", "postgresql", "42.6.0") // Database
     implementation("com.zaxxer", "HikariCP", "5.0.1") // Database
-    implementation("ch.qos.logback", "logback-classic", "1.4.7") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.4.11") // Logging
 }
 
 setupPublishing(

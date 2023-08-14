@@ -16,10 +16,10 @@ subprojects {
     apply(plugin = "xyz.srnyx.gradle-galaxy")
     apply(plugin = "com.github.johnrengelman.shadow")
 
-    setupJava("xyz.srnyx", "1.0.1", javaVersion = JavaVersion.VERSION_19)
+    setupJava("xyz.srnyx", "1.0.1", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
     addCompilerArgs("-parameters")
     repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
-    dependencies.implementation("net.dv8tion", "JDA", "5.0.0-beta.12")
+    dependencies.implementation("net.dv8tion", "JDA", "5.0.0-beta.13")
 
     tasks.withType<ShadowJar> {
         dependsOn("distTar", "distZip")

@@ -27,6 +27,9 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("EmptyMethod")
 public class LazyLibrary {
+    /**
+     * The {@link Logger} instance
+     */
     public static Logger LOGGER;
 
     /**
@@ -100,19 +103,28 @@ public class LazyLibrary {
         }).start();
     }
 
+    /**
+     * Returns the name of the settings file (excluding {@code .yml})
+     *
+     * @return  the name of the settings file (excluding {@code .yml})
+     */
     @NotNull
     public String getSettingsFileName() {
         return "config";
     }
 
+    /**
+     * Returns the {@link Consumer} to apply to the {@link LazySettings settings}
+     *
+     * @return  the {@link Consumer} to apply to the {@link LazySettings settings}
+     */
     @NotNull
     public Consumer<LazySettings> getSettings() {
         return settingsConsumer -> {};
     }
 
     /**
-     * Called when the instance is created
-     * <p><b>This is where you should set most of the settings!</b>
+     * Called when the instance is created (after {@link #settings} and {@link #LOGGER} are set)
      */
     public void onStart() {
         // Should be overridden
