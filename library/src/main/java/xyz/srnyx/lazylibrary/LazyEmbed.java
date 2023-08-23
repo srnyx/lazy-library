@@ -26,10 +26,6 @@ import java.util.function.BiConsumer;
 @SuppressWarnings("UnusedReturnValue")
 public class LazyEmbed {
     /**
-     * The {@link LazyLibrary} instance for this {@link LazyEmbed}
-     */
-    @NotNull private final LazyLibrary library;
-    /**
      * The {@link EmbedBuilder embed builder} that is used to build the {@link MessageEmbed}
      */
     @NotNull public final EmbedBuilder builder = new EmbedBuilder();
@@ -93,21 +89,15 @@ public class LazyEmbed {
 
     /**
      * Constructs a new {@link LazyEmbed}
-     *
-     * @param   library {@link #library}
      */
-    public LazyEmbed(@NotNull LazyLibrary library) {
-        this.library = library;
-    }
+    public LazyEmbed() {}
 
     /**
      * Constructs a new {@link LazyEmbed} from a {@link ConfigurationNode}
      *
-     * @param   library {@link #library}
      * @param   node    the {@link ConfigurationNode} to construct from
      */
-    public LazyEmbed(@NotNull LazyLibrary library, @NotNull ConfigurationNode node) {
-        this.library = library;
+    public LazyEmbed(@NotNull ConfigurationNode node) {
         if (node.empty()) return;
 
         // Get some values/nodes
@@ -137,12 +127,9 @@ public class LazyEmbed {
     /**
      * Constructs a new {@link LazyEmbed} from a {@link MessageEmbed}
      *
-     * @param   library     {@link #library}
      * @param   msgEmbed    the {@link MessageEmbed} to copy
      */
-    public LazyEmbed(@NotNull LazyLibrary library, @NotNull MessageEmbed msgEmbed) {
-        this.library = library;
-
+    public LazyEmbed(@NotNull MessageEmbed msgEmbed) {
         // Get some values
         final Color colorValue = msgEmbed.getColor();
         final MessageEmbed.AuthorInfo newAuthor = msgEmbed.getAuthor();
@@ -165,12 +152,9 @@ public class LazyEmbed {
      * Constructs a new {@link LazyEmbed} from a JSON string
      * <p><i>Only if the JSON is from {@link MessageEmbed#toData()}</i>
      *
-     * @param   library {@link #library}
      * @param   json    the JSON string to construct from
      */
-    public LazyEmbed(@NotNull LazyLibrary library, @NotNull String json) {
-        this.library = library;
-
+    public LazyEmbed(@NotNull String json) {
         final JsonObject object;
         try {
             object = JsonParser.parseString(json).getAsJsonObject();
@@ -308,10 +292,12 @@ public class LazyEmbed {
     /**
      * Builds the {@link MessageEmbed}
      *
-     * @return  the {@link MessageEmbed}
+     * @param   library the {@link LazyLibrary} instance
+     *
+     * @return          the {@link MessageEmbed}
      */
     @NotNull
-    public MessageEmbed build() {
+    public MessageEmbed build(@NotNull LazyLibrary library) {
         // Get replaceable values
         String authorNameReplace = authorName;
         String titleTextReplace = titleText;

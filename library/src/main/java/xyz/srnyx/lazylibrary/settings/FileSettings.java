@@ -52,7 +52,7 @@ public class FileSettings {
      * @param   library the {@link LazyLibrary} to create the {@link FileSettings} for
      */
     public FileSettings(@NotNull LazyLibrary library) {
-        file = new LazyFile(library, library.getSettingsFileName(), NodeStyle.BLOCK, true);
+        file = new LazyFile(library.getSettingsFileName(), NodeStyle.BLOCK, true);
         token = file.yaml.node("token").getString();
         database = file.yaml.node("database").getString();
 

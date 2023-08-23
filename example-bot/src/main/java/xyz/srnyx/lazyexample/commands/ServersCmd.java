@@ -32,12 +32,12 @@ public class ServersCmd extends ApplicationCommand {
             description = "Lists all servers the bot is in")
     public void serversCommand(@NotNull GlobalSlashEvent event) {
         if (!bot.isOwner(event.getUser().getIdLong())) {
-            event.replyEmbeds(new LazyEmbed(bot)
+            event.replyEmbeds(new LazyEmbed()
                             .setColor(Color.RED)
                             .setTitle("No permission!")
                             .setDescription("You don't have permission to use this command")
                             .setFooter("/servers")
-                            .build())
+                            .build(bot))
                     .setEphemeral(true).queue();
             return;
         }
@@ -50,12 +50,12 @@ public class ServersCmd extends ApplicationCommand {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
 
         // Send embed
-        final LazyEmbed embed = new LazyEmbed(bot)
+        final LazyEmbed embed = new LazyEmbed()
                 .setTitle(jda.getSelfUser().getName() + " servers")
                 .setDescription("**Total servers:** " + guildsMap.size() + "\n**Total members:** " + guildsMap.values().stream()
                         .mapToInt(Integer::intValue)
                         .sum());
         guildsMap.forEach((guild, members) -> embed.addField(guild.getName(), "**ID:** `" + guild.getId() + "`\n**Members:** " + members, true));
-        event.replyEmbeds(embed.build()).setEphemeral(true).queue();
+        event.replyEmbeds(embed.build(bot)).setEphemeral(true).queue();
     }
 }

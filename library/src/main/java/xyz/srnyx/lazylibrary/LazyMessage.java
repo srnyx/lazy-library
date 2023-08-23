@@ -29,12 +29,11 @@ public class LazyMessage {
     /**
      * Constructs a new {@link LazyMessage} from the given {@link Message}
      *
-     * @param   library the {@link LazyLibrary} to construct the {@link LazyMessage} with
      * @param   message the {@link Message} to construct the {@link LazyMessage} from
      */
-    public LazyMessage(@NotNull LazyLibrary library, @NotNull Message message) {
+    public LazyMessage(@NotNull Message message) {
         this(message.getContentRaw(), message.getEmbeds().stream()
-                .map(embed -> new LazyEmbed(library, embed))
+                .map(LazyEmbed::new)
                 .toList());
     }
 
@@ -68,14 +67,16 @@ public class LazyMessage {
     /**
      * Converts the {@link LazyMessage} to a {@link MessageCreateBuilder}
      *
-     * @return  the {@link MessageCreateBuilder} representation of the {@link LazyMessage}
+     * @param   library the {@link LazyLibrary} to construct the {@link LazyEmbed embeds} with
+     *
+     * @return          the {@link MessageCreateBuilder} representation of the {@link LazyMessage}
      */
     @NotNull
-    public MessageCreateBuilder toBuilder() {
+    public MessageCreateBuilder toBuilder(@NotNull LazyLibrary library) {
         final MessageCreateBuilder builder = new MessageCreateBuilder();
         builder.setContent(content);
         builder.setEmbeds(embeds.stream()
-                .map(LazyEmbed::build)
+                .map(embed -> embed.build(library))
                 .toList());
         return builder;
     }
@@ -122,12 +123,14 @@ public class LazyMessage {
     /**
      * Gets the built {@link MessageEmbed embeds} ({@link MessageEmbed}) of the {@link LazyMessage}
      *
-     * @return  the built {@link MessageEmbed embeds} ({@link MessageEmbed}) of the {@link LazyMessage}
+     * @param   library the {@link LazyLibrary} to construct the {@link LazyEmbed embeds} with
+     *
+     * @return          the built {@link MessageEmbed embeds} ({@link MessageEmbed}) of the {@link LazyMessage}
      */
     @NotNull
-    public List<MessageEmbed> getBuiltEmbeds() {
+    public List<MessageEmbed> getBuiltEmbeds(@NotNull LazyLibrary library) {
         return embeds.stream()
-                .map(LazyEmbed::build)
+                .map(embed -> embed.build(library))
                 .toList();
     }
 }
