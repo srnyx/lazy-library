@@ -22,10 +22,23 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
+/**
+ * An example of a command
+ */
 @CommandMarker
 public class ServersCmd extends ApplicationCommand {
     @Dependency private LazyExample bot;
 
+    /**
+     * A constructor is not necessary
+     */
+    public ServersCmd() {}
+
+    /**
+     * A command that lists all servers the bot is in
+     *
+     * @param   event   the {@link GlobalSlashEvent} instance
+     */
     @JDASlashCommand(
             scope = CommandScope.GLOBAL,
             name = "servers",
