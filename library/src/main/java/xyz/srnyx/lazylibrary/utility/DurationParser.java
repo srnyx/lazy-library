@@ -5,10 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -24,14 +24,14 @@ public class DurationParser {
             ChronoUnit.MINUTES.getDuration(),
             ChronoUnit.SECONDS.getDuration()};
     private static final int DURATIONS_LENGTH = DURATIONS.length;
-    @NotNull private static final Pattern PATTERN = Pattern.compile(Set.of(
+    @NotNull private static final Pattern PATTERN = Pattern.compile(Stream.of(
             "y(?:ear)?s?",
-            "mo(?:nth)?s?",
-            "w(?:eek)?s?",
-            "d(?:ay)?s?",
-            "h(?:our|r)?s?",
-            "m(?:inute|in)?s?",
-            "s(?:econd|ec)?s?").stream()
+                    "mo(?:nth)?s?",
+                    "w(?:eek)?s?",
+                    "d(?:ay)?s?",
+                    "h(?:our|r)?s?",
+                    "m(?:inute|in)?s?",
+                    "s(?:econd|ec)?s?")
             .map(pattern -> "(?:(\\d+)\\s*" + pattern + "[,\\s]*)?")
             .collect(Collectors.joining("", "^\\s*", "$")), Pattern.CASE_INSENSITIVE);
 
