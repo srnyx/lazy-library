@@ -5,8 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -16,23 +15,23 @@ import java.util.stream.Collectors;
  * A utility class for parsing {@link Duration durations} from strings
  */
 public class DurationParser {
-    private static final Map<ChronoUnit, String> UNITS_PATTERNS = new EnumMap<>(ChronoUnit.class);
-
-    static {
-        UNITS_PATTERNS.put(ChronoUnit.YEARS, "y(?:ear)?s?");
-        UNITS_PATTERNS.put(ChronoUnit.MONTHS, "mo(?:nth)?s?");
-        UNITS_PATTERNS.put(ChronoUnit.WEEKS, "w(?:eek)?s?");
-        UNITS_PATTERNS.put(ChronoUnit.DAYS, "d(?:ay)?s?");
-        UNITS_PATTERNS.put(ChronoUnit.HOURS, "h(?:our|r)?s?");
-        UNITS_PATTERNS.put(ChronoUnit.MINUTES, "m(?:inute|in)?s?");
-        UNITS_PATTERNS.put(ChronoUnit.SECONDS, "s(?:econd|ec)?s?");
-    }
-
-    private static final Duration[] DURATIONS = UNITS_PATTERNS.keySet().stream()
-            .map(ChronoUnit::getDuration)
-            .toArray(Duration[]::new);
-
-    private static final Pattern PATTERN = Pattern.compile(UNITS_PATTERNS.values().stream()
+    @NotNull private static final Duration[] DURATIONS = {
+            ChronoUnit.YEARS.getDuration(),
+            ChronoUnit.MONTHS.getDuration(),
+            ChronoUnit.WEEKS.getDuration(),
+            ChronoUnit.DAYS.getDuration(),
+            ChronoUnit.HOURS.getDuration(),
+            ChronoUnit.MINUTES.getDuration(),
+            ChronoUnit.SECONDS.getDuration()};
+    private static final int DURATIONS_LENGTH = DURATIONS.length;
+    @NotNull private static final Pattern PATTERN = Pattern.compile(Set.of(
+            "y(?:ear)?s?",
+            "mo(?:nth)?s?",
+            "w(?:eek)?s?",
+            "d(?:ay)?s?",
+            "h(?:our|r)?s?",
+            "m(?:inute|in)?s?",
+            "s(?:econd|ec)?s?").stream()
             .map(pattern -> "(?:(\\d+)\\s*" + pattern + "[,\\s]*)?")
             .collect(Collectors.joining("", "^\\s*", "$")), Pattern.CASE_INSENSITIVE);
 
@@ -49,7 +48,7 @@ public class DurationParser {
         if (!matcher.matches()) return null;
 
         Duration duration = Duration.ZERO;
-        for (int i = 0; i < DURATIONS.length; i++) {
+        for (int i = 0; i < DURATIONS_LENGTH; i++) {
             final String group = matcher.group(i + 1);
             if (group != null && !group.isEmpty()) {
                 final Integer number = LazyMapper.toInt(group);
