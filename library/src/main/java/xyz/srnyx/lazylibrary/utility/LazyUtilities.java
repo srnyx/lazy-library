@@ -129,13 +129,12 @@ public class LazyUtilities {
      * @param   interaction the {@link Interaction} to get the {@link Member member} and {@link GuildChannel channel} from
      * @param   permissions the {@link Permission permissions} to check for
      *
-     * @return              true if the {@link Member member} has the {@link Permission permissions} in the {@link GuildChannel channel}, false if not, or null if the {@link Member member} or {@link GuildChannel channel} is null (not executed in a {@link Guild} and/or {@link GuildChannel})
+     * @return              true if the {@link Member member} has the {@link Permission permissions} in the {@link GuildChannel channel}, false if not or if the {@link Member member}/{@link GuildChannel channel} is null (not executed in a {@link GuildChannel})
      */
-    @Nullable
-    public static Boolean userHasChannelPermission(@NotNull Interaction interaction, @NotNull Permission... permissions) {
+    public static boolean userHasChannelPermission(@NotNull Interaction interaction, @NotNull Permission... permissions) {
         final Member member = interaction.getMember();
         final GuildChannel channel = handleException(() -> (GuildChannel) interaction.getChannel());
-        if (member == null || channel == null) return null;
+        if (member == null || channel == null) return false;
         return member.hasPermission(channel, permissions);
     }
 
