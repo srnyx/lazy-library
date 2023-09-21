@@ -6,6 +6,7 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
 
 dependencies {
+    implementation("xyz.srnyx", "java-utilities", "1.0.0") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.2") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Data storage
     implementation("org.postgresql", "postgresql", "42.6.0") // Database
