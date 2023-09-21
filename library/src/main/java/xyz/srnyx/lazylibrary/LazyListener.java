@@ -1,10 +1,13 @@
 package xyz.srnyx.lazylibrary;
 
+import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateBoostTimeEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
+import xyz.srnyx.lazylibrary.events.GuildMemberStartBoost;
+import xyz.srnyx.lazylibrary.events.GuildMemberStopBoost;
 import xyz.srnyx.lazylibrary.events.GuildVoiceJoinEvent;
 import xyz.srnyx.lazylibrary.events.GuildVoiceLeaveEvent;
 
@@ -55,6 +58,34 @@ public abstract class LazyListener extends ListenerAdapter {
      * @param   event   the {@link GuildVoiceLeaveEvent} that was fired
      */
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
+        // This should be overridden
+    }
+
+    public void onGuildMemberUpdateBoostTime(@NotNull GuildMemberUpdateBoostTimeEvent event) {
+        // Stopped
+        if (event.getNewValue() == null) {
+            onGuildMemberStopBoosting(new GuildMemberStopBoost(event));
+            return;
+        }
+        // Started
+        onGuildMemberStartBoosting(new GuildMemberStartBoost(event));
+    }
+
+    /**
+     * Called when a member starts boosting a guild
+     *
+     * @param   event   the {@link GuildMemberStartBoost} that was fired
+     */
+    public void onGuildMemberStartBoosting(@NotNull GuildMemberStartBoost event) {
+        // This should be overridden
+    }
+
+    /**
+     * Called when a member stops boosting a guild
+     *
+     * @param   event   the {@link GuildMemberStopBoost} that was fired
+     */
+    public void onGuildMemberStopBoosting(@NotNull GuildMemberStopBoost event) {
         // This should be overridden
     }
 }
