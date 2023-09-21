@@ -24,14 +24,6 @@ public abstract class LazyListener extends ListenerAdapter {
         // Exists to add a Javadoc
     }
 
-    /**
-     * The {@link LazyLibrary bot's} instance
-     *
-     * @return  the {@link LazyLibrary bot's} instance
-     */
-    @NotNull
-    public abstract LazyLibrary getBot();
-
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
         // Joined
@@ -61,6 +53,7 @@ public abstract class LazyListener extends ListenerAdapter {
         // This should be overridden
     }
 
+    @Override
     public void onGuildMemberUpdateBoostTime(@NotNull GuildMemberUpdateBoostTimeEvent event) {
         // Stopped
         if (event.getNewValue() == null) {
