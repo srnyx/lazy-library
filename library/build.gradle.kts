@@ -11,6 +11,7 @@ dependencies {
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Data storage
     implementation("org.postgresql", "postgresql", "42.6.0") // Database
     implementation("com.zaxxer", "HikariCP", "5.0.1") // Database
+    implementation("org.mongodb", "mongodb-driver-sync", "4.10.2") // Mongo
     implementation("ch.qos.logback", "logback-classic", "1.4.11") // Logging
 }
 

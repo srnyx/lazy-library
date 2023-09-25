@@ -3,10 +3,18 @@ package xyz.srnyx.lazylibrary;
 import com.freya02.botcommands.api.CommandsBuilder;
 import com.freya02.botcommands.api.components.DefaultComponentManager;
 
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 import com.zaxxer.hikari.HikariDataSource;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +25,8 @@ import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -40,6 +50,10 @@ public class LazyLibrary {
      * The {@link JDA} instance
      */
     public JDA jda;
+    /**
+     * A map of {@link LazyCollection mongo collections} for the bot
+     */
+    @NotNull public final Map<Class<?>, LazyCollection<?>> mongoCollections = new HashMap<>();
 
     /**
      * Starts the bot
@@ -92,6 +106,14 @@ public class LazyLibrary {
         settings.builder.accept(builder);
         builder.build(jda);
 
+        // Mongo
+        final String mongoConnection = settings.fileSettings.mongoConnection;
+        final String mongoDatabase = settings.fileSettings.mongoDatabase;
+        if (mongoConnection != null && mongoDatabase != null) {
+            final MongoDatabase database = MongoClients.create(mongoConnection).getDatabase(mongoDatabase).withCodecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())));
+            settings.mongoCollections.forEach((name, clazz) -> mongoCollections.put(clazz, new LazyCollection<>(database, name, clazz)));
+        }
+
         // stop command
         new Thread(() -> {
             final Scanner scanner = new Scanner(System.in);
@@ -142,6 +164,22 @@ public class LazyLibrary {
      */
     public void onStop() {
         // Should be overridden
+    }
+
+    /**
+     * Gets the {@link MongoCollection} for the given class
+     *
+     * @param   clazz   the class to get the {@link MongoCollection} for
+     *
+     * @return          the {@link MongoCollection} for the given class
+     *
+     * @param   <T>     the type of the class
+     */
+    @NotNull
+    public <T> LazyCollection<T> getMongoCollection(@NotNull Class<T> clazz) {
+        final LazyCollection<?> collection = mongoCollections.get(clazz);
+        if (collection == null) throw new IllegalArgumentException("No MongoCollection found for class " + clazz);
+        return (LazyCollection<T>) collection;
     }
 
     /**
