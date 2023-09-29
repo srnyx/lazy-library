@@ -19,7 +19,6 @@ subprojects {
     setupJava("xyz.srnyx", "2.0.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
     addCompilerArgs("-parameters")
     repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
-    dependencies.implementation("net.dv8tion", "JDA", "5.0.0-beta.13")
 
     tasks.withType<ShadowJar> {
         dependsOn("distTar", "distZip")
