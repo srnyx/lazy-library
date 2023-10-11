@@ -3,6 +3,7 @@ package xyz.srnyx.lazylibrary;
 import com.freya02.botcommands.api.CommandsBuilder;
 import com.freya02.botcommands.api.components.DefaultComponentManager;
 
+import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -107,11 +108,18 @@ public class LazyLibrary {
         builder.build(jda);
 
         // Mongo
-        final String mongoConnection = settings.fileSettings.mongoConnection;
-        final String mongoDatabase = settings.fileSettings.mongoDatabase;
-        if (mongoConnection != null && mongoDatabase != null) {
-            final MongoDatabase database = MongoClients.create(mongoConnection).getDatabase(mongoDatabase).withCodecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())));
-            settings.mongoCollections.forEach((name, clazz) -> mongoCollections.put(clazz, new LazyCollection<>(database, name, clazz)));
+        final String mongo = settings.fileSettings.mongo;
+        if (mongo != null) {
+            final ConnectionString connection = new ConnectionString(mongo);
+            final String databaseName = connection.getDatabase();
+            if (databaseName != null) {
+                final MongoDatabase database = MongoClients.create(connection)
+                        .getDatabase(databaseName)
+                        .withCodecRegistry(CodecRegistries.fromRegistries(
+                                MongoClientSettings.getDefaultCodecRegistry(),
+                                CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())));
+                settings.mongoCollections.forEach((name, clazz) -> mongoCollections.put(clazz, new LazyCollection<>(database, name, clazz)));
+            }
         }
 
         // stop command

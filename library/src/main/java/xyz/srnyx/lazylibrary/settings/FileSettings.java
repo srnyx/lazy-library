@@ -40,11 +40,7 @@ public class FileSettings {
     /**
      * The MongoDB connection URL
      */
-    @Nullable public final String mongoConnection;
-    /**
-     * The MongoDB database name
-     */
-    @Nullable public final String mongoDatabase;
+    @Nullable public final String mongo;
     /**
      * Primary owner ID, used for {@link RequireOwner} and to get errors DMed
      */
@@ -63,11 +59,7 @@ public class FileSettings {
         file = new LazyFile(library.getSettingsFileName(), NodeStyle.BLOCK, true);
         token = file.yaml.node("token").getString();
         database = file.yaml.node("database").getString();
-
-        // mongo
-        final ConfigurationNode mongoNode = file.yaml.node("mongo");
-        mongoConnection = mongoNode.node("connection").getString();
-        mongoDatabase = mongoNode.node("database").getString();
+        mongo = file.yaml.node("mongo").getString();
 
         // owners
         final ConfigurationNode ownersNode = file.yaml.node("owners");

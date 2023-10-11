@@ -2,10 +2,14 @@
 # Token to run the bot with
 token: "PUT_BOT_TOKEN_HERE"
 
-# RECOMMENDED
+# REQUIRED (if using components)
 # Database to use for components (THIS IS NOT FOR THE BOT'S DATA)
 # Supports: MariaDB, SQLite, PostgreSQL, H2
 database: "PUT_CONNECTION_STRING_HERE"
+
+# REQUIRED (if storing using Mongo)
+# The Mongo database connection string to store data for the bot
+mongo: "PUT_CONNECTION_STRING_HERE"
 
 # RECOMMENDED
 # Owner IDs of the bot
