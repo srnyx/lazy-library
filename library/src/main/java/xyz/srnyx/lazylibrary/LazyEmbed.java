@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.spongepowered.configurate.ConfigurationNode;
+
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.awt.*;
@@ -225,6 +226,69 @@ public class LazyEmbed {
         // Timestamp
         final JsonPrimitive newTimestamp = object.getAsJsonPrimitive("timestamp");
         if (newTimestamp != null) setTimestamp(Instant.ofEpochMilli(newTimestamp.getAsLong()));
+    }
+
+    /**
+     * A pre-built {@link LazyEmbed} for when a user doesn't have permission to do something
+     *
+     * @return  the {@link LazyEmbed}
+     */
+    @NotNull
+    public static LazyEmbed noPermission() {
+        return new LazyEmbed()
+                .setColor(Color.RED)
+                .setTitle("No permission!")
+                .setDescription("You don't have the required permissions to do that!");
+    }
+
+    /**
+     * A pre-built {@link LazyEmbed} for when a user doesn't have permission to do something
+     *
+     * @param   requirement the requirement the user doesn't have (ex: role mention)
+     *
+     * @return              the {@link LazyEmbed}
+     */
+    @NotNull
+    public static LazyEmbed noPermission(@NotNull Object requirement) {
+        return new LazyEmbed()
+                .setColor(Color.RED)
+                .setTitle("No permission!")
+                .setDescription("You must have " + requirement + " to do that!");
+    }
+
+    /**
+     * A pre-built {@link LazyEmbed} for when an invalid argument is provided
+     *
+     * @param   argument    the argument that is invalid
+     * @param   value       the value that was provided
+     *
+     * @return              the {@link LazyEmbed}
+     */
+    @NotNull
+    public static LazyEmbed invalidArgument(@NotNull String argument, @NotNull Object value) {
+        return new LazyEmbed()
+                .setColor(Color.RED)
+                .setTitle("Invalid argument!")
+                .addField(argument, value.toString(), true);
+    }
+
+    /**
+     * A pre-built {@link LazyEmbed} for when multiple provided arguments are invalid
+     *
+     * @param   argumentsValues             the arguments and values that are invalid (argument1, value1, argument2, value2, ...)
+     *
+     * @return                              the {@link LazyEmbed}
+     *
+     * @throws  IllegalArgumentException    if the amount of arguments is not even (each argument must have a value)
+     */
+    @NotNull
+    public static LazyEmbed invalidArguments(@NotNull Object... argumentsValues) {
+        if (argumentsValues.length % 2 != 0) throw new IllegalArgumentException("Each argument must have a value!");
+        final LazyEmbed embed = new LazyEmbed()
+                .setColor(Color.RED)
+                .setTitle("Invalid argument!");
+        for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(argumentsValues[i].toString(), argumentsValues[i + 1].toString(), true);
+        return embed;
     }
 
     /**
