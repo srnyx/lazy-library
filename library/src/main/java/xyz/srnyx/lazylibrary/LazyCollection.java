@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import com.mongodb.client.model.UpdateOptions;
 
 import org.bson.conversions.Bson;
 
@@ -85,6 +86,16 @@ public class LazyCollection<T> {
     }
 
     /**
+     * Upserts a document in the collection
+     *
+     * @param   filter  the filter to apply
+     * @param   update  the update to apply
+     */
+    public void upsertOne(@NotNull Bson filter, @NotNull Bson update) {
+        collection.updateOne(filter, update, new UpdateOptions().upsert(true));
+    }
+
+    /**
      * Updates a document in the collection and returns the updated document
      *
      * @param   filter  the filter to apply
@@ -94,7 +105,8 @@ public class LazyCollection<T> {
      */
     @Nullable
     public T findOneAndUpdate(@NotNull Bson filter, @NotNull Bson update) {
-        return collection.findOneAndUpdate(filter, update, getReturnAfter());
+        return collection.findOneAndUpdate(filter, update, new FindOneAndUpdateOptions()
+                .returnDocument(ReturnDocument.AFTER));
     }
 
     /**
@@ -107,7 +119,9 @@ public class LazyCollection<T> {
      */
     @Nullable
     public T findOneAndUpsert(@NotNull Bson filter, @NotNull Bson update) {
-        return collection.findOneAndUpdate(filter, update, getUpsert());
+        return collection.findOneAndUpdate(filter, update, new FindOneAndUpdateOptions()
+                .returnDocument(ReturnDocument.AFTER)
+                .upsert(true));
     }
 
     /**
@@ -127,25 +141,5 @@ public class LazyCollection<T> {
      */
     public void deleteOne(@NotNull String field, @Nullable Object value) {
         deleteOne(Filters.eq(field, value));
-    }
-
-    /**
-     * Returns a new {@link FindOneAndUpdateOptions} instance with the {@link ReturnDocument#AFTER} option set
-     *
-     * @return  the {@link FindOneAndUpdateOptions} instance
-     */
-    @NotNull
-    private static FindOneAndUpdateOptions getReturnAfter() {
-        return new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER);
-    }
-
-    /**
-     * Returns a new {@link FindOneAndUpdateOptions} instance with the {@link ReturnDocument#AFTER} and {@link FindOneAndUpdateOptions#upsert(boolean)} options set
-     *
-     * @return  the {@link FindOneAndUpdateOptions} instance
-     */
-    @NotNull
-    private static FindOneAndUpdateOptions getUpsert() {
-        return getReturnAfter().upsert(true);
     }
 }
