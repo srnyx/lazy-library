@@ -3,19 +3,10 @@ package xyz.srnyx.lazylibrary;
 import com.freya02.botcommands.api.CommandsBuilder;
 import com.freya02.botcommands.api.components.DefaultComponentManager;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
 import com.zaxxer.hikari.HikariDataSource;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-
-import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
+import xyz.srnyx.magicmongo.MagicMongo;
+
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -52,9 +43,9 @@ public class LazyLibrary {
      */
     public JDA jda;
     /**
-     * A map of {@link LazyCollection mongo collections} for the bot
+     * The {@link MagicMongo} instance for managing MongoDB collections
      */
-    @NotNull public final Map<Class<?>, LazyCollection<?>> mongoCollections = new HashMap<>();
+    public MagicMongo mongo;
 
     /**
      * Starts the bot
@@ -108,19 +99,8 @@ public class LazyLibrary {
         builder.build(jda);
 
         // Mongo
-        final String mongo = settings.fileSettings.mongo;
-        if (mongo != null) {
-            final ConnectionString connection = new ConnectionString(mongo);
-            final String databaseName = connection.getDatabase();
-            if (databaseName != null) {
-                final MongoDatabase database = MongoClients.create(connection)
-                        .getDatabase(databaseName)
-                        .withCodecRegistry(CodecRegistries.fromRegistries(
-                                MongoClientSettings.getDefaultCodecRegistry(),
-                                CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())));
-                settings.mongoCollections.forEach((name, clazz) -> mongoCollections.put(clazz, new LazyCollection<>(database, name, clazz)));
-            }
-        }
+        final String mongoUrl = settings.fileSettings.mongo;
+        if (mongoUrl != null) this.mongo = new MagicMongo(mongoUrl, settings.mongoCollections);
 
         // stop command
         new Thread(() -> {
@@ -172,22 +152,6 @@ public class LazyLibrary {
      */
     public void onStop() {
         // Should be overridden
-    }
-
-    /**
-     * Gets the {@link MongoCollection} for the given class
-     *
-     * @param   clazz   the class to get the {@link MongoCollection} for
-     *
-     * @return          the {@link MongoCollection} for the given class
-     *
-     * @param   <T>     the type of the class
-     */
-    @NotNull
-    public <T> LazyCollection<T> getMongoCollection(@NotNull Class<T> clazz) {
-        final LazyCollection<?> collection = mongoCollections.get(clazz);
-        if (collection == null) throw new IllegalArgumentException("No MongoCollection found for class " + clazz);
-        return (LazyCollection<T>) collection;
     }
 
     /**
