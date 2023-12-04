@@ -126,6 +126,27 @@ public class LazyEmbed {
     }
 
     /**
+     * Constructs a new {@link LazyEmbed} from another {@link LazyEmbed}
+     *
+     * @param   lazyEmbed   the {@link LazyEmbed} to copy
+     */
+    public LazyEmbed(@NotNull LazyEmbed lazyEmbed) {
+        this.color = lazyEmbed.color;
+        this.authorName = lazyEmbed.authorName;
+        this.authorUrl = lazyEmbed.authorUrl;
+        this.authorIcon = lazyEmbed.authorIcon;
+        this.titleText = lazyEmbed.titleText;
+        this.titleUrl = lazyEmbed.titleUrl;
+        this.description = lazyEmbed.description;
+        this.thumbnail = lazyEmbed.thumbnail;
+        this.image = lazyEmbed.image;
+        this.fields.addAll(lazyEmbed.fields);
+        this.footerText = lazyEmbed.footerText;
+        this.footerIcon = lazyEmbed.footerIcon;
+        this.timestamp = lazyEmbed.timestamp;
+    }
+
+    /**
      * Constructs a new {@link LazyEmbed} from a {@link MessageEmbed}
      *
      * @param   msgEmbed    the {@link MessageEmbed} to copy
@@ -337,6 +358,16 @@ public class LazyEmbed {
         }
         if (timestamp != null) map.put("timestamp", timestamp.getLong(ChronoField.INSTANT_SECONDS) * 1000 + timestamp.getLong(ChronoField.MILLI_OF_SECOND));
         return map;
+    }
+
+    /**
+     * Copies this {@link LazyEmbed} as a new instance
+     *
+     * @return  the new {@link LazyEmbed} instance
+     */
+    @NotNull
+    public LazyEmbed copy() {
+        return new LazyEmbed(this);
     }
 
     /**
