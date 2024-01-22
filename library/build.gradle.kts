@@ -6,7 +6,7 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
 
 dependencies {
-    compileOnly("net.dv8tion", "JDA", "5.0.0-alpha.21") // JDA
+    compileOnly("net.dv8tion", "JDA", "5.0.0-beta.20") // JDA
     implementation("xyz.srnyx", "java-utilities", "1.0.0") // General Java utility library
     implementation("xyz.srnyx", "magic-mongo", "1.0.0") // MongoDB framework
     implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
