@@ -6,14 +6,14 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
 
 dependencies {
-    compileOnly("net.dv8tion", "JDA", "5.0.0-beta.20") // JDA
+    compileOnly("net.dv8tion", "JDA", "5.0.0-beta.21") // JDA
     implementation("xyz.srnyx", "java-utilities", "1.0.0") // General Java utility library
-    implementation("xyz.srnyx", "magic-mongo", "1.0.0") // MongoDB framework
+    implementation("xyz.srnyx", "magic-mongo", "1.1.0") // MongoDB framework
     implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
-    implementation("org.postgresql", "postgresql", "42.6.0") // Database
-    implementation("com.zaxxer", "HikariCP", "5.0.1") // Database
-    implementation("ch.qos.logback", "logback-classic", "1.4.11") // Logging
+    implementation("org.postgresql", "postgresql", "42.7.3") // Database
+    implementation("com.zaxxer", "HikariCP", "5.1.0") // Database
+    implementation("ch.qos.logback", "logback-classic", "1.5.3") // Logging
 }
 
 setupPublishing(
