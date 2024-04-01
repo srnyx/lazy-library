@@ -24,6 +24,10 @@ public abstract class LazyListener extends ListenerAdapter {
         // Exists to add a Javadoc
     }
 
+    /**
+     * <b>OVERRIDING THIS WILL BREAK {@link GuildVoiceJoinEvent} AND {@link GuildVoiceLeaveEvent}</b>
+     * <br>If you need to override this, make sure to call {@code super.onGuildVoiceUpdate(event)} in your method!
+     */
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
         // Joined
@@ -53,6 +57,10 @@ public abstract class LazyListener extends ListenerAdapter {
         // This should be overridden
     }
 
+    /**
+     * <b>OVERRIDING THIS WILL BREAK {@link GuildMemberStartBoost} AND {@link GuildMemberStopBoost}</b>
+     * <br>If you need to override this, make sure to call {@code super.onGuildMemberUpdateBoostTime(event)} in your method!
+     */
     @Override
     public void onGuildMemberUpdateBoostTime(@NotNull GuildMemberUpdateBoostTimeEvent event) {
         // Stopped
