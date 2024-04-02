@@ -67,6 +67,10 @@ public class LazyLibrary {
         }
         onReady();
 
+        // Mongo
+        final String mongoUrl = settings.fileSettings.mongo;
+        if (mongoUrl != null) this.mongo = new MagicMongo(mongoUrl, settings.mongoCollections);
+
         // BotCommands
         final CommandsBuilder builder = (settings.fileSettings.ownersPrimary == null ? CommandsBuilder.newBuilder() : CommandsBuilder.newBuilder(settings.fileSettings.ownersPrimary))
                 .textCommandBuilder(textCommands -> textCommands.disableHelpCommand(true));
@@ -97,10 +101,6 @@ public class LazyLibrary {
         // Build
         settings.builder.accept(builder);
         builder.build(jda);
-
-        // Mongo
-        final String mongoUrl = settings.fileSettings.mongo;
-        if (mongoUrl != null) this.mongo = new MagicMongo(mongoUrl, settings.mongoCollections);
 
         // stop command
         new Thread(() -> {
