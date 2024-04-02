@@ -5,7 +5,6 @@ import com.freya02.botcommands.api.annotations.Dependency;
 import com.freya02.botcommands.api.application.ApplicationCommand;
 import com.freya02.botcommands.api.application.CommandScope;
 import com.freya02.botcommands.api.application.slash.GlobalSlashEvent;
-import com.freya02.botcommands.api.application.slash.GuildSlashEvent;
 import com.freya02.botcommands.api.application.slash.annotations.JDASlashCommand;
 
 import net.dv8tion.jda.api.JDA;
@@ -32,7 +31,9 @@ public class ServersCmd extends ApplicationCommand {
     /**
      * A constructor is not necessary
      */
-    public ServersCmd() {}
+    public ServersCmd() {
+        // Only exists to provide a Javadoc
+    }
 
     /**
      * A command that lists all servers the bot is in

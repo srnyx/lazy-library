@@ -546,7 +546,7 @@ public class LazyEmbed {
      */
     @NotNull
     public LazyEmbed setDescription(@Nullable String description) {
-        if (description != null && description.length() == 0) description = null;
+        if (description != null && description.isEmpty()) description = null;
         builder.setDescription(description);
         this.description = description;
         return this;
