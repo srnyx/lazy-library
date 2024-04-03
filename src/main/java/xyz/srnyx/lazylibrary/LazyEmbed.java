@@ -623,6 +623,16 @@ public class LazyEmbed {
     }
 
     /**
+     * Returns an unmodifiable list of all fields in the embed
+     *
+     * @return  an unmodifiable list of all fields in the embed
+     */
+    @NotNull
+    public List<MessageEmbed.Field> getFields() {
+        return Collections.unmodifiableList(fields);
+    }
+
+    /**
      * Clears all fields from the embed
      *
      * @return  this
