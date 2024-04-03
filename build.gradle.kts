@@ -21,7 +21,7 @@ repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
 dependencies {
     compileOnly("net.dv8tion", "JDA", "5.0.0-beta.21") // JDA
     implementation("xyz.srnyx", "java-utilities", "1.0.0") // General Java utility library
-    implementation("xyz.srnyx", "magic-mongo", "1.2.0") // MongoDB framework
+    implementation("xyz.srnyx", "magic-mongo", "1.2.1") // MongoDB framework
     implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
     implementation("org.postgresql", "postgresql", "42.7.3") // Database
