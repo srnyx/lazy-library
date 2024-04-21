@@ -48,10 +48,6 @@ public class LazySettings {
      */
     @NotNull public Consumer<CommandsBuilder> builder = empty -> {};
     /**
-     * A map of strings (names) and classes (types) of collections in the MongoDB database
-     */
-    @NotNull public Map<String, Class<?>> mongoCollections = new HashMap<>();
-    /**
      * A list of default values for {@link LazyEmbed embeds}
      */
     @NotNull public Map<LazyEmbed.Key, Object> embedDefaults = new EnumMap<>(LazyEmbed.Key.class);
@@ -142,33 +138,6 @@ public class LazySettings {
     public LazySettings builder(@NotNull Consumer<CommandsBuilder> builder) {
     	this.builder = builder;
     	return this;
-    }
-
-    /**
-     * Adds Mongo collections to register
-     *
-     * @param   mongoCollections    the Mongo collections to add
-     *
-     * @return                      {@code this}
-     */
-    @NotNull
-    public LazySettings mongoCollections(@NotNull Map<String, Class<?>> mongoCollections) {
-        this.mongoCollections.putAll(mongoCollections);
-    	return this;
-    }
-
-    /**
-     * Adds a Mongo collection to register
-     *
-     * @param   name    the name of the Mongo collection
-     * @param   clazz   the class of the Mongo collection
-     *
-     * @return          {@code this}
-     */
-    @NotNull
-    public LazySettings mongoCollection(@NotNull String name, @NotNull Class<?> clazz) {
-        mongoCollections.put(name, clazz);
-        return this;
     }
 
     /**
