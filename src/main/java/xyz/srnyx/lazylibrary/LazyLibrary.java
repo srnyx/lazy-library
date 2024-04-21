@@ -18,7 +18,6 @@ import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 
@@ -46,7 +45,7 @@ public class LazyLibrary {
      */
     public LazyLibrary() {
         settings.dependencies(new ApplicationDependency<>((Class<? super LazyLibrary>) getClass(), () -> this));
-        getSettings().accept(settings);
+        setSettings();
         LOGGER = LoggerFactory.getLogger(settings.loggerName);
         onStart();
 
@@ -114,13 +113,10 @@ public class LazyLibrary {
     }
 
     /**
-     * Returns the {@link Consumer} to apply to the {@link LazySettings settings}
-     *
-     * @return  the {@link Consumer} to apply to the {@link LazySettings settings}
+     * Set the {@link #settings} for the bot here by overriding this method
      */
-    @NotNull
-    public Consumer<LazySettings> getSettings() {
-        return settingsConsumer -> {};
+    public void setSettings() {
+        // Should be overridden
     }
 
     /**
