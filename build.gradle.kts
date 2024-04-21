@@ -13,7 +13,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-setupJava("xyz.srnyx", "3.0.1", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
+setupJava("xyz.srnyx", "3.1.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
 application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
 addCompilerArgs("-parameters")
 
