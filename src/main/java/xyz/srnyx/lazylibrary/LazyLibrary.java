@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
-import xyz.srnyx.magicmongo.MagicMongo;
-
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -42,10 +40,6 @@ public class LazyLibrary {
      * The {@link JDA} instance
      */
     public JDA jda;
-    /**
-     * The {@link MagicMongo} instance for managing MongoDB collections
-     */
-    public MagicMongo mongo;
 
     /**
      * Starts the bot
@@ -66,10 +60,6 @@ public class LazyLibrary {
             return;
         }
         onReady();
-
-        // Mongo
-        final String mongoUrl = settings.fileSettings.mongo;
-        if (mongoUrl != null) this.mongo = new MagicMongo(mongoUrl, settings.mongoCollections);
 
         // BotCommands
         final CommandsBuilder builder = (settings.fileSettings.ownersPrimary == null ? CommandsBuilder.newBuilder() : CommandsBuilder.newBuilder(settings.fileSettings.ownersPrimary))
