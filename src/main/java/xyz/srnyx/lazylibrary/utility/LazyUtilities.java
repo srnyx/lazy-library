@@ -3,6 +3,8 @@ package xyz.srnyx.lazylibrary.utility;
 import com.freya02.botcommands.api.application.slash.autocomplete.AutocompleteAlgorithms;
 import com.freya02.botcommands.api.pagination.paginator.PaginatorBuilder;
 
+import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
+
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -21,6 +23,7 @@ import xyz.srnyx.lazylibrary.LazyEmoji;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 
 /**
@@ -65,24 +68,22 @@ public class LazyUtilities {
     @NotNull
     public static List<Command.Choice> sortChoicesFuzzy(@NotNull CommandAutoCompleteInteractionEvent event, @NotNull Collection<Command.Choice> collection) {
         final OptionType type = event.getFocusedOption().getType();
+        final Function<BoundExtractedResult<Command.Choice>, Command.Choice> mapping = switch (type) {
+            case STRING -> BoundExtractedResult::getReferent;
+            case INTEGER -> result -> {
+                final Command.Choice choice = result.getReferent();
+                final Long value = Mapper.toLong(choice.getAsString());
+                return value == null ? null : new Command.Choice(choice.getName(), value);
+            };
+            case NUMBER -> result -> {
+                final Command.Choice choice = result.getReferent();
+                final Double value = Mapper.toDouble(choice.getAsString());
+                return value == null ? null : new Command.Choice(choice.getName(), value);
+            };
+            default -> throw new IllegalArgumentException("Invalid autocompletion option type: " + type);
+        };
         return AutocompleteAlgorithms.fuzzyMatching(collection, Command.Choice::getName, event).stream()
-                .map(result -> {
-                    final Command.Choice choice = result.getReferent();
-                    final String name = choice.getName();
-                    final String value = choice.getAsString();
-                    return switch (type) {
-                        case STRING -> new Command.Choice(name, value);
-                        case INTEGER -> {
-                            final Long valueLong = Mapper.toLong(value);
-                            yield valueLong == null ? null : new Command.Choice(name, valueLong);
-                        }
-                        case NUMBER -> {
-                            final Double valueDouble = Mapper.toDouble(value);
-                            yield valueDouble == null ? null : new Command.Choice(name, valueDouble);
-                        }
-                        default -> throw new IllegalArgumentException("Invalid autocompletion option type: " + type);
-                    };
-                })
+                .map(mapping)
                 .toList();
     }
 
