@@ -805,26 +805,7 @@ public class LazyEmbed {
         final LazyEmbed embed = new LazyEmbed()
                 .setColor(Color.RED)
                 .setTitle("Invalid argument!");
-        for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(argumentsValues[i].toString(), argumentsValues[i + 1].toString(), true);
-        return embed;
-    }
-
-    /**
-     * A pre-built {@link LazyEmbed} for when multiple provided arguments are invalid
-     *
-     * @param   description     the description of the embed
-     * @param   argumentsValues the arguments and values that are invalid (argument1, value1, argument2, value2, ...)
-     *
-     * @return                  the {@link LazyEmbed}
-     */
-    @NotNull
-    public static LazyEmbed invalidArguments(@NotNull String description, @NotNull Object... argumentsValues) {
-        if (argumentsValues.length % 2 != 0) throw new IllegalArgumentException("Each argument must have a value!");
-        final LazyEmbed embed = new LazyEmbed()
-                .setColor(Color.RED)
-                .setTitle("Invalid argument!")
-                .setDescription(description);
-        for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(argumentsValues[i].toString(), argumentsValues[i + 1].toString(), true);
+        for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(String.valueOf(argumentsValues[i]), String.valueOf(argumentsValues[i + 1]), true);
         return embed;
     }
 }
