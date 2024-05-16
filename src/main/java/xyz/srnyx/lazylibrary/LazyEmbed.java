@@ -624,6 +624,18 @@ public class LazyEmbed {
     }
 
     /**
+     * Sets the timestamp of the embed
+     *
+     * @param   timestamp   the timestamp of the embed
+     *
+     * @return              this
+     */
+    @NotNull
+    public LazyEmbed setTimestamp(@Nullable Long timestamp) {
+        return setTimestamp(timestamp == null ? null : Instant.ofEpochMilli(timestamp));
+    }
+
+    /**
      * All possible (defaultable) keys an {@link LazyEmbed embed} can have ({@link LazySettings#embedDefaults})
      */
     public enum Key {
@@ -804,7 +816,7 @@ public class LazyEmbed {
         if (argumentsValues.length % 2 != 0) throw new IllegalArgumentException("Each argument must have a value!");
         final LazyEmbed embed = new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("Invalid argument!");
+                .setTitle("Invalid arguments!");
         for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(String.valueOf(argumentsValues[i]), String.valueOf(argumentsValues[i + 1]), true);
         return embed;
     }
