@@ -9,8 +9,8 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 
 plugins {
     application
-    id("xyz.srnyx.gradle-galaxy") version "1.1.2"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("xyz.srnyx.gradle-galaxy") version "1.1.3"
+    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 setupJava("xyz.srnyx", "3.1.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
@@ -19,7 +19,7 @@ addCompilerArgs("-parameters")
 
 repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
 dependencies {
-    compileOnly("net.dv8tion", "JDA", "5.0.0-beta.21") // JDA
+    compileOnly("net.dv8tion", "JDA", "5.0.0-beta.24") // JDA
     implementation("xyz.srnyx", "java-utilities", "1.0.0") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
