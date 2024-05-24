@@ -1,8 +1,9 @@
 package xyz.srnyx.lazylibrary.utility;
 
-import com.freya02.botcommands.api.application.slash.autocomplete.AutocompleteAlgorithms;
 import com.freya02.botcommands.api.pagination.paginator.PaginatorBuilder;
 
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.ToStringFunction;
 import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
 
 import net.dv8tion.jda.api.Permission;
@@ -10,9 +11,11 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
+import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +25,7 @@ import xyz.srnyx.javautilities.manipulation.Mapper;
 import xyz.srnyx.lazylibrary.LazyEmoji;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -57,6 +61,18 @@ public class LazyUtilities {
         return member.hasPermission(channel, permissions);
     }
 
+    @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> STRING_MAPPING = BoundExtractedResult::getReferent;
+    @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> INTEGER_MAPPING = result -> {
+        final Command.Choice choice = result.getReferent();
+        final Long value = Mapper.toLong(choice.getAsString());
+        return value == null ? null : new Command.Choice(choice.getName(), value);
+    };
+    @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> NUMBER_MAPPING = result -> {
+        final Command.Choice choice = result.getReferent();
+        final Double value = Mapper.toDouble(choice.getAsString());
+        return value == null ? null : new Command.Choice(choice.getName(), value);
+    };
+
     /**
      * Sorts {@link Command.Choice command choices} using fuzzy matching based on the focused option (most similar)
      *
@@ -67,22 +83,27 @@ public class LazyUtilities {
      */
     @NotNull
     public static List<Command.Choice> sortChoicesFuzzy(@NotNull CommandAutoCompleteInteractionEvent event, @NotNull Collection<Command.Choice> collection) {
-        final OptionType type = event.getFocusedOption().getType();
+        final AutoCompleteQuery inputQuery = event.getFocusedOption();
+        final OptionType type = inputQuery.getType();
+		final String input = inputQuery.getValue().toLowerCase();
+        final ToStringFunction<Command.Choice> toStringFunction = choice -> choice.getName().toLowerCase();
+
+		// Sort results by similarities but taking into account an incomplete input
+		final List<Command.Choice> list = collection.stream()
+				.sorted(Comparator.comparing(toStringFunction::apply))
+				.toList();
+		final List<Command.Choice> bigLengthDiffResults = FuzzySearch.extractTop(input, list, toStringFunction, FuzzySearch::partialRatio, OptionData.MAX_CHOICES).stream()
+                .map(BoundExtractedResult::getReferent)
+                .toList();
+
+		// Sort results by similarities but don't take length into account
         final Function<BoundExtractedResult<Command.Choice>, Command.Choice> mapping = switch (type) {
-            case STRING -> BoundExtractedResult::getReferent;
-            case INTEGER -> result -> {
-                final Command.Choice choice = result.getReferent();
-                final Long value = Mapper.toLong(choice.getAsString());
-                return value == null ? null : new Command.Choice(choice.getName(), value);
-            };
-            case NUMBER -> result -> {
-                final Command.Choice choice = result.getReferent();
-                final Double value = Mapper.toDouble(choice.getAsString());
-                return value == null ? null : new Command.Choice(choice.getName(), value);
-            };
+            case STRING -> STRING_MAPPING;
+            case INTEGER -> INTEGER_MAPPING;
+            case NUMBER -> NUMBER_MAPPING;
             default -> throw new IllegalArgumentException("Invalid autocompletion option type: " + type);
         };
-        return AutocompleteAlgorithms.fuzzyMatching(collection, Command.Choice::getName, event).stream()
+		return FuzzySearch.extractTop(input, bigLengthDiffResults, toStringFunction, FuzzySearch::ratio, OptionData.MAX_CHOICES).stream()
                 .map(mapping)
                 .toList();
     }
