@@ -94,11 +94,7 @@ public class LazyLibrary {
         // stop command
         new Thread(() -> {
             final Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNextLine()) {
-                if (!scanner.nextLine().equals("stop")) continue;
-                onStop();
-                System.exit(0);
-            }
+            while (scanner.hasNextLine()) if (scanner.nextLine().equals("stop")) stopBot();
         }).start();
     }
 
@@ -138,6 +134,14 @@ public class LazyLibrary {
      */
     public void onStop() {
         // Should be overridden
+    }
+
+    /**
+     * Stops the bot (calls {@link #onStop()} and exits the program)
+     */
+    public void stopBot() {
+        onStop();
+        System.exit(0);
     }
 
     /**
