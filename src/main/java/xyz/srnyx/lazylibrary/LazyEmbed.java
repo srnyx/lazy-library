@@ -337,7 +337,8 @@ public class LazyEmbed {
         String footerTextReplace = footerText;
 
         // Parse replacements for the values
-        for (final Map.Entry<String, String> entry : replacements.entrySet()) {
+        final boolean hasReplacements = !replacements.isEmpty();
+        if (hasReplacements) for (final Map.Entry<String, String> entry : replacements.entrySet()) {
             if (authorNameReplace != null) authorNameReplace = authorNameReplace.replace(entry.getKey(), entry.getValue());
             if (titleTextReplace != null) titleTextReplace = titleTextReplace.replace(entry.getKey(), entry.getValue());
             if (descriptionReplace != null) descriptionReplace = descriptionReplace.replace(entry.getKey(), entry.getValue());
@@ -351,21 +352,22 @@ public class LazyEmbed {
         setFooter(footerTextReplace, footerIcon);
 
         // Fields
-        final List<MessageEmbed.Field> fieldsCopy = new ArrayList<>(fields);
-        clearFields();
-        for (final MessageEmbed.Field field : fieldsCopy) {
-            // Get name and value
-            String name = field.getName();
-            String value = field.getValue();
+        if (hasReplacements) {
+            clearFields();
+            for (final MessageEmbed.Field field : new ArrayList<>(fields)) {
+                // Get name and value
+                String name = field.getName();
+                String value = field.getValue();
 
-            // Parse replacements for the name and value
-            for (final Map.Entry<String, String> entry : replacements.entrySet()) {
-                if (name != null) name = name.replace(entry.getKey(), entry.getValue());
-                if (value != null) value = value.replace(entry.getKey(), entry.getValue());
+                // Parse replacements for the name and value
+                for (final Map.Entry<String, String> entry : replacements.entrySet()) {
+                    if (name != null) name = name.replace(entry.getKey(), entry.getValue());
+                    if (value != null) value = value.replace(entry.getKey(), entry.getValue());
+                }
+
+                // Add the new field
+                if (name != null && value != null) addField(name, value, field.isInline());
             }
-
-            // Add the new field
-            if (name != null && value != null) addField(name, value, field.isInline());
         }
         
         // Set defaults
