@@ -19,8 +19,8 @@ addCompilerArgs("-parameters")
 
 repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
 dependencies {
-    compileOnly("net.dv8tion", "JDA", "5.0.0-beta.24") // JDA
-    implementation("xyz.srnyx", "java-utilities", "a71551bc2d") // General Java utility library
+    compileOnly("net.dv8tion", "JDA", "5.0.2") // JDA
+    implementation("xyz.srnyx", "java-utilities", "12eda02e55") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
     implementation("org.postgresql", "postgresql", "42.7.3") // Database
