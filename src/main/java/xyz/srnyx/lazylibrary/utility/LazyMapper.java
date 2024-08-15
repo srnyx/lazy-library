@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.javautilities.MiscUtility;
 
+import java.util.Optional;
+
 
 /**
  * A utility class for converting {@link Object Objects} to other types
@@ -18,10 +20,10 @@ public class LazyMapper {
      *
      * @param   object  the {@link String} to parse
      *
-     * @return          the {@link Long snowflake} or {@code null}
+     * @return          the {@link Long snowflake} or empty
      */
-    @Nullable
-    public static Long parseSnowflake(@NotNull Object object) {
+    @NotNull
+    public static Optional<Long> parseSnowflake(@NotNull Object object) {
         return MiscUtility.handleException(() -> MiscUtil.parseSnowflake(object.toString()));
     }
 
@@ -30,14 +32,11 @@ public class LazyMapper {
      *
      * @param   object  the {@link Object} to convert
      *
-     * @return          the {@link UserSnowflake} or {@code null}
+     * @return          the {@link UserSnowflake} or empty
      */
-    @Nullable
-    public static UserSnowflake toUserSnowflake(@Nullable Object object) {
-        if (object == null) return null;
-        final Long snowflake = parseSnowflake(object);
-        if (snowflake == null) return null;
-        return MiscUtility.handleException(() -> UserSnowflake.fromId(snowflake));
+    @NotNull
+    public static Optional<UserSnowflake> toUserSnowflake(@Nullable Object object) {
+        return object == null ? Optional.empty() : parseSnowflake(object).flatMap(snowflake -> MiscUtility.handleException(() -> UserSnowflake.fromId(snowflake)));
     }
 
     private LazyMapper() {

@@ -9,8 +9,8 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 
 plugins {
     application
-    id("xyz.srnyx.gradle-galaxy") version "1.1.3"
-    id("io.github.goooler.shadow") version "8.1.7"
+    id("xyz.srnyx.gradle-galaxy") version "1.2.3"
+    id("com.gradleup.shadow") version "8.3.0"
 }
 
 setupJava("xyz.srnyx", "3.1.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
@@ -20,12 +20,12 @@ addCompilerArgs("-parameters")
 repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
 dependencies {
     compileOnly("net.dv8tion", "JDA", "5.0.2") // JDA
-    implementation("xyz.srnyx", "java-utilities", "12eda02e55") // General Java utility library
+    implementation("xyz.srnyx", "java-utilities", "a073202b43") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
     implementation("org.postgresql", "postgresql", "42.7.3") // Database
     implementation("com.zaxxer", "HikariCP", "5.1.0") // Database
-    implementation("ch.qos.logback", "logback-classic", "1.5.3") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.5.6") // Logging
 }
 
 setupPublishing(

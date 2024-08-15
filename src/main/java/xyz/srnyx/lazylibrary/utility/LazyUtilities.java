@@ -19,7 +19,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import org.jetbrains.annotations.NotNull;
 
-import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.manipulation.Mapper;
 
 import xyz.srnyx.lazylibrary.LazyEmoji;
@@ -56,21 +55,23 @@ public class LazyUtilities {
      */
     public static boolean userHasChannelPermission(@NotNull Interaction interaction, @NotNull Permission... permissions) {
         final Member member = interaction.getMember();
-        final GuildChannel channel = MiscUtility.handleException(() -> (GuildChannel) interaction.getChannel());
-        if (member == null || channel == null) return false;
-        return member.hasPermission(channel, permissions);
+        return member != null && Mapper.to(interaction.getChannel(), GuildChannel.class)
+                .map(channel -> member.hasPermission(channel, permissions))
+                .orElse(false);
     }
 
     @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> STRING_MAPPING = BoundExtractedResult::getReferent;
     @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> INTEGER_MAPPING = result -> {
         final Command.Choice choice = result.getReferent();
-        final Long value = Mapper.toLong(choice.getAsString());
-        return value == null ? null : new Command.Choice(choice.getName(), value);
+        return Mapper.toLong(choice.getAsString())
+                .map(value -> new Command.Choice(choice.getName(), value))
+                .orElse(null);
     };
     @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> NUMBER_MAPPING = result -> {
         final Command.Choice choice = result.getReferent();
-        final Double value = Mapper.toDouble(choice.getAsString());
-        return value == null ? null : new Command.Choice(choice.getName(), value);
+        return Mapper.toDouble(choice.getAsString())
+                .map(value -> new Command.Choice(choice.getName(), value))
+                .orElse(null);
     };
 
     /**
