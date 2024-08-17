@@ -638,6 +638,18 @@ public class LazyEmbed {
     }
 
     /**
+     * Sets the timestamp of the embed
+     *
+     * @param   timestamp   the timestamp of the embed
+     *
+     * @return              this
+     */
+    @NotNull
+    public LazyEmbed setTimestamp(@Nullable Date timestamp) {
+        return setTimestamp(timestamp == null ? null : timestamp.getTime());
+    }
+
+    /**
      * All possible (defaultable) keys an {@link LazyEmbed embed} can have ({@link LazySettings#embedDefaults})
      */
     public enum Key {
