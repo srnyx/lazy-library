@@ -131,19 +131,15 @@ public class LazyEmbed {
      * @param   lazyEmbed   the {@link LazyEmbed} to copy
      */
     public LazyEmbed(@NotNull LazyEmbed lazyEmbed) {
-        this.color = lazyEmbed.color;
-        this.authorName = lazyEmbed.authorName;
-        this.authorUrl = lazyEmbed.authorUrl;
-        this.authorIcon = lazyEmbed.authorIcon;
-        this.titleText = lazyEmbed.titleText;
-        this.titleUrl = lazyEmbed.titleUrl;
-        this.description = lazyEmbed.description;
-        this.thumbnail = lazyEmbed.thumbnail;
-        this.image = lazyEmbed.image;
-        this.fields.addAll(lazyEmbed.fields);
-        this.footerText = lazyEmbed.footerText;
-        this.footerIcon = lazyEmbed.footerIcon;
-        this.timestamp = lazyEmbed.timestamp;
+        setColor(lazyEmbed.color);
+        setAuthor(lazyEmbed.authorName, lazyEmbed.authorUrl, lazyEmbed.authorIcon);
+        setTitle(lazyEmbed.titleText, lazyEmbed.titleUrl);
+        setDescription(lazyEmbed.description);
+        setThumbnail(lazyEmbed.thumbnail);
+        setImage(lazyEmbed.image);
+        addFields(lazyEmbed.fields);
+        setFooter(lazyEmbed.footerText, lazyEmbed.footerIcon);
+        setTimestamp(lazyEmbed.timestamp);
     }
 
     /**
