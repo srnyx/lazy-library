@@ -330,43 +330,45 @@ public class LazyEmbed {
      */
     @NotNull
     public MessageEmbed build(@NotNull LazyLibrary library) {
-        // Get replaceable values
-        String authorNameReplace = authorName;
-        String titleTextReplace = titleText;
-        String descriptionReplace = description;
-        String footerTextReplace = footerText;
+        // Replacements
+        if (!replacements.isEmpty()) {
+            // Get replaceable values
+            String authorNameReplace = authorName;
+            String titleTextReplace = titleText;
+            String descriptionReplace = description;
+            String footerTextReplace = footerText;
 
-        // Parse replacements for the values
-        final boolean hasReplacements = !replacements.isEmpty();
-        if (hasReplacements) for (final Map.Entry<String, String> entry : replacements.entrySet()) {
-            if (authorNameReplace != null) authorNameReplace = authorNameReplace.replace(entry.getKey(), entry.getValue());
-            if (titleTextReplace != null) titleTextReplace = titleTextReplace.replace(entry.getKey(), entry.getValue());
-            if (descriptionReplace != null) descriptionReplace = descriptionReplace.replace(entry.getKey(), entry.getValue());
-            if (footerTextReplace != null) footerTextReplace = footerTextReplace.replace(entry.getKey(), entry.getValue());
-        }
+            // Parse replacements for the values
+            for (final Map.Entry<String, String> entry : replacements.entrySet()) {
+                if (authorNameReplace != null) authorNameReplace = authorNameReplace.replace(entry.getKey(), entry.getValue());
+                if (titleTextReplace != null) titleTextReplace = titleTextReplace.replace(entry.getKey(), entry.getValue());
+                if (descriptionReplace != null) descriptionReplace = descriptionReplace.replace(entry.getKey(), entry.getValue());
+                if (footerTextReplace != null) footerTextReplace = footerTextReplace.replace(entry.getKey(), entry.getValue());
+            }
 
-        // Set the values
-        setAuthor(authorNameReplace, authorUrl, authorIcon);
-        setTitle(titleTextReplace, titleUrl);
-        setDescription(descriptionReplace);
-        setFooter(footerTextReplace, footerIcon);
+            // Set the new values
+            setAuthor(authorNameReplace, authorUrl, authorIcon);
+            setTitle(titleTextReplace, titleUrl);
+            setDescription(descriptionReplace);
+            setFooter(footerTextReplace, footerIcon);
 
-        // Fields
-        if (hasReplacements) {
+            // Fields
+            final List<MessageEmbed.Field> newFields = new ArrayList<>(fields);
             clearFields();
-            for (final MessageEmbed.Field field : new ArrayList<>(fields)) {
+            for (final MessageEmbed.Field field : newFields) {
                 // Get name and value
                 String name = field.getName();
                 String value = field.getValue();
+                if (name == null || value == null) continue;
 
                 // Parse replacements for the name and value
                 for (final Map.Entry<String, String> entry : replacements.entrySet()) {
-                    if (name != null) name = name.replace(entry.getKey(), entry.getValue());
-                    if (value != null) value = value.replace(entry.getKey(), entry.getValue());
+                    name = name.replace(entry.getKey(), entry.getValue());
+                    value = value.replace(entry.getKey(), entry.getValue());
                 }
 
                 // Add the new field
-                if (name != null && value != null) addField(name, value, field.isInline());
+                addField(name, value, field.isInline());
             }
         }
         
