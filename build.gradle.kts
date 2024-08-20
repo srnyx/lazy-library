@@ -14,10 +14,10 @@ plugins {
 }
 
 setupJava("xyz.srnyx", "3.1.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
-application.mainClass.set("xyz.srnyx.lazylibrary.LazyLoader")
+application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
 addCompilerArgs("-parameters")
 
-repository(Repository.ALESSIO_DP, Repository.MAVEN_CENTRAL, Repository.JITPACK)
+repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
 dependencies {
     compileOnly("net.dv8tion", "JDA", "5.0.2") // JDA
     implementation("xyz.srnyx", "java-utilities", "a073202b43") // General Java utility library
