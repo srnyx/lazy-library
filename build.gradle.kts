@@ -9,23 +9,26 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 
 plugins {
     application
+    `java-library`
     id("xyz.srnyx.gradle-galaxy") version "1.2.3"
     id("com.gradleup.shadow") version "8.3.0"
 }
 
 setupJava("xyz.srnyx", "3.1.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_19)
-application.mainClass.set("xyz.srnyx.lazylibrary.LazyLibrary")
+application.mainClass.set("xyz.srnyx.lazylibrary.LazyLoader")
 addCompilerArgs("-parameters")
 
-repository(Repository.MAVEN_CENTRAL, Repository.JITPACK)
+repository(Repository.ALESSIO_DP, Repository.MAVEN_CENTRAL, Repository.JITPACK)
 dependencies {
-    compileOnly("net.dv8tion", "JDA", "5.0.2") // JDA
-    implementation("xyz.srnyx", "java-utilities", "a073202b43") // General Java utility library
-    implementation("io.github.freya022", "BotCommands", "2.10.3") // Command framework
-    implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
-    implementation("org.postgresql", "postgresql", "42.7.3") // Database
-    implementation("com.zaxxer", "HikariCP", "5.1.0") // Database
-    implementation("ch.qos.logback", "logback-classic", "1.5.6") // Logging
+    implementation("net.byteflux", "libby-core", "1.3.1")
+    compileOnlyApi("org.jetbrains", "annotations", "24.1.0")
+    compileOnlyApi("net.dv8tion", "JDA", "5.0.2")
+    compileOnlyApi("xyz.srnyx", "java-utilities", "a073202b43")
+    compileOnlyApi("io.github.freya022", "BotCommands", "2.10.3")
+    compileOnlyApi("org.spongepowered", "configurate-yaml", "4.1.2")
+    compileOnly("org.postgresql", "postgresql", "42.7.3")
+    compileOnly("com.zaxxer", "HikariCP", "5.1.0")
+    compileOnly("ch.qos.logback", "logback-classic", "1.5.6")
 }
 
 setupPublishing(
