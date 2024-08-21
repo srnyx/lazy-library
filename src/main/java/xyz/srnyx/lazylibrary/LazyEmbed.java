@@ -19,6 +19,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 
 /**
@@ -315,6 +316,16 @@ public class LazyEmbed {
     public LazyEmbed replace(@NotNull String key, @Nullable Object value) {
         replacements.put(key, String.valueOf(value));
         return this;
+    }
+
+    /**
+     * Convenience method for {@link Factory#Factory(LazyEmbed) new Factory(LazyEmbed)} using this {@link LazyEmbed}
+     *
+     * @return  the {@link Factory} instance
+     */
+    @NotNull
+    public Factory toFactory() {
+        return new Factory(this);
     }
 
     /**
@@ -645,6 +656,68 @@ public class LazyEmbed {
     @NotNull
     public LazyEmbed setTimestamp(@Nullable Date timestamp) {
         return setTimestamp(timestamp == null ? null : timestamp.getTime());
+    }
+
+    /**
+     * A factory for storing a base {@link LazyEmbed} to copy from
+     */
+    public static class Factory {
+        /**
+         * The base {@link LazyEmbed} to copy from
+         */
+        @NotNull private LazyEmbed embed;
+
+        /**
+         * Constructs a new {@link Factory} with an empty {@link LazyEmbed}
+         */
+        public Factory() {
+            this.embed = new LazyEmbed();
+        }
+
+        /**
+         * Constructs a new {@link Factory} with a base {@link LazyEmbed}
+         *
+         * @param   embed   the base {@link LazyEmbed}
+         */
+        public Factory(@NotNull LazyEmbed embed) {
+            this.embed = embed;
+        }
+
+        /**
+         * Returns a new {@link LazyEmbed} from the base {@link LazyEmbed}
+         *
+         * @return  the new {@link LazyEmbed}
+         */
+        @NotNull
+        public LazyEmbed newEmbed() {
+            return embed.copy();
+        }
+
+        /**
+         * Sets the base {@link LazyEmbed}
+         *
+         * @param   embed   the base {@link LazyEmbed}
+         *
+         * @return          this
+         */
+        @NotNull
+        public Factory setEmbed(@NotNull LazyEmbed embed) {
+            this.embed = embed;
+            return this;
+        }
+
+        /**
+         * Updates the base {@link LazyEmbed} with a consumer
+         *
+         * @param   updater the consumer to update the base {@link LazyEmbed}
+         *
+         * @return          this
+         */
+        @NotNull
+        public Factory updateEmbed(@NotNull Consumer<LazyEmbed> updater) {
+            updater.accept(embed);
+            return this;
+        }
     }
 
     /**
