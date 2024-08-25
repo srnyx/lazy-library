@@ -29,7 +29,7 @@ public class LazyLibrary {
     /**
      * The {@link Logger} instance
      */
-    public static Logger LOGGER;
+    @NotNull public static Logger LOGGER = LoggerFactory.getLogger("LazyLibrary");
 
     /**
      * The {@link LazySettings settings} for the bot
