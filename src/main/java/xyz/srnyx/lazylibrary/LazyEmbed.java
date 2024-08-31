@@ -826,6 +826,22 @@ public class LazyEmbed {
     }
 
     /**
+     * A pre-built {@link LazyEmbed} for when an unexpected error occurs
+     *
+     * @param   error   a short description of the error that occurred
+     *
+     * @return          the {@link LazyEmbed}
+     */
+    @NotNull
+    public static LazyEmbed unexpectedError(@NotNull String error) {
+        return new LazyEmbed()
+                .setColor(Color.RED)
+                .setTitle(LazyEmoji.WARNING_CLEAR + " Unexpected error!")
+                .setDescription("An unexpected error occurred, please try again!\n*If the issue persists, please contact support*")
+                .addField("Error", error, true);
+    }
+
+    /**
      * A pre-built {@link LazyEmbed} for when a user doesn't have permission to do something
      *
      * @return  the {@link LazyEmbed}
