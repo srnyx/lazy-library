@@ -51,7 +51,9 @@ public class LazyLibrary {
 
         // Start bot
         try {
-            jda = JDABuilder.create(settings.gatewayIntents).disableCache(settings.disabledCacheFlags).setToken(settings.fileSettings.token).build().awaitReady();
+            final JDABuilder builder = JDABuilder.create(settings.gatewayIntents).setToken(settings.fileSettings.token);
+            if (settings.jdaBuilder != null) settings.jdaBuilder.accept(builder);
+            jda = builder.build().awaitReady();
         } catch (final InterruptedException | IllegalArgumentException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();

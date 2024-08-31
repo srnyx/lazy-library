@@ -2,10 +2,11 @@ package xyz.srnyx.lazylibrary.settings;
 
 import com.freya02.botcommands.api.CommandsBuilder;
 
+import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.lazylibrary.LazyEmbed;
 import xyz.srnyx.lazylibrary.LazyLibrary;
@@ -32,9 +33,9 @@ public class LazySettings {
      */
     @NotNull public final Set<GatewayIntent> gatewayIntents = new HashSet<>();
     /**
-     * A set of {@link CacheFlag cache flags} to disable
+     * A {@link Consumer} for the {@link JDABuilder} for the bot
      */
-    @NotNull public final Set<CacheFlag> disabledCacheFlags = new HashSet<>();
+    @Nullable public Consumer<JDABuilder> jdaBuilder = null;
     /**
      * A set of package paths to search for applications
      */
@@ -89,15 +90,15 @@ public class LazySettings {
     }
 
     /**
-     * Adds {@link CacheFlag cache flags} to {@link #disabledCacheFlags}
+     * Sets {@link #jdaBuilder}
      *
-     * @param   disabledCacheFlags  the {@link CacheFlag cache flags} to add
+     * @param   jdaBuilder  the new value of {@link #jdaBuilder}
      *
-     * @return                      {@code this}
+     * @return              {@code this}
      */
     @NotNull
-    public LazySettings disabledCacheFlags(@NotNull CacheFlag... disabledCacheFlags) {
-        Collections.addAll(this.disabledCacheFlags, disabledCacheFlags);
+    public LazySettings jdaBuilder(@Nullable Consumer<JDABuilder> jdaBuilder) {
+    	this.jdaBuilder = jdaBuilder;
     	return this;
     }
 
