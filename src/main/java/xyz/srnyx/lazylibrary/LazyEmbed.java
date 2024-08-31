@@ -821,7 +821,7 @@ public class LazyEmbed {
     public static LazyEmbed unexpectedError() {
         return new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("Unexpected error!")
+                .setTitle(LazyEmoji.WARNING_CLEAR + " Unexpected error!")
                 .setDescription("An unexpected error occurred, please try again!\n*If the issue persists, please contact support*");
     }
 
@@ -834,7 +834,7 @@ public class LazyEmbed {
     public static LazyEmbed noPermission() {
         return new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("No permission!")
+                .setTitle(LazyEmoji.NO_CLEAR + " No permission!")
                 .setDescription("You don't have the required permissions to do that!");
     }
 
@@ -849,7 +849,7 @@ public class LazyEmbed {
     public static LazyEmbed noPermission(@NotNull Object requirement) {
         return new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("No permission!")
+                .setTitle(LazyEmoji.NO_CLEAR + " No permission!")
                 .setDescription("You must have " + requirement + " to do that!");
     }
 
@@ -865,7 +865,7 @@ public class LazyEmbed {
     public static LazyEmbed invalidArgument(@NotNull String argument, @Nullable Object value) {
         return new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("Invalid argument!")
+                .setTitle(LazyEmoji.NO_CLEAR + " Invalid argument!")
                 .addField(argument, String.valueOf(value), true);
     }
 
@@ -882,7 +882,7 @@ public class LazyEmbed {
     public static LazyEmbed invalidArgument(@NotNull String argument, @Nullable Object value, @NotNull String description) {
         return new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("Invalid argument!")
+                .setTitle(LazyEmoji.NO_CLEAR + " Invalid argument!")
                 .setDescription(description)
                 .addField(argument, String.valueOf(value), true);
     }
@@ -901,7 +901,7 @@ public class LazyEmbed {
         if (argumentsValues.length % 2 != 0) throw new IllegalArgumentException("Each argument must have a value!");
         final LazyEmbed embed = new LazyEmbed()
                 .setColor(Color.RED)
-                .setTitle("Invalid arguments!");
+                .setTitle(LazyEmoji.NO_CLEAR + " Invalid arguments!");
         for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(String.valueOf(argumentsValues[i]), String.valueOf(argumentsValues[i + 1]), true);
         return embed;
     }
