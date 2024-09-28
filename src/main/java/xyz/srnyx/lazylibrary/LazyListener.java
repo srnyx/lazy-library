@@ -6,8 +6,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
-import xyz.srnyx.lazylibrary.events.GuildMemberStartBoost;
-import xyz.srnyx.lazylibrary.events.GuildMemberStopBoost;
+import xyz.srnyx.lazylibrary.events.GuildMemberStartBoostEvent;
+import xyz.srnyx.lazylibrary.events.GuildMemberStopBoostEvent;
 import xyz.srnyx.lazylibrary.events.GuildVoiceJoinEvent;
 import xyz.srnyx.lazylibrary.events.GuildVoiceLeaveEvent;
 
@@ -58,35 +58,35 @@ public abstract class LazyListener extends ListenerAdapter {
     }
 
     /**
-     * <b>OVERRIDING THIS WILL BREAK {@link GuildMemberStartBoost} AND {@link GuildMemberStopBoost}</b>
+     * <b>OVERRIDING THIS WILL BREAK {@link GuildMemberStartBoostEvent} AND {@link GuildMemberStopBoostEvent}</b>
      * <br>If you need to override this, make sure to call {@code super.onGuildMemberUpdateBoostTime(event)} in your method!
      */
     @Override
     public void onGuildMemberUpdateBoostTime(@NotNull GuildMemberUpdateBoostTimeEvent event) {
         // Stopped
         if (event.getNewValue() == null) {
-            onGuildMemberStopBoosting(new GuildMemberStopBoost(event));
+            onGuildMemberStopBoost(new GuildMemberStopBoostEvent(event));
             return;
         }
         // Started
-        onGuildMemberStartBoosting(new GuildMemberStartBoost(event));
+        onGuildMemberStartBoost(new GuildMemberStartBoostEvent(event));
     }
 
     /**
      * Called when a member starts boosting a guild
      *
-     * @param   event   the {@link GuildMemberStartBoost} that was fired
+     * @param   event   the {@link GuildMemberStartBoostEvent} that was fired
      */
-    public void onGuildMemberStartBoosting(@NotNull GuildMemberStartBoost event) {
+    public void onGuildMemberStartBoost(@NotNull GuildMemberStartBoostEvent event) {
         // This should be overridden
     }
 
     /**
      * Called when a member stops boosting a guild
      *
-     * @param   event   the {@link GuildMemberStopBoost} that was fired
+     * @param   event   the {@link GuildMemberStopBoostEvent} that was fired
      */
-    public void onGuildMemberStopBoosting(@NotNull GuildMemberStopBoost event) {
+    public void onGuildMemberStopBoost(@NotNull GuildMemberStopBoostEvent event) {
         // This should be overridden
     }
 }
