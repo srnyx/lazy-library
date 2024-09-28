@@ -571,6 +571,81 @@ public class LazyEmbed {
     }
 
     /**
+     * Adds multiple fields to the embed
+     *
+     * @param   newFields   the fields to add
+     *
+     * @return              this
+     */
+    @NotNull
+    public LazyEmbed addFields(@NotNull MessageEmbed.Field... newFields) {
+        return addFields(Arrays.asList(newFields));
+    }
+
+    /**
+     * Adds an empty field to the embed
+     *
+     * @param   inline  whether the field should be inline or not
+     *
+     * @return          this
+     */
+    @NotNull
+    public LazyEmbed addEmptyField(boolean inline) {
+        return addField("", "", inline);
+    }
+
+    /**
+     * Adds multiple empty fields to the embed
+     *
+     * @param   amount  the amount of empty fields to add
+     * @param   inline  whether the fields should be inline or not
+     *
+     * @return          this
+     */
+    @NotNull
+    public LazyEmbed addEmptyFields(int amount, boolean inline) {
+        for (int i = 0; i < amount; i++) addEmptyField(inline);
+        return this;
+    }
+
+    /**
+     * Creates a grid of fields in the embed
+     *
+     * @param   rows    the rows of fields to add
+     *
+     * @return          this
+     */
+    @NotNull
+    public LazyEmbed gridFields(@NotNull Collection<Map<String, String>> rows) {
+        for (final Map<String, String> row : rows) {
+            // Add fields
+            int added = 0;
+            for (final Map.Entry<String, String> entry : row.entrySet()) {
+                final String value = entry.getValue();
+                if (value == null || value.isEmpty()) continue;
+                addField(entry.getKey(), entry.getValue(), true);
+                added++;
+            }
+            // Add empty fields to make the grid
+            final int remainder = added % 3;
+            if (remainder != 0) addEmptyFields(3 - remainder, true);
+        }
+        return this;
+    }
+
+    /**
+     * Creates a grid of fields in the embed
+     *
+     * @param   rows    the rows of fields to add
+     *
+     * @return          this
+     */
+    @NotNull @SafeVarargs
+    public final LazyEmbed gridFields(@NotNull Map<String, String>... rows) {
+        return gridFields(Arrays.asList(rows));
+    }
+
+    /**
      * Returns an unmodifiable list of all fields in the embed
      *
      * @return  an unmodifiable list of all fields in the embed
