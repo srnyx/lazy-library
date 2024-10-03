@@ -656,6 +656,34 @@ public class LazyEmbed {
     }
 
     /**
+     * Returns a field from the embed by its name
+     *
+     * @param   name    the name of the field
+     *
+     * @return          the field, or {@link Optional#empty() empty} if not found
+     */
+    @NotNull
+    public Optional<MessageEmbed.Field> getField(@NotNull String name) {
+        for (final MessageEmbed.Field field : fields) {
+            final String fieldName = field.getName();
+            if (fieldName != null && fieldName.equals(name)) return Optional.of(field);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Returns the value of a field from the embed by its name
+     *
+     * @param   name    the name of the field
+     *
+     * @return          the value of the field, or {@link Optional#empty() empty} if not found
+     */
+    @NotNull
+    public Optional<String> getFieldValue(@NotNull String name) {
+        return getField(name).map(MessageEmbed.Field::getValue);
+    }
+
+    /**
      * Clears all fields from the embed
      *
      * @return  this
