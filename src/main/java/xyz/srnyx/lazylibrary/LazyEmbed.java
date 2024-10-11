@@ -662,6 +662,8 @@ public class LazyEmbed {
      * @param   rows    the rows of fields to add
      *
      * @return          this
+     *
+     * @see             #gridFields(Map...)
      */
     @NotNull
     public LazyEmbed gridFields(@NotNull Collection<Map<String, String>> rows) {
@@ -687,6 +689,8 @@ public class LazyEmbed {
      * @param   rows    the rows of fields to add
      *
      * @return          this
+     *
+     * @see             #gridFields(Collection)
      */
     @NotNull @SafeVarargs
     public final LazyEmbed gridFields(@NotNull Map<String, String>... rows) {
@@ -1071,5 +1075,19 @@ public class LazyEmbed {
                 .setTitle(LazyEmoji.NO_CLEAR + " Invalid arguments!");
         for (int i = 0; i < argumentsValues.length; i += 2) embed.addField(String.valueOf(argumentsValues[i]), String.valueOf(argumentsValues[i + 1]), true);
         return embed;
+    }
+
+    /**
+     * A pre-built {@link LazyEmbed} that has no color ({@code #2b2d31}, which blends in with the embed background) and has all default key values disabled
+     * <br>It's basically just a completely empty embed/rectangle for you to fill in
+     * <br>Works great with {@link LazyEmbed#gridFields(Collection)}
+     *
+     * @return  the {@link LazyEmbed}
+     */
+    @NotNull
+    public static LazyEmbed empty() {
+        return new LazyEmbed()
+                .setColor(0x2b2d31)
+                .disableDefaults(Key.values());
     }
 }
