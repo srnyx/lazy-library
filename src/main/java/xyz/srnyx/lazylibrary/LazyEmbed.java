@@ -35,6 +35,10 @@ public class LazyEmbed {
      * Replacements for all values that will be replaced when building the {@link MessageEmbed}
      */
     @NotNull protected final Map<String, String> replacements = new HashMap<>();
+    /**
+     * The {@link Key keys} that are disabled from being set by the {@link LazySettings#embedDefaults}
+     */
+    @NotNull protected final Set<Key> disabledDefaults = new HashSet<>();
 
     /**
      * The color of the embed
@@ -132,6 +136,10 @@ public class LazyEmbed {
      * @param   lazyEmbed   the {@link LazyEmbed} to copy
      */
     public LazyEmbed(@NotNull LazyEmbed lazyEmbed) {
+        replacements.putAll(lazyEmbed.replacements);
+        disabledDefaults.addAll(lazyEmbed.disabledDefaults);
+
+        // Embed data
         setColor(lazyEmbed.color);
         setAuthor(lazyEmbed.authorName, lazyEmbed.authorUrl, lazyEmbed.authorIcon);
         setTitle(lazyEmbed.titleText, lazyEmbed.titleUrl);
@@ -319,6 +327,44 @@ public class LazyEmbed {
     }
 
     /**
+     * Replaces multiple keys with values in all parameters of the {@link LazyEmbed embed}
+     *
+     * @param   replacements    the replacements to make
+     *
+     * @return                  the {@link LazyEmbed} instance
+     */
+    @NotNull
+    public LazyEmbed replace(@NotNull Map<String, Object> replacements) {
+        for (final Map.Entry<String, Object> entry : replacements.entrySet()) replace(entry.getKey(), entry.getValue());
+        return this;
+    }
+
+    /**
+     * Disables keys from being set by the {@link LazySettings#embedDefaults}
+     *
+     * @param   keys    the keys to disable
+     *
+     * @return          the {@link LazyEmbed} instance
+     */
+    @NotNull
+    public LazyEmbed disableDefaults(@NotNull Key... keys) {
+        return disableDefaults(Arrays.asList(keys));
+    }
+
+    /**
+     * Disables keys from being set by the {@link LazySettings#embedDefaults}
+     *
+     * @param   keys    the keys to disable
+     *
+     * @return          the {@link LazyEmbed} instance
+     */
+    @NotNull
+    public LazyEmbed disableDefaults(@NotNull Collection<Key> keys) {
+        disabledDefaults.addAll(keys);
+        return this;
+    }
+
+    /**
      * Convenience method for {@link Factory#Factory(LazyEmbed) new Factory(LazyEmbed)} using this {@link LazyEmbed}
      *
      * @return  the {@link Factory} instance
@@ -381,8 +427,10 @@ public class LazyEmbed {
         
         // Set defaults
         for (final Map.Entry<Key, Object> entry : library.settings.embedDefaults.entrySet()) {
+            final Key key = entry.getKey();
+            if (disabledDefaults.contains(key)) continue;
             final Object value = entry.getValue();
-            if (value != null) entry.getKey().setter.accept(this, value);
+            if (value != null) key.setter.accept(this, value);
         }
 
         return builder.build();
