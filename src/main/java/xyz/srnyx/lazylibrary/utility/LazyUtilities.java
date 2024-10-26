@@ -34,15 +34,23 @@ import java.util.function.Function;
  */
 public class LazyUtilities {
     /**
-     * Get a {@link PaginatorBuilder} with {@link LazyEmoji#LEFT_CLEAR_DARK} and {@link LazyEmoji#RIGHT_CLEAR_DARK} as the previous and next buttons respectively
+     * Get a {@link PaginatorBuilder} with:
+     * <ul>
+     *     <li>{@link LazyEmoji#BACK_CLEAR_DARK} as the "first page" button</li>
+     *     <li>{@link LazyEmoji#LEFT2_CLEAR_DARK} as the "previous page" button</li>
+     *     <li>{@link LazyEmoji#RIGHT2_CLEAR_DARK} as the "next page" button</li>
+     *     <li>{@link LazyEmoji#FORWARD_CLEAR_DARK} as the "last page" button</li>
+     * </ul>
      *
      * @return  the {@link PaginatorBuilder}
      */
     @NotNull
     public static PaginatorBuilder getDefaultPaginator() {
         return new PaginatorBuilder()
-                .setPreviousContent(LazyEmoji.LEFT_CLEAR_DARK.getButtonContent(null))
-                .setNextContent(LazyEmoji.RIGHT_CLEAR_DARK.getButtonContent(null));
+                .setFirstContent(LazyEmoji.BACK_CLEAR_DARK.getButtonContent())
+                .setPreviousContent(LazyEmoji.LEFT2_CLEAR_DARK.getButtonContent())
+                .setNextContent(LazyEmoji.RIGHT2_CLEAR_DARK.getButtonContent())
+                .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent());
     }
 
     /**

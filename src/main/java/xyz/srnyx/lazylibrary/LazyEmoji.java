@@ -15,120 +15,264 @@ public enum LazyEmoji {
     /**
      * Checkmark
      */
-    YES("vnyes", 1095912430443450469L),
+    YES(1095912430443450469L),
     /**
      * Checkmark without background
      */
-    YES_CLEAR("vnyesclear", 1095912345978552340L),
+    YES_CLEAR(1095912345978552340L),
     /**
      * X
      */
-    NO("vnno", 1095912334792331326L),
+    NO(1095912334792331326L),
     /**
      * X without background
      */
-    NO_CLEAR("vnnoclear", 1095912336163864576L),
+    NO_CLEAR(1095912336163864576L),
     /**
      * Dark X without background
      */
-    NO_CLEAR_DARK("vnnocleardark", 1095912337162129418L),
+    NO_CLEAR_DARK(1095912337162129418L),
     /**
      * Slash
      */
-    MAYBE("vnmaybe", 1095912332351242312L),
+    MAYBE(1095912332351242312L),
     /**
      * Slash without background
      */
-    MAYBE_CLEAR("vnmaybeclear", 1095912333768933476L),
+    MAYBE_CLEAR(1095912333768933476L),
     /**
-     * Left arrow
+     * Long left arrow
      */
-    LEFT("vnleft", 1095912329767571506L),
+    LEFT(1095912329767571506L),
     /**
-     * Left arrow without background
+     * Long left arrow without background
      */
-    LEFT_CLEAR("vnleftclear", 1095912331210399834L),
+    LEFT_CLEAR(1095912331210399834L),
     /**
-     * Dark left arrow without background
+     * Dark long left arrow without background
      */
-    LEFT_CLEAR_DARK("vnleftcleardark", 1097032738839732364L),
+    LEFT_CLEAR_DARK(1097032738839732364L),
     /**
-     * Right arrow
+     * Long right arrow
      */
-    RIGHT("vnright", 1095912338248454196L),
+    RIGHT(1095912338248454196L),
     /**
-     * Right arrow without background
+     * Long right arrow without background
      */
-    RIGHT_CLEAR("vnrightclear", 1095912340416893039L),
+    RIGHT_CLEAR(1095912340416893039L),
     /**
-     * Dark right arrow without background
+     * Dark long right arrow without background
      */
-    RIGHT_CLEAR_DARK("vnrightcleardark", 1097032739447918644L),
+    RIGHT_CLEAR_DARK(1097032739447918644L),
     /**
-     * Up arrow
+     * Long up arrow
      */
-    UP("vnup", 1096932211938304160L),
+    UP(1096932211938304160L),
     /**
-     * Up arrow without background
+     * Long up arrow without background
      */
-    UP_CLEAR("vnupclear", 1096932212814917772L),
+    UP_CLEAR(1096932212814917772L),
     /**
-     * Dark up arrow without background
+     * Dark long up arrow without background
      */
-    UP_CLEAR_DARK("vnupcleardark", 1097032042585280614L),
+    UP_CLEAR_DARK(1097032042585280614L),
     /**
-     * Down arrow
+     * Long down arrow
      */
-    DOWN("vndown", 1096932209237164164L),
+    DOWN(1096932209237164164L),
     /**
-     * Down arrow without background
+     * Long down arrow without background
      */
-    DOWN_CLEAR("vndownclear", 1096932210650656878L),
+    DOWN_CLEAR(1096932210650656878L),
     /**
-     * Dark down arrow without background
+     * Dark long down arrow without background
      */
-    DOWN_CLEAR_DARK("vndowncleardark", 1097032737187184751L),
+    DOWN_CLEAR_DARK(1097032737187184751L),
+    /**
+     * Double left arrow
+     */
+    BACK(1298360906857578557L),
+    /**
+     * Double left arrow without background
+     */
+    BACK_CLEAR(1298360908145496144L),
+    /**
+     * Dark double left arrow without background
+     */
+    BACK_CLEAR_DARK(1298360909277954108L),
+    /**
+     * Short left arrow
+     */
+    LEFT2(1298411480168923146L),
+    /**
+     * Short left arrow without background
+     */
+    LEFT2_CLEAR(1298411480940806165L),
+    /**
+     * Dark short left arrow without background
+     */
+    LEFT2_CLEAR_DARK(1298411482257559585L),
+    /**
+     * Short right arrow
+     */
+    RIGHT2(1298411491099283516L),
+    /**
+     * Short right arrow without background
+     */
+    RIGHT2_CLEAR(1298411599018590249L),
+    /**
+     * Dark short right arrow without background
+     */
+    RIGHT2_CLEAR_DARK(1298411494790402058L),
+    /**
+     * Double right arrow
+     */
+    FORWARD(1298360910410158121L),
+    /**
+     * Double right arrow without background
+     */
+    FORWARD_CLEAR(1298360911286894632L),
+    /**
+     * Dark double right arrow without background
+     */
+    FORWARD_CLEAR_DARK(1298360912477945938L),
     /**
      * Exclamation mark warning symbol
      */
-    WARNING("vnwarning", 1096159841120165908L),
+    WARNING(1096159841120165908L),
     /**
      * Exclamation mark warning symbol without background
      */
-    WARNING_CLEAR("vnwarningclear", 1096159842315534409L),
+    WARNING_CLEAR(1096159842315534409L),
     /**
      * Trash can
      */
-    TRASH("vntrash", 1095912427125747883L),
+    TRASH(1095912427125747883L),
     /**
      * Trash can without background
      */
-    TRASH_CLEAR("vntrashclear", 1095912428597948507L),
+    TRASH_CLEAR(1095912428597948507L),
     /**
      * Dark trash can without background
      */
-    TRASH_CLEAR_DARK("vntrashcleardark", 1095912429587800135L),
+    TRASH_CLEAR_DARK(1095912429587800135L),
     /**
      * Chat bubble
      */
-    CHAT("vnchat", 1096272195841441822L),
+    CHAT(1096272195841441822L),
     /**
      * Chat bubble without background
      */
-    CHAT_CLEAR("vnchatclear", 1096272196864835584L);
+    CHAT_CLEAR(1096272196864835584L),
+    /**
+     * Ticket
+     */
+    TICKET(1298361698050375690L),
+    /**
+     * Ticket without background
+     */
+    TICKET_CLEAR(1298361698981253140L),
+    /**
+     * Dark ticket without background
+     */
+    TICKET_CLEAR_DARK(1298361700583735472L),
+    /**
+     * Padlock
+     */
+    LOCK(1298362723700314212L),
+    /**
+     * Padlock without background
+     */
+    LOCK_CLEAR(1298362724987830412L),
+    /**
+     * Dark padlock without background
+     */
+    LOCK_CLEAR_DARK(1298362731573022782L),
+    /**
+     * Unlocked padlock
+     */
+    UNLOCK(1298400380585119764L),
+    /**
+     * Unlocked padlock without background
+     */
+    UNLOCK_CLEAR(1298400381793206302L),
+    /**
+     * Dark unlocked padlock without background
+     */
+    UNLOCK_CLEAR_DARK(1298400382648844420L),
+    /**
+     * Clock
+     */
+    CLOCK(1298363518118006845L),
+    /**
+     * Clock without background
+     */
+    CLOCK_CLEAR(1298363519548391454L),
+    /**
+     * Dark clock without background
+     */
+    CLOCK_CLEAR_DARK(1298363520907219075L),
+    /**
+     * Information {@code i} symbol
+     */
+    INFO(1298365351980961852L),
+    /**
+     * Information {@code i} symbol without background
+     */
+    INFO_CLEAR(1298365353717530744L),
+    /**
+     * Dark information {@code i} symbol without background
+     */
+    INFO_CLEAR_DARK(1298365354812112917L),
+    /**
+     * Wave
+     */
+    WAVE(1298366552994873476L),
+    /**
+     * Wave without background
+     */
+    WAVE_CLEAR(1298366555025047723L),
+    /**
+     * Dark wave without background
+     */
+    WAVE_CLEAR_DARK(1298366556140601345L),
+    /**
+     * Three loading dots
+     */
+    LOAD(1298411483595538483L),
+    /**
+     * Three loading dots without background
+     */
+    LOAD_CLEAR(1298411485395157032L),
+    /**
+     * Three dark loading dots without background
+     */
+    LOAD_CLEAR_DARK(1298411486112252088L),
+    /**
+     * Question mark
+     */
+    QUESTION(1298411486825152603L),
+    /**
+     * Question mark without background
+     */
+    QUESTION_CLEAR(1298411488158945311L),
+    /**
+     * Dark question mark without background
+     */
+    QUESTION_CLEAR_DARK(1298411642358337578L);
 
     @NotNull private final String name;
     private final long id;
     private final boolean animated;
 
-    LazyEmoji(@NotNull String name, long id, boolean animated) {
-        this.name = name;
+    LazyEmoji(long id, boolean animated) {
+        this.name = "vn" + name().toLowerCase().replace("_", "");
         this.id = id;
         this.animated = animated;
     }
 
-    LazyEmoji(@NotNull String name, long id) {
-        this(name, id, false);
+    LazyEmoji(long id) {
+        this(id, false);
     }
 
     /**
@@ -146,11 +290,21 @@ public enum LazyEmoji {
      *
      * @param   text    the text to display on the button
      *
-     * @return          the {@link ButtonContent} constructed
+     * @return          the constructed {@link ButtonContent}
      */
     @NotNull
     public ButtonContent getButtonContent(@Nullable String text) {
         return new ButtonContent(text, getEmoji());
+    }
+
+    /**
+     * Construct a {@link ButtonContent} from this {@link LazyEmoji} with no text
+     *
+     * @return  the constructed {@link ButtonContent}
+     */
+    @NotNull
+    public ButtonContent getButtonContent() {
+        return getButtonContent(null);
     }
 
     @Override @NotNull
