@@ -34,11 +34,11 @@ public class LazyEmbed {
     /**
      * Replacements for all values that will be replaced when building the {@link MessageEmbed}
      */
-    @NotNull protected final Map<String, String> replacements = new HashMap<>();
+    @NotNull public final Map<String, String> replacements = new HashMap<>();
     /**
      * The {@link Key keys} that are disabled from being set by the {@link LazySettings#embedDefaults}
      */
-    @NotNull protected final Set<Key> disabledDefaults = new HashSet<>();
+    @NotNull public final Set<Key> disabledDefaults = new HashSet<>();
 
     /**
      * The color of the embed
@@ -365,6 +365,37 @@ public class LazyEmbed {
     }
 
     /**
+     * Enables keys to be set by the {@link LazySettings#embedDefaults}
+     * <br>All keys are enabled by default
+     *
+     * @param   keys    the keys to enable
+     *
+     * @return          the {@link LazyEmbed} instance
+     *
+     * @see             #disableDefaults(Key...)
+     */
+    @NotNull
+    public LazyEmbed enableDefaults(@NotNull Key... keys) {
+        return enableDefaults(Arrays.asList(keys));
+    }
+
+    /**
+     * Enables keys to be set by the {@link LazySettings#embedDefaults}
+     * <br>All keys are enabled by default
+     *
+     * @param   keys    the keys to enable
+     *
+     * @return          the {@link LazyEmbed} instance
+     *
+     * @see             #disableDefaults(Collection)
+     */
+    @NotNull
+    public LazyEmbed enableDefaults(@NotNull Collection<Key> keys) {
+        disabledDefaults.removeAll(keys);
+        return this;
+    }
+
+    /**
      * Convenience method for {@link Factory#Factory(LazyEmbed) new Factory(LazyEmbed)} using this {@link LazyEmbed}
      *
      * @return  the {@link Factory} instance
@@ -658,6 +689,7 @@ public class LazyEmbed {
 
     /**
      * Creates a grid of fields in the embed
+     * <br><b>WARNING: These look pretty bad on mobile!</b>
      *
      * @param   rows    the rows of fields to add
      *
@@ -685,6 +717,7 @@ public class LazyEmbed {
 
     /**
      * Creates a grid of fields in the embed
+     * <br><b>WARNING: These look pretty bad on mobile!</b>
      *
      * @param   rows    the rows of fields to add
      *
