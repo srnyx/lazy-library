@@ -125,6 +125,30 @@ public enum LazyEmoji {
      */
     RIGHT2_CLEAR_DARK(1298411494790402058L),
     /**
+     * Short up arrow
+     */
+    UP2(1315113070892421230L),
+    /**
+     * Short up arrow without background
+     */
+    UP2_CLEAR(1315113072737779742L),
+    /**
+     * Dark short up arrow without background
+     */
+    UP2_CLEAR_DARK(1315113073840750654L),
+    /**
+     * Short down arrow
+     */
+    DOWN2(1315113084024786974L),
+    /**
+     * Short down arrow without background
+     */
+    DOWN2_CLEAR(1315113084850802698L),
+    /**
+     * Dark short down arrow without background
+     */
+    DOWN2_CLEAR_DARK(1315113085723480074L),
+    /**
      * Double right arrow
      */
     FORWARD(1298360910410158121L),
