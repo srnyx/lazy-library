@@ -22,6 +22,7 @@ dependencies {
     implementation("org.postgresql", "postgresql", "42.7.4") // Database
     implementation("com.zaxxer", "HikariCP", "6.2.1") // Database
     implementation("ch.qos.logback", "logback-classic", "1.5.15") // Logging
+    implementation("dev.freya02", "jda-emojis", "3.0.0") // Emojis
 }
 
 setupPublishing(
