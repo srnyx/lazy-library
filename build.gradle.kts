@@ -16,12 +16,12 @@ setupJda("5.2.2", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots",
 
 repository(Repository.JITPACK)
 dependencies {
-    implementation("xyz.srnyx", "java-utilities", "2.0.0") // General Java utility library
+    implementation("xyz.srnyx", "java-utilities", "4649cfa2f4") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.4") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.1.2") // Config manager
-    implementation("org.postgresql", "postgresql", "42.7.4") // Database
+    implementation("org.postgresql", "postgresql", "42.7.5") // Database
     implementation("com.zaxxer", "HikariCP", "6.2.1") // Database
-    implementation("ch.qos.logback", "logback-classic", "1.5.15") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.5.16") // Logging
     implementation("dev.freya02", "jda-emojis", "3.0.0") // Emojis
 }
 
