@@ -63,9 +63,10 @@ public class LazyLibrary {
         onReady();
 
         // BotCommands
-        final CommandsBuilder builder = (settings.fileSettings.ownersPrimary == null ? CommandsBuilder.newBuilder() : CommandsBuilder.newBuilder(settings.fileSettings.ownersPrimary))
+        final CommandsBuilder builder = CommandsBuilder.newBuilder()
                 .textCommandBuilder(textCommands -> textCommands.disableHelpCommand(true));
         // Owners, search paths, and command dependency
+        if (settings.fileSettings.ownersPrimary != null) builder.addOwners(settings.fileSettings.ownersPrimary);
         settings.fileSettings.ownersOther.forEach(builder::addOwners);
         settings.searchPaths.forEach(builder::addSearchPath);
         builder.extensionsBuilder(extensionsBuilder -> settings.dependencies.forEach(dependency -> extensionsBuilder.registerCommandDependency((Class<Object>) dependency.clazz(), (Supplier<Object>) dependency.supplier())));
@@ -96,7 +97,14 @@ public class LazyLibrary {
         // stop command
         new Thread(() -> {
             final Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNextLine()) if (scanner.nextLine().equals("stop")) stopBot();
+            while (scanner.hasNextLine()) {
+                final String line = scanner.nextLine();
+                if (settings.defaultStopCommand && line.equals("stop")) {
+                    stopBot();
+                    return;
+                }
+                onConsoleCommand(new ConsoleCommand(line));
+            }
         }).start();
     }
 
@@ -144,6 +152,15 @@ public class LazyLibrary {
     public void stopBot() {
         onStop();
         System.exit(0);
+    }
+
+    /**
+     * Called when a command is sent in the console
+     *
+     * @param   command the {@link ConsoleCommand} that was sent
+     */
+    public void onConsoleCommand(@NotNull ConsoleCommand command) {
+        // Should be overridden
     }
 
     /**

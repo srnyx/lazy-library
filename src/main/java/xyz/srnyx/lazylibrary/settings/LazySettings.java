@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.lazylibrary.LazyEmbed;
 import xyz.srnyx.lazylibrary.LazyLibrary;
+import xyz.srnyx.lazylibrary.ConsoleCommand;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -28,6 +29,11 @@ public class LazySettings {
      * The name of the logger to use
      */
     @NotNull public String loggerName;
+    /**
+     * Whether to use the default stop command that just runs {@link LazyLibrary#stopBot()}
+     * <br>You can use {@link LazyLibrary#onConsoleCommand(ConsoleCommand)} to create your own stop command
+     */
+    public boolean defaultStopCommand = true;
     /**
      * A set of {@link GatewayIntent gateway intents} to enable
      */
@@ -73,6 +79,19 @@ public class LazySettings {
     @NotNull
     public LazySettings loggerName(@NotNull String loggerName) {
     	this.loggerName = loggerName;
+    	return this;
+    }
+
+    /**
+     * Sets {@link #defaultStopCommand}
+     *
+     * @param   defaultStopCommand  the new value of {@link #defaultStopCommand}
+     *
+     * @return                      {@code this}
+     */
+    @NotNull
+    public LazySettings defaultStopCommand(boolean defaultStopCommand) {
+    	this.defaultStopCommand = defaultStopCommand;
     	return this;
     }
 
