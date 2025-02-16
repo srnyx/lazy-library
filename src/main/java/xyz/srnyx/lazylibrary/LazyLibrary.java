@@ -98,12 +98,12 @@ public class LazyLibrary {
         new Thread(() -> {
             final Scanner scanner = new Scanner(System.in);
             while (scanner.hasNextLine()) {
-                final String line = scanner.nextLine();
-                if (settings.defaultStopCommand && line.equals("stop")) {
+                final ConsoleCommand command = new ConsoleCommand(scanner.nextLine());
+                if (settings.defaultStopCommand && command.getRaw().equals("stop")) {
                     stopBot();
                     return;
                 }
-                onConsoleCommand(new ConsoleCommand(line));
+                onConsoleCommand(command);
             }
         }).start();
     }

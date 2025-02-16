@@ -30,7 +30,7 @@ public class LazySettings {
      */
     @NotNull public String loggerName;
     /**
-     * Whether to use the default stop command that just runs {@link LazyLibrary#stopBot()}
+     * Whether to use the default stop command that just runs {@link LazyLibrary#stopBot()} (it will only run if the {@link ConsoleCommand#getRaw() entire raw command} is exactly {@code stop})
      * <br>You can use {@link LazyLibrary#onConsoleCommand(ConsoleCommand)} to create your own stop command
      */
     public boolean defaultStopCommand = true;

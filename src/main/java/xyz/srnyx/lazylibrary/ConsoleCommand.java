@@ -1,7 +1,5 @@
 package xyz.srnyx.lazylibrary;
 
-import net.dv8tion.jda.api.JDA;
-
 import org.jetbrains.annotations.NotNull;
 
 
@@ -11,8 +9,24 @@ import org.jetbrains.annotations.NotNull;
 public class ConsoleCommand {
     /**
      * The full raw inputted command
+     * <br>{@code test arg1 arg2} -> {@code test arg1 arg2}
      */
     @NotNull private final String command;
+    /**
+     * The split elements of the command
+     * <br>{@code test arg1 arg2} -> {@code [test, arg1, arg2]}
+     */
+    @NotNull private final String[] split;
+    /**
+     * The first space-based element of the command (aka the command name)
+     * <br>{@code test arg1 arg2} -> {@code test}
+     */
+    @NotNull private final String name;
+    /**
+     * The arguments of the command (aka everything after the command name)
+     * <br>{@code test arg1 arg2} -> {@code [arg1, arg2]}
+     */
+    @NotNull private final String[] arguments;
 
     /**
      * Constructs a new {@link ConsoleCommand}
@@ -21,13 +35,23 @@ public class ConsoleCommand {
      */
     public ConsoleCommand(@NotNull String command) {
         this.command = command;
+        this.split = command.split(" ");
+        this.name = split[0];
+
+        // arguments
+        if (split.length < 2) {
+            this.arguments = new String[0];
+            return;
+        }
+        final String[] args = new String[split.length - 1];
+        System.arraycopy(split, 1, args, 0, split.length - 1);
+        this.arguments = args;
     }
 
     /**
-     * Gets the full raw inputted command
-     * <br>{@code test arg1 arg2} -> {@code test arg1 arg2}
+     * {@link #command}
      *
-     * @return  the full raw inputted command
+     * @return  {@link #command}
      */
     @NotNull
     public String getRaw() {
@@ -35,40 +59,33 @@ public class ConsoleCommand {
     }
 
     /**
-     * Splits the command by spaces
-     * <br>{@code test arg1 arg2} -> {@code [test, arg1, arg2]}
+     * {@link #split}
      *
-     * @return  the split elements
+     * @return  {@link #split}
      */
     @NotNull
     public String[] getSplit() {
-        return command.split(" ");
+        return split;
     }
 
     /**
-     * Gets the first space-based element of the command (aka the command name)
-     * <br>{@code test arg1 arg2} -> {@code test}
+     * {@link #name}
      *
-     * @return  the command name
+     * @return  {@link #name}
      */
     @NotNull
     public String getName() {
-        return getSplit()[0];
+        return name;
     }
 
     /**
-     * Gets the arguments of the command (aka everything after the command name)
-     * {@code test arg1 arg2} -> {@code [arg1, arg2]}
+     * {@link #arguments}
      *
-     * @return  the arguments of the command
+     * @return  {@link #arguments}
      */
     @NotNull
     public String[] getArguments() {
-        final String[] split = getSplit();
-        if (split.length < 2) return new String[0];
-        final String[] args = new String[split.length - 1];
-        System.arraycopy(split, 1, args, 0, split.length - 1);
-        return args;
+        return arguments;
     }
 
     @Override @NotNull
