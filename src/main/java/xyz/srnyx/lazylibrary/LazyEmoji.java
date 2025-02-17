@@ -286,6 +286,9 @@ public enum LazyEmoji {
      */
     QUESTION_CLEAR_DARK(1298411642358337578L);
 
+    /**
+     * The {@link CustomEmoji} for this {@link LazyEmoji}
+     */
     @NotNull public final CustomEmoji emoji;
 
     LazyEmoji(long id, boolean animated) {
