@@ -33,10 +33,6 @@ setupPublishing(
 
 // Fix some tasks
 tasks {
-    startScripts {
-        dependsOn("shadowJar")
-    }
-    startShadowScripts {
-        dependsOn("jar")
-    }
+    startScripts { dependsOn("shadowJar") }
+    startShadowScripts { dependsOn("jar") }
 }

@@ -2,6 +2,7 @@ package xyz.srnyx.lazylibrary;
 
 import com.freya02.botcommands.api.utils.ButtonContent;
 
+import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 import org.jetbrains.annotations.NotNull;
@@ -285,28 +286,14 @@ public enum LazyEmoji {
      */
     QUESTION_CLEAR_DARK(1298411642358337578L);
 
-    @NotNull private final String name;
-    private final long id;
-    private final boolean animated;
+    @NotNull public final CustomEmoji emoji;
 
     LazyEmoji(long id, boolean animated) {
-        this.name = "vn" + name().toLowerCase().replace("_", "");
-        this.id = id;
-        this.animated = animated;
+        this.emoji = Emoji.fromCustom("vn" + name().toLowerCase().replace("_", ""), id, animated);
     }
 
     LazyEmoji(long id) {
         this(id, false);
-    }
-
-    /**
-     * Forms a {@link Emoji} from this {@link LazyEmoji}
-     *
-     * @return  the {@link Emoji} formed
-     */
-    @NotNull
-    public Emoji getEmoji() {
-        return Emoji.fromCustom(name, id, animated);
     }
 
     /**
@@ -318,7 +305,7 @@ public enum LazyEmoji {
      */
     @NotNull
     public ButtonContent getButtonContent(@Nullable String text) {
-        return new ButtonContent(text, getEmoji());
+        return new ButtonContent(text, emoji);
     }
 
     /**
@@ -333,6 +320,6 @@ public enum LazyEmoji {
 
     @Override @NotNull
     public String toString() {
-        return getEmoji().getFormatted();
+        return emoji.getFormatted();
     }
 }
