@@ -12,7 +12,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.6"
 }
 
-setupJda("5.2.2", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_21)
+setupJda("5.3.0", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_21)
 
 repository(Repository.JITPACK)
 dependencies {
