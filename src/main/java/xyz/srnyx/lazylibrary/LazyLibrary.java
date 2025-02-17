@@ -94,7 +94,7 @@ public class LazyLibrary {
         settings.builder.accept(builder);
         builder.build(jda);
 
-        // stop command
+        // Console commands
         new Thread(() -> {
             final Scanner scanner = new Scanner(System.in);
             while (scanner.hasNextLine()) {
