@@ -9,10 +9,10 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}bot.log</file>
+        <file>${LOGS_PATH}bot.log</file>
 
         <rollingPolicy class="xyz.srnyx.lazylibrary.logging.FixedWindowWithTimeRollingPolicy">
-            <fileNamePattern>${LOG_PATH}bot_%d{yyyy-MM-dd_HH-mm}_%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS_PATH}bot_%d{yyyy-MM-dd_HH-mm}_%i.log</fileNamePattern>
             <maxIndex>10</maxIndex>
         </rollingPolicy>
 
