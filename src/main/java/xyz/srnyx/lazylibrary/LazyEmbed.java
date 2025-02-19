@@ -468,6 +468,163 @@ public class LazyEmbed {
     }
 
     /**
+     * Get {@link #color}
+     *
+     * @return  {@link #color}
+     */
+    public int getColor() {
+        return color;
+    }
+
+    /**
+     * Get {@link #authorName}
+     *
+     * @return  {@link #authorName}
+     */
+    @Nullable
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    /**
+     * Get {@link #authorUrl}
+     *
+     * @return  {@link #authorUrl}
+     */
+    @Nullable
+    public String getAuthorUrl() {
+        return authorUrl;
+    }
+
+    /**
+     * Get {@link #authorIcon}
+     *
+     * @return  {@link #authorIcon}
+     */
+    @Nullable
+    public String getAuthorIcon() {
+        return authorIcon;
+    }
+
+    /**
+     * Get {@link #titleText}
+     *
+     * @return  {@link #titleText}
+     */
+    @Nullable
+    public String getTitleText() {
+        return titleText;
+    }
+
+    /**
+     * Get {@link #titleUrl}
+     *
+     * @return  {@link #titleUrl}
+     */
+    @Nullable
+    public String getTitleUrl() {
+        return titleUrl;
+    }
+
+    /**
+     * Get {@link #description}
+     *
+     * @return  {@link #description}
+     */
+    @Nullable
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Get {@link #thumbnail}
+     *
+     * @return  {@link #thumbnail}
+     */
+    @Nullable
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    /**
+     * Get {@link #image}
+     *
+     * @return  {@link #image}
+     */
+    @Nullable
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * Returns an unmodifiable list of all fields in the embed
+     *
+     * @return  an unmodifiable list of all fields in the embed
+     */
+    @NotNull
+    public List<MessageEmbed.Field> getFields() {
+        return Collections.unmodifiableList(fields);
+    }
+
+    /**
+     * Returns a field from the embed by its name
+     *
+     * @param   name    the name of the field
+     *
+     * @return          the field, or {@link Optional#empty() empty} if not found
+     */
+    @NotNull
+    public Optional<MessageEmbed.Field> getField(@NotNull String name) {
+        for (final MessageEmbed.Field field : fields) {
+            final String fieldName = field.getName();
+            if (fieldName != null && fieldName.equals(name)) return Optional.of(field);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Returns the value of a field from the embed by its name
+     *
+     * @param   name    the name of the field
+     *
+     * @return          the value of the field, or {@link Optional#empty() empty} if not found
+     */
+    @NotNull
+    public Optional<String> getFieldValue(@NotNull String name) {
+        return getField(name).map(MessageEmbed.Field::getValue);
+    }
+
+    /**
+     * Get {@link #footerText}
+     *
+     * @return  {@link #footerText}
+     */
+    @Nullable
+    public String getFooterText() {
+        return footerText;
+    }
+
+    /**
+     * Get {@link #footerIcon}
+     *
+     * @return  {@link #footerIcon}
+     */
+    @Nullable
+    public String getFooterIcon() {
+        return footerIcon;
+    }
+
+    /**
+     * Get {@link #timestamp}
+     *
+     * @return  {@link #timestamp}
+     */
+    @Nullable
+    public TemporalAccessor getTimestamp() {
+        return timestamp;
+    }
+
+    /**
      * Sets the color of the embed
      *
      * @param   color   the {@link Color} of the embed
@@ -728,44 +885,6 @@ public class LazyEmbed {
     @NotNull @SafeVarargs
     public final LazyEmbed gridFields(@NotNull Map<String, String>... rows) {
         return gridFields(Arrays.asList(rows));
-    }
-
-    /**
-     * Returns an unmodifiable list of all fields in the embed
-     *
-     * @return  an unmodifiable list of all fields in the embed
-     */
-    @NotNull
-    public List<MessageEmbed.Field> getFields() {
-        return Collections.unmodifiableList(fields);
-    }
-
-    /**
-     * Returns a field from the embed by its name
-     *
-     * @param   name    the name of the field
-     *
-     * @return          the field, or {@link Optional#empty() empty} if not found
-     */
-    @NotNull
-    public Optional<MessageEmbed.Field> getField(@NotNull String name) {
-        for (final MessageEmbed.Field field : fields) {
-            final String fieldName = field.getName();
-            if (fieldName != null && fieldName.equals(name)) return Optional.of(field);
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Returns the value of a field from the embed by its name
-     *
-     * @param   name    the name of the field
-     *
-     * @return          the value of the field, or {@link Optional#empty() empty} if not found
-     */
-    @NotNull
-    public Optional<String> getFieldValue(@NotNull String name) {
-        return getField(name).map(MessageEmbed.Field::getValue);
     }
 
     /**
