@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.srnyx.javautilities.parents.Stringable;
+
 import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
@@ -25,7 +27,7 @@ import java.util.function.Supplier;
  * The main class for the bot
  */
 @SuppressWarnings("EmptyMethod")
-public class LazyLibrary {
+public class LazyLibrary extends Stringable {
     /**
      * The {@link Logger} instance
      */

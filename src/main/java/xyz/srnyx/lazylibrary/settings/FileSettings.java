@@ -12,6 +12,8 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 
+import xyz.srnyx.javautilities.parents.Stringable;
+
 import xyz.srnyx.lazylibrary.LazyFile;
 import xyz.srnyx.lazylibrary.LazyLibrary;
 
@@ -23,7 +25,7 @@ import java.util.Set;
 /**
  * A class to hold the settings defined in the settings file
  */
-public class FileSettings {
+public class FileSettings extends Stringable {
     /**
      * The file to load settings from
      */

@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import xyz.srnyx.javautilities.parents.Stringable;
+
 import xyz.srnyx.lazylibrary.LazyEmbed;
 import xyz.srnyx.lazylibrary.LazyLibrary;
 import xyz.srnyx.lazylibrary.ConsoleCommand;
@@ -20,7 +22,7 @@ import java.util.function.Consumer;
  * A class to hold settings for {@link LazyLibrary}
  */
 @SuppressWarnings("EmptyMethod")
-public class LazySettings {
+public class LazySettings extends Stringable {
     /**
      * The {@link FileSettings file settings} for the bot
      */

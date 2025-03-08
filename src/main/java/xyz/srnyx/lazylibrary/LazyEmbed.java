@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import org.spongepowered.configurate.ConfigurationNode;
 
+import xyz.srnyx.javautilities.parents.Stringable;
+
 import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.awt.*;
@@ -26,7 +28,7 @@ import java.util.function.Consumer;
  * A class for building {@link MessageEmbed MessageEmbeds} quickly and nicely
  */
 @SuppressWarnings("UnusedReturnValue")
-public class LazyEmbed {
+public class LazyEmbed extends Stringable {
     /**
      * The {@link EmbedBuilder embed builder} that is used to build the {@link MessageEmbed}
      */

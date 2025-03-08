@@ -6,6 +6,8 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
+import xyz.srnyx.javautilities.parents.Stringable;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.nio.file.Files;
 /**
  * Class for file management (loading, creating, saving, etc...)
  */
-public class LazyFile {
+public class LazyFile extends Stringable {
     /**
      * The path to the file
      */
