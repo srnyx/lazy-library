@@ -3,6 +3,7 @@ package xyz.srnyx.lazylibrary.settings;
 import com.freya02.botcommands.api.CommandsBuilder;
 
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +61,11 @@ public class LazySettings extends Stringable {
      * A list of default values for {@link LazyEmbed embeds}
      */
     @NotNull public Map<LazyEmbed.Key, Object> embedDefaults = new EnumMap<>(LazyEmbed.Key.class);
+    /**
+     * A list of {@link Activity activities} to rotate between every minute
+     * <br><i>Leave empty to disable</i>
+     */
+    @NotNull public List<Activity> activities = new ArrayList<>();
 
     /**
      * Creates a new {@link LazySettings} for the given {@link LazyLibrary}
@@ -186,6 +192,32 @@ public class LazySettings extends Stringable {
     @NotNull
     public LazySettings embedDefault(@NotNull LazyEmbed.Key key, @NotNull Object value) {
         embedDefaults.put(key, value);
+        return this;
+    }
+
+    /**
+     * Adds {@link Activity activities} to {@link #activities}
+     *
+     * @param   activities  the {@link Activity activities} to add
+     *
+     * @return              {@code this}
+     */
+    @NotNull
+    public LazySettings activities(@NotNull Collection<Activity> activities) {
+        this.activities.addAll(activities);
+        return this;
+    }
+
+    /**
+     * Adds {@link Activity activities} to {@link #activities}
+     *
+     * @param   activities  the {@link Activity activities} to add
+     *
+     * @return              {@code this}
+     */
+    @NotNull
+    public LazySettings activities(@NotNull Activity... activities) {
+        Collections.addAll(this.activities, activities);
         return this;
     }
 }
