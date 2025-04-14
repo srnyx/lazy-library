@@ -8,14 +8,17 @@ import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,9 +26,7 @@ import xyz.srnyx.javautilities.manipulation.Mapper;
 
 import xyz.srnyx.lazylibrary.LazyEmoji;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 
@@ -33,6 +34,31 @@ import java.util.function.Function;
  * Class for miscellaneous utilities
  */
 public class LazyUtilities {
+    /**
+     * An empty set of {@link Message.MentionType mention types}
+     */
+    @NotNull public static final Set<Message.MentionType> NO_MENTIONS = Collections.emptySet();
+    /**
+     * An {@link ErrorHandler} that ignores {@link ErrorResponse#UNKNOWN_MESSAGE} errors
+     */
+    @NotNull public static final ErrorHandler IGNORE_UNKNOWN_MESSAGE = new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE);
+    /**
+     * An {@link ErrorHandler} that ignores {@link ErrorResponse#CANNOT_SEND_TO_USER} errors
+     */
+    @NotNull public static final ErrorHandler IGNORE_CANNOT_SEND_TO_USER = new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER);
+    /**
+     * An {@link ErrorHandler} that ignores {@link ErrorResponse#UNKNOWN_MEMBER} errors
+     */
+    @NotNull public static final ErrorHandler IGNORE_UNKNOWN_MEMBER = new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER);
+    /**
+     * An {@link ErrorHandler} that ignores {@link ErrorResponse#MAX_MESSAGE_PINS} errors
+     */
+    @NotNull public static final ErrorHandler IGNORE_MAX_MESSAGE_PINS = new ErrorHandler().ignore(ErrorResponse.MAX_MESSAGE_PINS);
+    /**
+     * An {@link ErrorHandler} that ignores {@link ErrorResponse#MISSING_PERMISSIONS} errors
+     */
+    @NotNull public static final ErrorHandler IGNORE_MISSING_PERMISSIONS = new ErrorHandler().ignore(ErrorResponse.MISSING_PERMISSIONS);
+
     /**
      * Get a {@link PaginatorBuilder} with:
      * <ul>
