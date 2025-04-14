@@ -65,7 +65,7 @@ public class LazySettings extends Stringable {
      * A list of {@link Activity activities} to rotate between every minute
      * <br><i>Leave empty to disable</i>
      */
-    @NotNull public List<Activity> activities = new ArrayList<>();
+    @NotNull public Set<Activity> activities = new HashSet<>();
 
     /**
      * Creates a new {@link LazySettings} for the given {@link LazyLibrary}

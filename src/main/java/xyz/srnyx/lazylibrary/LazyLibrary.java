@@ -18,12 +18,10 @@ import xyz.srnyx.javautilities.parents.Stringable;
 
 import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
+import xyz.srnyx.lazylibrary.utility.LazyUtilities;
 
 import java.sql.SQLException;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -37,22 +35,6 @@ public class LazyLibrary extends Stringable {
      * The {@link Logger} instance
      */
     @NotNull public static Logger LOGGER = LoggerFactory.getLogger("LazyLibrary");
-    /**
-     * A {@link Random} instance
-     */
-    @NotNull public static final Random RANDOM = new Random();
-    /**
-     * The number of available CPU processors
-     */
-    public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
-    /**
-     * A {@link ScheduledExecutorService} for CPU intensive tasks (heavy computation, such as mathematical calculations or data processing)
-     */
-    @NotNull public static final ScheduledExecutorService CPU_SCHEDULER = Executors.newScheduledThreadPool(AVAILABLE_PROCESSORS);
-    /**
-     * A {@link ScheduledExecutorService} for IO intensive tasks (waiting for external resources, such as reading/writing files, making network requests, or querying a database)
-     */
-    @NotNull public static final ScheduledExecutorService IO_SCHEDULER = Executors.newScheduledThreadPool(AVAILABLE_PROCESSORS * 2);
 
     /**
      * The {@link LazySettings settings} for the bot
@@ -136,7 +118,7 @@ public class LazyLibrary extends Stringable {
         // Rotating status
         if (!settings.activities.isEmpty()) {
             final Activity[] array = settings.activities.toArray(new Activity[0]);
-            CPU_SCHEDULER.scheduleAtFixedRate(() -> jda.getPresence().setActivity(array[RANDOM.nextInt(array.length)]), 0, 1, TimeUnit.MINUTES);
+            LazyUtilities.CPU_SCHEDULER.scheduleAtFixedRate(() -> jda.getPresence().setActivity(array[LazyUtilities.RANDOM.nextInt(array.length)]), 0, 1, TimeUnit.MINUTES);
         }
     }
 
