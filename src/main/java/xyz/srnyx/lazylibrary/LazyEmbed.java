@@ -1241,7 +1241,7 @@ public class LazyEmbed extends Stringable {
     @NotNull
     public static LazyEmbed empty() {
         return new LazyEmbed()
-                .setColor(0x2b2d31)
+                .setColor(0x242429)
                 .disableDefaults(Key.values());
     }
 }
