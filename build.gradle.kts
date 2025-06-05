@@ -16,7 +16,7 @@ setupJda("5.5.1", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots",
 
 repository(Repository.JITPACK)
 dependencies {
-    implementation("xyz.srnyx", "java-utilities", "7db9a108ad") // General Java utility library
+    implementation("xyz.srnyx", "java-utilities", "5a5e3e2e0d") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.4") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     implementation("org.postgresql", "postgresql", "42.7.6") // Database
