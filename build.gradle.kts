@@ -12,14 +12,14 @@ plugins {
     id("com.gradleup.shadow") version "8.3.6"
 }
 
-setupJda("5.3.2", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_21)
+setupJda("5.5.1", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_21)
 
 repository(Repository.JITPACK)
 dependencies {
-    implementation("xyz.srnyx", "java-utilities", "150bcfdf44") // General Java utility library
+    implementation("xyz.srnyx", "java-utilities", "7db9a108ad") // General Java utility library
     implementation("io.github.freya022", "BotCommands", "2.10.4") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
-    implementation("org.postgresql", "postgresql", "42.7.5") // Database
+    implementation("org.postgresql", "postgresql", "42.7.6") // Database
     implementation("com.zaxxer", "HikariCP", "6.3.0") // Database
     implementation("ch.qos.logback", "logback-classic", "1.5.18") // Logging
     implementation("dev.freya02", "jda-emojis", "3.0.0") // Emojis
