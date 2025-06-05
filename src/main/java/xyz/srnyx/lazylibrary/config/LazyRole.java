@@ -1,5 +1,6 @@
 package xyz.srnyx.lazylibrary.config;
 
+import com.freya02.botcommands.api.application.context.message.GuildMessageEvent;
 import com.freya02.botcommands.api.application.slash.GuildSlashEvent;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -137,14 +138,26 @@ public class LazyRole extends Stringable {
     }
 
     /**
-     * Checks if the given {@link GuildSlashEvent} has the role and replies with an error message if not
-     * <br>It will check the {@link Member} from {@link GuildSlashEvent#getMember()}
+     * Checks if the user who ran the {@link GuildSlashEvent} has the role and replies with an error message if not
      *
      * @param   event   the {@link GuildSlashEvent} to get the user from and reply to (if needed)
      *
      * @return          {@code true} if the user <b>doesn't</b> have the role, {@code false} if they <b>do</b>
      */
     public boolean checkDontHaveRole(@NotNull GuildSlashEvent event) {
+        final boolean hasRole = hasRole(event.getMember());
+        if (!hasRole) event.replyEmbeds(LazyEmbed.noPermission(getMention()).build(bot)).setEphemeral(true).queue();
+        return !hasRole;
+    }
+
+    /**
+     * Checks if the user who ran the {@link GuildMessageEvent} has the role and replies with an error message if not
+     *
+     * @param   event   the {@link GuildSlashEvent} to get the user from and reply to (if needed)
+     *
+     * @return          {@code true} if the user <b>doesn't</b> have the role, {@code false} if they <b>do</b>
+     */
+    public boolean checkDontHaveRole(@NotNull GuildMessageEvent event) {
         final boolean hasRole = hasRole(event.getMember());
         if (!hasRole) event.replyEmbeds(LazyEmbed.noPermission(getMention()).build(bot)).setEphemeral(true).queue();
         return !hasRole;
