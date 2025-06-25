@@ -9,7 +9,7 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 plugins {
     application
     id("xyz.srnyx.gradle-galaxy") version "1.3.3"
-    id("com.gradleup.shadow") version "8.3.6"
+    id("com.gradleup.shadow") version "8.3.7"
 }
 
 setupJda("5.5.1", "xyz.srnyx", "3.2.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_21)
