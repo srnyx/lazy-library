@@ -20,7 +20,7 @@ dependencies {
     implementation("io.github.freya022", "BotCommands", "2.10.4") // Command framework
     implementation("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     implementation("org.postgresql", "postgresql", "42.7.7") // Database
-    implementation("com.zaxxer", "HikariCP", "6.3.0") // Database
+    implementation("com.zaxxer", "HikariCP", "7.0.0") // Database
     implementation("ch.qos.logback", "logback-classic", "1.5.18") // Logging
     implementation("dev.freya02", "jda-emojis", "3.0.0") // Emojis
 }
