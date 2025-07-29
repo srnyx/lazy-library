@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import xyz.srnyx.lazylibrary.utility.LazyUtilities;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -44,6 +47,10 @@ public class LazyLibrary extends Stringable {
      * The {@link JDA} instance
      */
     public JDA jda;
+    /**
+     * @see #updateActivityRotation()
+     */
+    @Nullable private ScheduledExecutorService activityScheduler;
 
     /**
      * Starts the bot
@@ -115,11 +122,8 @@ public class LazyLibrary extends Stringable {
         // All necessary tasks are done
         onNecessaryTasksDone();
 
-        // Rotating status
-        if (!settings.activities.isEmpty()) {
-            final Activity[] array = settings.activities.toArray(new Activity[0]);
-            LazyUtilities.CPU_SCHEDULER.scheduleAtFixedRate(() -> jda.getPresence().setActivity(array[LazyUtilities.RANDOM.nextInt(array.length)]), 0, 1, TimeUnit.MINUTES);
-        }
+        // Rotating activity
+        updateActivityRotation();
     }
 
     /**
@@ -168,6 +172,15 @@ public class LazyLibrary extends Stringable {
     }
 
     /**
+     * Called when a command is sent in the console
+     *
+     * @param   command the {@link ConsoleCommand} that was sent
+     */
+    public void onConsoleCommand(@NotNull ConsoleCommand command) {
+        // Should be overridden
+    }
+
+    /**
      * Stops the bot (calls {@link #onStop()} and exits the program)
      */
     public void stopBot() {
@@ -176,12 +189,39 @@ public class LazyLibrary extends Stringable {
     }
 
     /**
-     * Called when a command is sent in the console
+     * Updates the activity rotation (stops the old scheduler and starts a new one)
      *
-     * @param   command the {@link ConsoleCommand} that was sent
+     * @see LazySettings#activities(Activity...)
+     * @see LazySettings#activities(java.util.Collection)
      */
-    public void onConsoleCommand(@NotNull ConsoleCommand command) {
-        // Should be overridden
+    public void updateActivityRotation() {
+        // Stop old scheduler
+        if (activityScheduler != null) activityScheduler.shutdown();
+
+        // Stop activity rotation
+        if (settings.activities == null) {
+            activityScheduler = null;
+            return;
+        }
+
+        // Check if JDA is ready
+        if (jda == null || jda.getStatus() != JDA.Status.CONNECTED) return;
+
+        // Start new scheduler
+        activityScheduler = Executors.newSingleThreadScheduledExecutor();
+        activityScheduler.scheduleAtFixedRate(() -> {
+            // Stop if activities is null
+            if (settings.activities == null) {
+                if (activityScheduler != null) {
+                    activityScheduler.shutdown();
+                    activityScheduler = null;
+                }
+                return;
+            }
+
+            // Set random activity
+            if (!settings.activities.isEmpty()) jda.getPresence().setActivity(settings.activities.get(LazyUtilities.RANDOM.nextInt(settings.activities.size())));
+        }, 0, 1, TimeUnit.MINUTES);
     }
 
     /**

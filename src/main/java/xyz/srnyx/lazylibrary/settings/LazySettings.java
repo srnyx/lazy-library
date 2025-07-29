@@ -25,6 +25,10 @@ import java.util.function.Consumer;
 @SuppressWarnings("EmptyMethod")
 public class LazySettings extends Stringable {
     /**
+     * The {@link LazyLibrary} this {@link LazySettings} belongs to
+     */
+    @NotNull private final LazyLibrary library;
+    /**
      * The {@link FileSettings file settings} for the bot
      */
     @NotNull public final FileSettings fileSettings;
@@ -63,16 +67,17 @@ public class LazySettings extends Stringable {
     @NotNull public Map<LazyEmbed.Key, Object> embedDefaults = new EnumMap<>(LazyEmbed.Key.class);
     /**
      * A list of {@link Activity activities} to rotate between every minute
-     * <br><i>Leave empty to disable</i>
+     * <br><i>Set to null to disable</i>
      */
-    @NotNull public Set<Activity> activities = new HashSet<>();
+    @Nullable public List<Activity> activities = null;
 
     /**
      * Creates a new {@link LazySettings} for the given {@link LazyLibrary}
      *
-     * @param   library the {@link LazyLibrary} to create the {@link LazySettings} for
+     * @param   library {@link #library}
      */
     public LazySettings(@NotNull LazyLibrary library) {
+        this.library = library;
     	fileSettings = new FileSettings(library);
         loggerName = library.getClass().getSimpleName();
     }
@@ -204,7 +209,9 @@ public class LazySettings extends Stringable {
      */
     @NotNull
     public LazySettings activities(@NotNull Collection<Activity> activities) {
-        this.activities.addAll(activities);
+        if (this.activities == null) this.activities = new ArrayList<>();
+        Objects.requireNonNull(this.activities).addAll(activities);
+        library.updateActivityRotation();
         return this;
     }
 
@@ -217,7 +224,9 @@ public class LazySettings extends Stringable {
      */
     @NotNull
     public LazySettings activities(@NotNull Activity... activities) {
-        Collections.addAll(this.activities, activities);
+        if (this.activities == null) this.activities = new ArrayList<>();
+        Collections.addAll(Objects.requireNonNull(this.activities), activities);
+        library.updateActivityRotation();
         return this;
     }
 }
