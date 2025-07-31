@@ -15,11 +15,11 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.parents.Stringable;
 
 import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
 import xyz.srnyx.lazylibrary.settings.LazySettings;
-import xyz.srnyx.lazylibrary.utility.LazyUtilities;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -220,7 +220,7 @@ public class LazyLibrary extends Stringable {
             }
 
             // Set random activity
-            if (!settings.activities.isEmpty()) jda.getPresence().setActivity(settings.activities.get(LazyUtilities.RANDOM.nextInt(settings.activities.size())));
+            if (!settings.activities.isEmpty()) jda.getPresence().setActivity(settings.activities.get(MiscUtility.RANDOM.nextInt(settings.activities.size())));
         }, 0, 1, TimeUnit.MINUTES);
     }
 
