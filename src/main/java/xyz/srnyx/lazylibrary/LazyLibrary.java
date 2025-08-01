@@ -221,7 +221,7 @@ public class LazyLibrary extends Stringable {
 
             // Set random activity
             if (!settings.activities.isEmpty()) jda.getPresence().setActivity(settings.activities.get(MiscUtility.RANDOM.nextInt(settings.activities.size())));
-        }, 0, 1, TimeUnit.MINUTES);
+        }, 0, 3, TimeUnit.MINUTES);
     }
 
     /**
