@@ -42,18 +42,8 @@ public class GuildVoiceLeaveEvent extends GuildVoiceUpdateEvent {
         return Objects.requireNonNull(super.getChannelLeft());
     }
 
-    @Override @Nullable
-    public AudioChannelUnion getChannelJoined() {
-        return null;
-    }
-
     @Override @NotNull
     public AudioChannel getOldValue() {
         return Objects.requireNonNull(super.getOldValue());
-    }
-
-    @Override @Nullable
-    public AudioChannel getNewValue() {
-        return null;
     }
 }

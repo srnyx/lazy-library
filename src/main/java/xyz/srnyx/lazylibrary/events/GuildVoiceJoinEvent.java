@@ -37,19 +37,9 @@ public class GuildVoiceJoinEvent extends GuildVoiceUpdateEvent {
         this(event.getJDA(), event.getResponseNumber(), event.getMember(), event.getChannelLeft());
     }
 
-    @Override @Nullable
-    public AudioChannelUnion getChannelLeft() {
-        return null;
-    }
-
     @Override @NotNull
     public AudioChannelUnion getChannelJoined() {
         return Objects.requireNonNull(super.getChannelJoined());
-    }
-
-    @Override @Nullable
-    public AudioChannel getOldValue() {
-        return null;
     }
 
     @Override @NotNull

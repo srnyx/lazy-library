@@ -31,10 +31,7 @@ public abstract class LazyListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
         // Joined
-        if (event.getChannelJoined() != null) {
-            onGuildVoiceJoin(new GuildVoiceJoinEvent(event));
-            return;
-        }
+        if (event.getChannelJoined() != null) onGuildVoiceJoin(new GuildVoiceJoinEvent(event));
         // Left
         if (event.getChannelLeft() != null) onGuildVoiceLeave(new GuildVoiceLeaveEvent(event));
     }
