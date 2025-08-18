@@ -118,6 +118,7 @@ public class LazyUtilities {
      */
     @NotNull
     public static List<Command.Choice> sortChoicesFuzzy(@NotNull CommandAutoCompleteInteractionEvent event, @NotNull Collection<Command.Choice> collection) {
+        if (collection.isEmpty()) return Collections.emptyList();
         final AutoCompleteQuery inputQuery = event.getFocusedOption();
         final OptionType type = inputQuery.getType();
 		final String input = inputQuery.getValue().toLowerCase();
