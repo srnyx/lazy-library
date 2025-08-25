@@ -1,13 +1,18 @@
 package xyz.srnyx.lazylibrary;
 
-import com.freya02.botcommands.api.CommandsBuilder;
-import com.freya02.botcommands.api.components.DefaultComponentManager;
+import io.github.freya022.botcommands.api.commands.application.provider.GlobalApplicationCommandManager;
+import io.github.freya022.botcommands.api.commands.application.provider.GuildApplicationCommandManager;
+import io.github.freya022.botcommands.api.core.BotCommands;
+import io.github.freya022.botcommands.api.core.config.BConfigBuilder;
+import io.github.freya022.botcommands.api.core.service.annotations.BService;
 
-import com.zaxxer.hikari.HikariDataSource;
+import kotlin.jvm.JvmClassMappingKt;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.interactions.InteractionContextType;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,224 +20,224 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.parents.Stringable;
+import xyz.srnyx.lazylibrary.services.Bot;
 
-import xyz.srnyx.lazylibrary.settings.ApplicationDependency;
-import xyz.srnyx.lazylibrary.settings.LazySettings;
-
-import java.sql.SQLException;
-import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
+import java.util.*;
+import java.util.function.Consumer;
 
 
-/**
- * The main class for the bot
- */
-@SuppressWarnings("EmptyMethod")
+@BService
 public class LazyLibrary extends Stringable {
-    /**
-     * The {@link Logger} instance
-     */
+    @NotNull public static final LazyLibrary INSTANCE = new LazyLibrary();
     @NotNull public static Logger LOGGER = LoggerFactory.getLogger("LazyLibrary");
 
+    public Class<? extends Bot> botClass;
+    @NotNull public String fileSettingsName = "config";
+    public FileSettings fileSettings;
+    @Nullable public String loggerName;
+    @NotNull public final Set<String> searchPaths = new HashSet<>();
+    @NotNull public Set<GatewayIntent> gatewayIntents = new HashSet<>();
+    @NotNull public Set<CacheFlag> cacheFlags = new HashSet<>();
+    @Nullable public Consumer<JDABuilder> jdaBuilder;
+    @NotNull public Consumer<BConfigBuilder> builder = _ -> {};
+    public boolean defaultStopCommand = true;
+    @NotNull public Map<LazyEmbed.Key, Object> embedDefaults = new EnumMap<>(LazyEmbed.Key.class);
     /**
-     * The {@link LazySettings settings} for the bot
+     * A list of {@link Activity activities} to rotate between every few minutes
+     * <br><i>Set to null to disable (default)</i>
      */
-    @NotNull public final LazySettings settings = new LazySettings(this);
-    /**
-     * The {@link JDA} instance
-     */
-    public JDA jda;
-    /**
-     * @see #updateActivityRotation()
-     */
-    @Nullable private ScheduledExecutorService activityScheduler;
+    @Nullable public List<Activity> activities = null;
 
     /**
-     * Starts the bot
+     * Use {@link #INSTANCE} instead
      */
-    public LazyLibrary() {
-        settings.dependencies(new ApplicationDependency<>((Class<? super LazyLibrary>) getClass(), () -> this));
-        setSettings();
-        LOGGER = LoggerFactory.getLogger(settings.loggerName);
-        onStart();
+    private LazyLibrary() {
+        searchPaths.add("xyz.srnyx.lazylibrary");
+    }
 
-        // Start bot
-        try {
-            final JDABuilder builder = JDABuilder.create(settings.gatewayIntents).setToken(settings.fileSettings.token);
-            if (settings.jdaBuilder != null) settings.jdaBuilder.accept(builder);
-            jda = builder.build().awaitReady();
-        } catch (final InterruptedException | IllegalArgumentException e) {
-            e.printStackTrace();
-            Thread.currentThread().interrupt();
-            System.exit(0);
-            return;
+    public void build(@NotNull Class<? extends Bot> botClass) {
+        this.botClass = botClass;
+
+        // Set logger
+        if (loggerName != null) {
+            LOGGER = LoggerFactory.getLogger(loggerName);
+        } else {
+            LOGGER = LoggerFactory.getLogger(botClass);
         }
-        onReady();
 
-        // BotCommands
-        final CommandsBuilder builder = CommandsBuilder.newBuilder()
-                .textCommandBuilder(textCommands -> textCommands.disableHelpCommand(true));
-        // Owners, search paths, and command dependency
-        if (settings.fileSettings.ownersPrimary != null) builder.addOwners(settings.fileSettings.ownersPrimary);
-        settings.fileSettings.ownersOther.forEach(builder::addOwners);
-        settings.searchPaths.forEach(builder::addSearchPath);
-        builder.extensionsBuilder(extensionsBuilder -> settings.dependencies.forEach(dependency -> extensionsBuilder.registerCommandDependency((Class<Object>) dependency.clazz(), (Supplier<Object>) dependency.supplier())));
-        // Database
-        if (settings.fileSettings.database != null) {
-            //noinspection resource
-            final HikariDataSource dataSource = new HikariDataSource();
-            dataSource.setJdbcUrl(settings.fileSettings.database);
-            dataSource.setMaximumPoolSize(3);
-            dataSource.setLeakDetectionThreshold(5000);
-            try {
-                builder.setComponentManager(new DefaultComponentManager(() -> {
-                    try {
-                        return dataSource.getConnection();
-                    } catch (final SQLException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                }));
-            } catch (final RuntimeException e) {
-                e.printStackTrace();
-            }
-        }
-        // Build
-        settings.builder.accept(builder);
-        builder.build(jda);
+        // Get FileSettings
+        fileSettings = new FileSettings(fileSettingsName);
 
-        // Console commands
-        new Thread(() -> {
-            final Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNextLine()) {
-                final ConsoleCommand command = new ConsoleCommand(scanner.nextLine());
-                if (settings.defaultStopCommand && command.getRaw().equals("stop")) {
-                    stopBot();
-                    return;
-                }
-                onConsoleCommand(command);
-            }
-        }).start();
+        // Set default contexts
+        GlobalApplicationCommandManager.Defaults.INSTANCE.setContexts(InteractionContextType.ALL);
+        GuildApplicationCommandManager.Defaults.INSTANCE.setContexts(Collections.singleton(InteractionContextType.GUILD));
 
-        // All necessary tasks are done
-        onNecessaryTasksDone();
+        // Create BotCommands
+        BotCommands.create(config -> {
+            // LazySettings service
+            config.services(services -> services.registerServiceSupplier(JvmClassMappingKt.getKotlinClass(LazyLibrary.class), _ -> LazyLibrary.INSTANCE));
+            // Disable help text command
+            config.textCommands(textCommands -> textCommands.disableHelp(true));
+            // Owners
+            if (fileSettings.ownersPrimary != null) config.addPredefinedOwners(fileSettings.ownersPrimary);
+            fileSettings.ownersOther.forEach(config::addPredefinedOwners);
+            // Search paths
+            searchPaths.forEach(config::addSearchPath);
+            // Enable components
+            config.components(components -> components.enable(true));
+            // Custom config
+            builder.accept(config);
+        });
+    }
 
-        // Rotating activity
-        updateActivityRotation();
+    public boolean isOwner(long id) {
+        return (fileSettings.ownersPrimary != null && fileSettings.ownersPrimary == id) || fileSettings.ownersOther.contains(id);
     }
 
     /**
-     * Returns the name of the settings file (excluding {@code .yml})
+     * Sets {@link #fileSettingsName}
      *
-     * @return  the name of the settings file (excluding {@code .yml})
+     * @param   fileSettingsName   the new value of {@link #fileSettingsName}
+     *
+     * @return                      {@code this}
      */
     @NotNull
-    public String getSettingsFileName() {
-        return "config";
+    public LazyLibrary fileSettingsName(@NotNull String fileSettingsName) {
+    	this.fileSettingsName = fileSettingsName;
+    	return this;
     }
 
     /**
-     * Set the {@link #settings} for the bot here by overriding this method
-     */
-    public void setSettings() {
-        // Should be overridden
-    }
-
-    /**
-     * Called when the instance is created (after {@link #settings} and {@link #LOGGER} are set)
-     */
-    public void onStart() {
-        // Should be overridden
-    }
-
-    /**
-     * Called when the {@link JDA} is ready
-     */
-    public void onReady() {
-        // Should be overridden
-    }
-
-    /**
-     * Called when all necessary tasks are done
-     */
-    public void onNecessaryTasksDone() {
-        // Should be overridden
-    }
-
-    /**
-     * Called when the stop command is executed
-     */
-    public void onStop() {
-        // Should be overridden
-    }
-
-    /**
-     * Called when a command is sent in the console
+     * Sets {@link #loggerName}
      *
-     * @param   command the {@link ConsoleCommand} that was sent
+     * @param   loggerName  the new value of {@link #loggerName}
+     *
+     * @return              {@code this}
      */
-    public void onConsoleCommand(@NotNull ConsoleCommand command) {
-        // Should be overridden
+    @NotNull
+    public LazyLibrary loggerName(@NotNull String loggerName) {
+    	this.loggerName = loggerName;
+    	return this;
     }
 
     /**
-     * Stops the bot (calls {@link #onStop()} and exits the program)
+     * Sets {@link #defaultStopCommand}
+     *
+     * @param   defaultStopCommand  the new value of {@link #defaultStopCommand}
+     *
+     * @return                      {@code this}
      */
-    public void stopBot() {
-        onStop();
-        System.exit(0);
+    @NotNull
+    public LazyLibrary defaultStopCommand(boolean defaultStopCommand) {
+    	this.defaultStopCommand = defaultStopCommand;
+    	return this;
     }
 
     /**
-     * Updates the activity rotation (stops the old scheduler and starts a new one)
+     * Adds {@link GatewayIntent gateway intents} to {@link #gatewayIntents}
      *
-     * @see LazySettings#activities(Activity...)
-     * @see LazySettings#activities(java.util.Collection)
+     * @param   gatewayIntents  the {@link GatewayIntent gateway intents} to add
+     *
+     * @return                  {@code this}
      */
-    public void updateActivityRotation() {
-        // Stop old scheduler
-        if (activityScheduler != null) activityScheduler.shutdown();
-
-        // Stop activity rotation
-        if (settings.activities == null) {
-            activityScheduler = null;
-            return;
-        }
-
-        // Check if JDA is ready
-        if (jda == null || jda.getStatus() != JDA.Status.CONNECTED) return;
-
-        // Start new scheduler
-        activityScheduler = Executors.newSingleThreadScheduledExecutor();
-        activityScheduler.scheduleAtFixedRate(() -> {
-            // Stop if activities is null
-            if (settings.activities == null) {
-                if (activityScheduler != null) {
-                    activityScheduler.shutdown();
-                    activityScheduler = null;
-                }
-                return;
-            }
-
-            // Set random activity
-            if (!settings.activities.isEmpty()) jda.getPresence().setActivity(settings.activities.get(MiscUtility.RANDOM.nextInt(settings.activities.size())));
-        }, 0, 3, TimeUnit.MINUTES);
+    @NotNull
+    public LazyLibrary gatewayIntents(@NotNull GatewayIntent... gatewayIntents) {
+        Collections.addAll(this.gatewayIntents, gatewayIntents);
+    	return this;
     }
 
     /**
-     * Checks if the given {@link Long ID} is an owner
+     * Sets {@link #jdaBuilder}
      *
-     * @param   id  the {@link Long ID} to check
+     * @param   jdaBuilder  the new value of {@link #jdaBuilder}
      *
-     * @return      {@code true} if the given ID is an owner, {@code false} otherwise
+     * @return              {@code this}
      */
-    public boolean isOwner(long id) {
-        final Long ownersPrimary = settings.fileSettings.ownersPrimary;
-        return (ownersPrimary != null && id == ownersPrimary) || (settings.fileSettings.ownersOther.contains(id));
+    @NotNull
+    public LazyLibrary jdaBuilder(@Nullable Consumer<JDABuilder> jdaBuilder) {
+    	this.jdaBuilder = jdaBuilder;
+    	return this;
+    }
+
+    /**
+     * Adds package paths to {@link #searchPaths}
+     *
+     * @param   searchPaths the package paths to add
+     *
+     * @return              {@code this}
+     */
+    @NotNull
+    public LazyLibrary searchPaths(@NotNull String... searchPaths) {
+        Collections.addAll(this.searchPaths, searchPaths);
+    	return this;
+    }
+
+    /**
+     * Sets {@link #builder}
+     *
+     * @param   builder the new value of {@link #builder}
+     *
+     * @return          {@code this}
+     */
+    @NotNull
+    public LazyLibrary builder(@NotNull Consumer<BConfigBuilder> builder) {
+    	this.builder = builder;
+    	return this;
+    }
+
+    /**
+     * Adds default values for {@link LazyEmbed embeds} to {@link #embedDefaults}
+     *
+     * @param   embedDefaults   the default values for {@link LazyEmbed embeds} to add
+     *
+     * @return                  {@code this}
+     */
+    @NotNull
+    public LazyLibrary embedDefaults(@NotNull Map<LazyEmbed.Key, Object> embedDefaults) {
+        this.embedDefaults.putAll(embedDefaults);
+    	return this;
+    }
+
+    /**
+     * Adds a default value for a {@link LazyEmbed embed} to {@link #embedDefaults}
+     *
+     * @param   key     the {@link LazyEmbed.Key key} of the default value
+     * @param   value   the default value
+     *
+     * @return          {@code this}
+     */
+    @NotNull
+    public LazyLibrary embedDefault(@NotNull LazyEmbed.Key key, @NotNull Object value) {
+        embedDefaults.put(key, value);
+        return this;
+    }
+
+    /**
+     * Adds {@link Activity activities} to {@link #activities}
+     *
+     * @param   activities  the {@link Activity activities} to add
+     *
+     * @return              {@code this}
+     */
+    @NotNull
+    public LazyLibrary activities(@NotNull Collection<Activity> activities) {
+        if (this.activities == null) this.activities = new ArrayList<>();
+        Objects.requireNonNull(this.activities).addAll(activities);
+        return this;
+    }
+
+    /**
+     * Adds {@link Activity activities} to {@link #activities}
+     *
+     * @param   activities  the {@link Activity activities} to add
+     *
+     * @return              {@code this}
+     */
+    @NotNull
+    public LazyLibrary activities(@NotNull Activity... activities) {
+        if (this.activities == null) this.activities = new ArrayList<>();
+        Collections.addAll(Objects.requireNonNull(this.activities), activities);
+        return this;
     }
 }

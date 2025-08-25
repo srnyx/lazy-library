@@ -10,9 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import org.spongepowered.configurate.ConfigurationNode;
 
+import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.parents.Stringable;
-
-import xyz.srnyx.lazylibrary.settings.LazySettings;
 
 import java.awt.*;
 import java.time.Instant;
@@ -37,9 +36,6 @@ public class LazyEmbed extends Stringable {
      * Replacements for all values that will be replaced when building the {@link MessageEmbed}
      */
     @NotNull public final Map<String, String> replacements = new HashMap<>();
-    /**
-     * The {@link Key keys} that are disabled from being set by the {@link LazySettings#embedDefaults}
-     */
     @NotNull public final Set<Key> disabledDefaults = new HashSet<>();
 
     /**
@@ -186,7 +182,7 @@ public class LazyEmbed extends Stringable {
     public LazyEmbed(@NotNull String json) {
         final JsonObject object;
         try {
-            object = JsonParser.parseString(json).getAsJsonObject();
+            object = MiscUtility.JSON_PARSER.parse(json).getAsJsonObject();
         } catch (final JsonParseException | IllegalStateException e) {
             return;
         }
@@ -341,56 +337,22 @@ public class LazyEmbed extends Stringable {
         return this;
     }
 
-    /**
-     * Disables keys from being set by the {@link LazySettings#embedDefaults}
-     *
-     * @param   keys    the keys to disable
-     *
-     * @return          the {@link LazyEmbed} instance
-     */
     @NotNull
     public LazyEmbed disableDefaults(@NotNull Key... keys) {
         return disableDefaults(Arrays.asList(keys));
     }
 
-    /**
-     * Disables keys from being set by the {@link LazySettings#embedDefaults}
-     *
-     * @param   keys    the keys to disable
-     *
-     * @return          the {@link LazyEmbed} instance
-     */
     @NotNull
     public LazyEmbed disableDefaults(@NotNull Collection<Key> keys) {
         disabledDefaults.addAll(keys);
         return this;
     }
 
-    /**
-     * Enables keys to be set by the {@link LazySettings#embedDefaults}
-     * <br>All keys are enabled by default
-     *
-     * @param   keys    the keys to enable
-     *
-     * @return          the {@link LazyEmbed} instance
-     *
-     * @see             #disableDefaults(Key...)
-     */
     @NotNull
     public LazyEmbed enableDefaults(@NotNull Key... keys) {
         return enableDefaults(Arrays.asList(keys));
     }
 
-    /**
-     * Enables keys to be set by the {@link LazySettings#embedDefaults}
-     * <br>All keys are enabled by default
-     *
-     * @param   keys    the keys to enable
-     *
-     * @return          the {@link LazyEmbed} instance
-     *
-     * @see             #disableDefaults(Collection)
-     */
     @NotNull
     public LazyEmbed enableDefaults(@NotNull Collection<Key> keys) {
         disabledDefaults.removeAll(keys);
@@ -407,15 +369,8 @@ public class LazyEmbed extends Stringable {
         return new Factory(this);
     }
 
-    /**
-     * Builds the {@link MessageEmbed}
-     *
-     * @param   library the {@link LazyLibrary} instance
-     *
-     * @return          the {@link MessageEmbed}
-     */
     @NotNull
-    public MessageEmbed build(@NotNull LazyLibrary library) {
+    public MessageEmbed build() {
         // Replacements
         if (!replacements.isEmpty()) {
             // Get replaceable values
@@ -459,7 +414,7 @@ public class LazyEmbed extends Stringable {
         }
         
         // Set defaults
-        for (final Map.Entry<Key, Object> entry : library.settings.embedDefaults.entrySet()) {
+        for (final Map.Entry<Key, Object> entry : LazyLibrary.INSTANCE.embedDefaults.entrySet()) {
             final Key key = entry.getKey();
             if (disabledDefaults.contains(key)) continue;
             final Object value = entry.getValue();
@@ -1029,9 +984,6 @@ public class LazyEmbed extends Stringable {
         }
     }
 
-    /**
-     * All possible (defaultable) keys an {@link LazyEmbed embed} can have ({@link LazySettings#embedDefaults})
-     */
     public enum Key {
         /**
          * {@link LazyEmbed#color}

@@ -1,12 +1,15 @@
 package xyz.srnyx.lazylibrary;
 
-import com.freya02.botcommands.api.utils.ButtonContent;
+//import io.github.freya022.botcommands.api.components.utils.ButtonContent;
 
+import io.github.freya022.botcommands.api.components.utils.ButtonContent;
 import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+//import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -299,26 +302,14 @@ public enum LazyEmoji {
         this(id, false);
     }
 
-    /**
-     * Construct a {@link ButtonContent} from this {@link LazyEmoji}
-     *
-     * @param   text    the text to display on the button
-     *
-     * @return          the constructed {@link ButtonContent}
-     */
     @NotNull
-    public ButtonContent getButtonContent(@Nullable String text) {
-        return new ButtonContent(text, emoji);
+    public ButtonContent getButtonContent(@NotNull ButtonStyle style, @Nullable String text) {
+        return text == null ? ButtonContent.fromEmoji(style, emoji) : ButtonContent.fromEmoji(style, text, emoji);
     }
 
-    /**
-     * Construct a {@link ButtonContent} from this {@link LazyEmoji} with no text
-     *
-     * @return  the constructed {@link ButtonContent}
-     */
     @NotNull
-    public ButtonContent getButtonContent() {
-        return getButtonContent(null);
+    public ButtonContent getButtonContent(@NotNull ButtonStyle style) {
+        return getButtonContent(style, null);
     }
 
     @Override @NotNull

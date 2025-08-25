@@ -1,4 +1,4 @@
-package xyz.srnyx.lazylibrary;
+package xyz.srnyx.lazylibrary.services.consolecommand;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,7 +1,6 @@
-package xyz.srnyx.lazylibrary.settings;
+package xyz.srnyx.lazylibrary;
 
-import com.freya02.botcommands.api.annotations.RequireOwner;
-import com.freya02.botcommands.api.components.ComponentManager;
+import io.github.freya022.botcommands.api.commands.text.annotations.RequireOwner;
 
 import net.dv8tion.jda.api.JDABuilder;
 
@@ -13,9 +12,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 
 import xyz.srnyx.javautilities.parents.Stringable;
-
-import xyz.srnyx.lazylibrary.LazyFile;
-import xyz.srnyx.lazylibrary.LazyLibrary;
+import xyz.srnyx.lazylibrary.services.DatabaseSource;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,7 +33,7 @@ public class FileSettings extends Stringable {
      */
     @Nullable public final String token;
     /**
-     * The database connection URL, used for {@link ComponentManager}
+     * The database connection URL, used for {@link DatabaseSource}
      */
     @Nullable public final String database;
     /**
@@ -48,13 +45,8 @@ public class FileSettings extends Stringable {
      */
     @NotNull public Set<Long> ownersOther = new HashSet<>();
 
-    /**
-     * Creates a new {@link FileSettings} for the given {@link LazyLibrary}
-     *
-     * @param   library the {@link LazyLibrary} to create the {@link FileSettings} for
-     */
-    public FileSettings(@NotNull LazyLibrary library) {
-        file = new LazyFile(library.getSettingsFileName(), NodeStyle.BLOCK, true);
+    public FileSettings(@NotNull String fileName) {
+        file = new LazyFile(fileName, NodeStyle.BLOCK, true);
         token = file.yaml.node("token").getString();
         database = file.yaml.node("database").getString();
 

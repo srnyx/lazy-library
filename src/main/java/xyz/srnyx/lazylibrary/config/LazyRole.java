@@ -1,6 +1,6 @@
 package xyz.srnyx.lazylibrary.config;
 
-import com.freya02.botcommands.api.application.slash.GuildSlashEvent;
+import io.github.freya022.botcommands.api.commands.application.slash.GuildSlashEvent;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -15,7 +15,6 @@ import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.parents.Stringable;
 
 import xyz.srnyx.lazylibrary.LazyEmbed;
-import xyz.srnyx.lazylibrary.LazyLibrary;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -27,10 +26,6 @@ import java.util.function.Supplier;
  */
 public class LazyRole extends Stringable {
     /**
-     * The {@link LazyLibrary bot} instance
-     */
-    @NotNull public final LazyLibrary bot;
-    /**
      * The {@link Supplier} for the {@link Guild} that owns the role
      */
     @NotNull public final Supplier<Guild> guildSupplier;
@@ -39,28 +34,12 @@ public class LazyRole extends Stringable {
      */
     public final long id;
 
-    /**
-     * Creates a new {@link LazyRole}
-     *
-     * @param   bot             {@link #bot}
-     * @param   guildSupplier   {@link #guildSupplier}
-     * @param   id              {@link #id}
-     */
-    public LazyRole(@NotNull LazyLibrary bot, @NotNull Supplier<Guild> guildSupplier, long id) {
-        this.bot = bot;
+    public LazyRole(@NotNull Supplier<Guild> guildSupplier, long id) {
         this.guildSupplier = guildSupplier;
         this.id = id;
     }
 
-    /**
-     * Creates a new {@link LazyRole}
-     *
-     * @param   bot             {@link #bot}
-     * @param   guildSupplier   {@link #guildSupplier}
-     * @param   node            a {@link ConfigurationNode} containing the role ID
-     */
-    public LazyRole(@NotNull LazyLibrary bot, @NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
-        this.bot = bot;
+    public LazyRole(@NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
         this.guildSupplier = guildSupplier;
         this.id = node.getLong();
     }
@@ -147,7 +126,7 @@ public class LazyRole extends Stringable {
     public boolean checkDontHaveRole(@NotNull IReplyCallback event) {
         final Member member = event.getMember();
         final boolean hasRole = member != null ? hasRole(member) : hasRole(event.getUser().getIdLong());
-        if (!hasRole) event.replyEmbeds(LazyEmbed.noPermission(getMention()).build(bot)).setEphemeral(true).queue();
+        if (!hasRole) event.replyEmbeds(LazyEmbed.noPermission(getMention()).build()).setEphemeral(true).queue();
         return !hasRole;
     }
 }

@@ -81,7 +81,7 @@ public class LazyFile extends Stringable {
             return;
         }
 
-        try (final InputStream inputStream = LazyLibrary.class.getClassLoader().getResourceAsStream(pathString);
+        try (final InputStream inputStream = LazyFile.class.getClassLoader().getResourceAsStream(pathString);
              final FileOutputStream outputStream = new FileOutputStream(pathString)) {
             if (inputStream == null) throw new IOException("Resource not found in JAR file.");
             final byte [] buffer = new byte[inputStream.available()];

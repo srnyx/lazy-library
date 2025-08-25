@@ -1,10 +1,9 @@
 package xyz.srnyx.lazylibrary.utility;
 
-import com.freya02.botcommands.api.pagination.paginator.PaginatorBuilder;
-
-import me.xdrop.fuzzywuzzy.FuzzySearch;
-import me.xdrop.fuzzywuzzy.ToStringFunction;
-import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
+import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.AutocompleteAlgorithms;
+import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.FuzzyResult;
+import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.ToStringFunction;
+import io.github.freya022.botcommands.api.pagination.paginator.PaginatorBuilder;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,7 +16,7 @@ import net.dv8tion.jda.api.interactions.AutoCompleteQuery;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +59,7 @@ public class LazyUtilities {
     @NotNull public static final ErrorHandler IGNORE_MISSING_PERMISSIONS = new ErrorHandler().ignore(ErrorResponse.MISSING_PERMISSIONS);
 
     /**
-     * Get a {@link PaginatorBuilder} with:
+     * Apply some default paginator settings to the given {@link PaginatorBuilder builder}
      * <ul>
      *     <li>{@link LazyEmoji#BACK_CLEAR_DARK} as the "first page" button</li>
      *     <li>{@link LazyEmoji#LEFT2_CLEAR_DARK} as the "previous page" button</li>
@@ -68,15 +67,17 @@ public class LazyUtilities {
      *     <li>{@link LazyEmoji#FORWARD_CLEAR_DARK} as the "last page" button</li>
      * </ul>
      *
-     * @return  the {@link PaginatorBuilder}
+     * @param   builder the {@link PaginatorBuilder} to apply the defaults to
+     *
+     * @return          the {@link PaginatorBuilder}
      */
     @NotNull
-    public static PaginatorBuilder getDefaultPaginator() {
-        return new PaginatorBuilder()
-                .setFirstContent(LazyEmoji.BACK_CLEAR_DARK.getButtonContent())
-                .setPreviousContent(LazyEmoji.LEFT2_CLEAR_DARK.getButtonContent())
-                .setNextContent(LazyEmoji.RIGHT2_CLEAR_DARK.getButtonContent())
-                .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent());
+    public static PaginatorBuilder getDefaultPaginator(@NotNull PaginatorBuilder builder) {
+        return builder
+                .setFirstContent(LazyEmoji.BACK_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
+                .setPreviousContent(LazyEmoji.LEFT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
+                .setNextContent(LazyEmoji.RIGHT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
+                .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY));
     }
 
     /**
@@ -94,15 +95,15 @@ public class LazyUtilities {
                 .orElse(false);
     }
 
-    @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> STRING_MAPPING = BoundExtractedResult::getReferent;
-    @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> INTEGER_MAPPING = result -> {
-        final Command.Choice choice = result.getReferent();
+    @NotNull private static final Function<FuzzyResult<Command.Choice>, Command.Choice> STRING_MAPPING = FuzzyResult::item;
+    @NotNull private static final Function<FuzzyResult<Command.Choice>, Command.Choice> INTEGER_MAPPING = result -> {
+        final Command.Choice choice = result.item();
         return Mapper.toLong(choice.getAsString())
                 .map(value -> new Command.Choice(choice.getName(), value))
                 .orElse(null);
     };
-    @NotNull private static final Function<BoundExtractedResult<Command.Choice>, Command.Choice> NUMBER_MAPPING = result -> {
-        final Command.Choice choice = result.getReferent();
+    @NotNull private static final Function<FuzzyResult<Command.Choice>, Command.Choice> NUMBER_MAPPING = result -> {
+        final Command.Choice choice = result.item();
         return Mapper.toDouble(choice.getAsString())
                 .map(value -> new Command.Choice(choice.getName(), value))
                 .orElse(null);
@@ -125,21 +126,21 @@ public class LazyUtilities {
         final ToStringFunction<Command.Choice> toStringFunction = choice -> choice.getName().toLowerCase();
 
 		// Sort results by similarities but taking into account an incomplete input
-		final List<Command.Choice> list = collection.stream()
-				.sorted(Comparator.comparing(toStringFunction::apply))
-				.toList();
-		final List<Command.Choice> bigLengthDiffResults = FuzzySearch.extractTop(input, list, toStringFunction, FuzzySearch::partialRatio, OptionData.MAX_CHOICES).stream()
-                .map(BoundExtractedResult::getReferent)
-                .toList();
+//		final List<Command.Choice> list = collection.stream()
+//				.sorted(Comparator.comparing(toStringFunction::toString))
+//				.toList();
+//		final List<Command.Choice> bigLengthDiffResults = FuzzySearch.extractTop(input, list, toStringFunction, FuzzySearch::partialRatio, OptionData.MAX_CHOICES).stream()
+//                .map(FuzzyResult::item)
+//                .toList();
 
 		// Sort results by similarities but don't take length into account
-        final Function<BoundExtractedResult<Command.Choice>, Command.Choice> mapping = switch (type) {
+        final Function<FuzzyResult<Command.Choice>, Command.Choice> mapping = switch (type) {
             case STRING -> STRING_MAPPING;
             case INTEGER -> INTEGER_MAPPING;
             case NUMBER -> NUMBER_MAPPING;
             default -> throw new IllegalArgumentException("Invalid autocompletion option type: " + type);
         };
-		return FuzzySearch.extractTop(input, bigLengthDiffResults, toStringFunction, FuzzySearch::ratio, OptionData.MAX_CHOICES).stream()
+		return AutocompleteAlgorithms.fuzzyMatching(collection, toStringFunction, input).stream()
                 .map(mapping)
                 .toList();
     }

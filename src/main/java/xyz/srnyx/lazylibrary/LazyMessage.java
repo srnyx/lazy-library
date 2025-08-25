@@ -64,19 +64,12 @@ public class LazyMessage {
         return map;
     }
 
-    /**
-     * Converts the {@link LazyMessage} to a {@link MessageCreateBuilder}
-     *
-     * @param   library the {@link LazyLibrary} to construct the {@link LazyEmbed embeds} with
-     *
-     * @return          the {@link MessageCreateBuilder} representation of the {@link LazyMessage}
-     */
     @NotNull
-    public MessageCreateBuilder toBuilder(@NotNull LazyLibrary library) {
+    public MessageCreateBuilder toBuilder() {
         final MessageCreateBuilder builder = new MessageCreateBuilder();
         builder.setContent(content);
         builder.setEmbeds(embeds.stream()
-                .map(embed -> embed.build(library))
+                .map(LazyEmbed::build)
                 .toList());
         return builder;
     }
@@ -120,17 +113,10 @@ public class LazyMessage {
         return this;
     }
 
-    /**
-     * Gets the built {@link MessageEmbed embeds} ({@link MessageEmbed}) of the {@link LazyMessage}
-     *
-     * @param   library the {@link LazyLibrary} to construct the {@link LazyEmbed embeds} with
-     *
-     * @return          the built {@link MessageEmbed embeds} ({@link MessageEmbed}) of the {@link LazyMessage}
-     */
     @NotNull
-    public List<MessageEmbed> getBuiltEmbeds(@NotNull LazyLibrary library) {
+    public List<MessageEmbed> getBuiltEmbeds() {
         return embeds.stream()
-                .map(embed -> embed.build(library))
+                .map(LazyEmbed::build)
                 .toList();
     }
 }
