@@ -5,8 +5,7 @@ import io.github.freya022.botcommands.api.commands.application.provider.GuildApp
 import io.github.freya022.botcommands.api.core.BotCommands;
 import io.github.freya022.botcommands.api.core.config.BConfigBuilder;
 import io.github.freya022.botcommands.api.core.service.annotations.BService;
-
-import kotlin.jvm.JvmClassMappingKt;
+import io.github.freya022.botcommands.api.core.utils.ReflectionUtils;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -21,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xyz.srnyx.javautilities.parents.Stringable;
-import xyz.srnyx.lazylibrary.services.Bot;
 
+import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -32,7 +31,7 @@ public class LazyLibrary extends Stringable {
     @NotNull public static final LazyLibrary INSTANCE = new LazyLibrary();
     @NotNull public static Logger LOGGER = LoggerFactory.getLogger("LazyLibrary");
 
-    public Class<? extends Bot> botClass;
+    public Class<?> botClass;
     @NotNull public String fileSettingsName = "config";
     public FileSettings fileSettings;
     @Nullable public String loggerName;
@@ -56,7 +55,7 @@ public class LazyLibrary extends Stringable {
         searchPaths.add("xyz.srnyx.lazylibrary");
     }
 
-    public void build(@NotNull Class<? extends Bot> botClass) {
+    public void startBot(@NotNull Class<?> botClass) {
         this.botClass = botClass;
 
         // Set logger
@@ -69,6 +68,10 @@ public class LazyLibrary extends Stringable {
         // Get FileSettings
         fileSettings = new FileSettings(fileSettingsName);
 
+        // Create command cache folder
+        final File localShare = new File(".local/share");
+        if (!localShare.exists() && !localShare.mkdirs()) LOGGER.warn("Failed to create .local/share folder");
+
         // Set default contexts
         GlobalApplicationCommandManager.Defaults.INSTANCE.setContexts(InteractionContextType.ALL);
         GuildApplicationCommandManager.Defaults.INSTANCE.setContexts(Collections.singleton(InteractionContextType.GUILD));
@@ -76,13 +79,14 @@ public class LazyLibrary extends Stringable {
         // Create BotCommands
         BotCommands.create(config -> {
             // LazySettings service
-            config.services(services -> services.registerServiceSupplier(JvmClassMappingKt.getKotlinClass(LazyLibrary.class), _ -> LazyLibrary.INSTANCE));
+            config.services(services -> services.registerServiceSupplier(ReflectionUtils.toKotlin(LazyLibrary.class), _ -> LazyLibrary.INSTANCE));
             // Disable help text command
             config.textCommands(textCommands -> textCommands.disableHelp(true));
             // Owners
             if (fileSettings.ownersPrimary != null) config.addPredefinedOwners(fileSettings.ownersPrimary);
             fileSettings.ownersOther.forEach(config::addPredefinedOwners);
             // Search paths
+            config.addSearchPath(botClass.getPackage().getName());
             searchPaths.forEach(config::addSearchPath);
             // Enable components
             config.components(components -> components.enable(true));
@@ -118,19 +122,6 @@ public class LazyLibrary extends Stringable {
     @NotNull
     public LazyLibrary loggerName(@NotNull String loggerName) {
     	this.loggerName = loggerName;
-    	return this;
-    }
-
-    /**
-     * Sets {@link #defaultStopCommand}
-     *
-     * @param   defaultStopCommand  the new value of {@link #defaultStopCommand}
-     *
-     * @return                      {@code this}
-     */
-    @NotNull
-    public LazyLibrary defaultStopCommand(boolean defaultStopCommand) {
-    	this.defaultStopCommand = defaultStopCommand;
     	return this;
     }
 
@@ -183,6 +174,19 @@ public class LazyLibrary extends Stringable {
     @NotNull
     public LazyLibrary builder(@NotNull Consumer<BConfigBuilder> builder) {
     	this.builder = builder;
+    	return this;
+    }
+
+    /**
+     * Sets {@link #defaultStopCommand}
+     *
+     * @param   defaultStopCommand  the new value of {@link #defaultStopCommand}
+     *
+     * @return                      {@code this}
+     */
+    @NotNull
+    public LazyLibrary defaultStopCommand(boolean defaultStopCommand) {
+    	this.defaultStopCommand = defaultStopCommand;
     	return this;
     }
 
