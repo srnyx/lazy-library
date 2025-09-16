@@ -38,7 +38,7 @@ public class LazyLibrary extends Stringable {
     @NotNull public final Set<String> searchPaths = new HashSet<>();
     @NotNull public Set<GatewayIntent> gatewayIntents = new HashSet<>();
     @NotNull public Set<CacheFlag> cacheFlags = new HashSet<>();
-    @Nullable public Consumer<JDABuilder> jdaBuilder;
+    @NotNull public Consumer<JDABuilder> jdaBuilder = _ -> {};
     @NotNull public Consumer<BConfigBuilder> builder = _ -> {};
     public boolean defaultStopCommand = true;
     @NotNull public Map<LazyEmbed.Key, Object> embedDefaults = new EnumMap<>(LazyEmbed.Key.class);
@@ -146,7 +146,7 @@ public class LazyLibrary extends Stringable {
      * @return              {@code this}
      */
     @NotNull
-    public LazyLibrary jdaBuilder(@Nullable Consumer<JDABuilder> jdaBuilder) {
+    public LazyLibrary jdaBuilder(@NotNull Consumer<JDABuilder> jdaBuilder) {
     	this.jdaBuilder = jdaBuilder;
     	return this;
     }

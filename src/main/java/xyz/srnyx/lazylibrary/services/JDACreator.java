@@ -40,7 +40,7 @@ public class JDACreator extends JDAService {
     public void createJDA(@NotNull BReadyEvent event, @NotNull IEventManager eventManager) {
         if (settings.fileSettings.token == null) throw new IllegalStateException("Token is not set in the settings file");
         final JDABuilder builder = create(settings.fileSettings.token);
-        if (settings.jdaBuilder != null) settings.jdaBuilder.accept(builder);
+        settings.jdaBuilder.accept(builder);
         builder.build();
     }
 
