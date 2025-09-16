@@ -4,8 +4,8 @@ import io.github.freya022.botcommands.api.commands.application.provider.GlobalAp
 import io.github.freya022.botcommands.api.commands.application.provider.GuildApplicationCommandManager;
 import io.github.freya022.botcommands.api.core.BotCommands;
 import io.github.freya022.botcommands.api.core.config.BConfigBuilder;
+import io.github.freya022.botcommands.api.core.service.ServiceSupplier;
 import io.github.freya022.botcommands.api.core.service.annotations.BService;
-import io.github.freya022.botcommands.api.core.utils.ReflectionUtils;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -73,13 +73,13 @@ public class LazyLibrary extends Stringable {
         if (!localShare.exists() && !localShare.mkdirs()) LOGGER.warn("Failed to create .local/share folder");
 
         // Set default contexts
-        GlobalApplicationCommandManager.Defaults.INSTANCE.setContexts(InteractionContextType.ALL);
-        GuildApplicationCommandManager.Defaults.INSTANCE.setContexts(Collections.singleton(InteractionContextType.GUILD));
+        GlobalApplicationCommandManager.Defaults.setContexts(InteractionContextType.ALL);
+        GuildApplicationCommandManager.Defaults.setContexts(Collections.singleton(InteractionContextType.GUILD));
 
         // Create BotCommands
         BotCommands.create(config -> {
             // LazySettings service
-            config.services(services -> services.registerServiceSupplier(ReflectionUtils.toKotlin(LazyLibrary.class), _ -> LazyLibrary.INSTANCE));
+            config.services(services -> services.registerServiceSupplier(ServiceSupplier.builder(LazyLibrary.class).asPrimary().build(_ -> LazyLibrary.INSTANCE)));
             // Disable help text command
             config.textCommands(textCommands -> textCommands.disableHelp(true));
             // Owners
