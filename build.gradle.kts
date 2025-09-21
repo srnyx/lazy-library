@@ -1,5 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.kotlin.dsl.withType
+import xyz.srnyx.gradlegalaxy.data.DependencyConfig
+import xyz.srnyx.gradlegalaxy.data.JavaSetupConfig
 import xyz.srnyx.gradlegalaxy.data.pom.DeveloperData
 import xyz.srnyx.gradlegalaxy.data.pom.LicenseData
 import xyz.srnyx.gradlegalaxy.enums.Repository
@@ -11,12 +13,18 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 plugins {
     application
     `java-library`
-    id("xyz.srnyx.gradle-galaxy") version "1.3.5"
+    id("xyz.srnyx.gradle-galaxy") version "2.0.0"
     id("com.gradleup.shadow") version "8.3.8"
     id("dev.reformator.stacktracedecoroutinator") version "2.5.6"
 }
 
-setupJda("6.0.0-rc.5", "xyz.srnyx", "4.0.0", "A simple library for JDA Discord bots", JavaVersion.VERSION_22)
+setupJda(
+    javaSetupConfig = JavaSetupConfig(
+        group = "xyz.srnyx",
+        version = "4.0.0",
+        description = "A simple library for JDA Discord bots",
+        javaVersion = JavaVersion.VERSION_22),
+    jdaConfig = DependencyConfig(version = "6.0.0-rc.5"))
 
 repository(Repository.JITPACK)
 dependencies {
