@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.interactions.InteractionContextType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.dv8tion.jda.api.utils.messages.MessageRequest;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +41,7 @@ public class LazyLibrary extends Stringable {
     @NotNull public Set<CacheFlag> cacheFlags = new HashSet<>();
     @NotNull public Consumer<JDABuilder> jdaBuilder = _ -> {};
     @NotNull public Consumer<BConfigBuilder> builder = _ -> {};
+    public boolean defaultComponentsV2 = false;
     public boolean defaultStopCommand = true;
     @NotNull public Map<LazyEmbed.Key, Object> embedDefaults = new EnumMap<>(LazyEmbed.Key.class);
     /**
@@ -75,6 +77,9 @@ public class LazyLibrary extends Stringable {
         // Set default contexts
         GlobalApplicationCommandManager.Defaults.setContexts(InteractionContextType.ALL);
         GuildApplicationCommandManager.Defaults.setContexts(Collections.singleton(InteractionContextType.GUILD));
+
+        // Set defaultComponentsV2
+        MessageRequest.setDefaultUseComponentsV2(defaultComponentsV2);
 
         // Create BotCommands
         BotCommands.create(config -> {
@@ -175,6 +180,29 @@ public class LazyLibrary extends Stringable {
     public LazyLibrary builder(@NotNull Consumer<BConfigBuilder> builder) {
     	this.builder = builder;
     	return this;
+    }
+
+    /**
+     * Sets {@link #defaultComponentsV2}
+     *
+     * @param   defaultComponentsV2  the new value of {@link #defaultComponentsV2}
+     *
+     * @return                      {@code this}
+     */
+    @NotNull
+    public LazyLibrary defaultComponentsV2(boolean defaultComponentsV2) {
+    	this.defaultComponentsV2 = defaultComponentsV2;
+    	return this;
+    }
+
+    /**
+     * Sets {@link #defaultComponentsV2} to {@code true}
+     *
+     * @return  {@code this}
+     */
+    @NotNull
+    public LazyLibrary defaultComponentsV2() {
+        return defaultComponentsV2(true);
     }
 
     /**
