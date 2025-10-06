@@ -10,6 +10,7 @@ import io.github.freya022.botcommands.api.core.service.annotations.BService;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.interactions.InteractionContextType;
+import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.dv8tion.jda.api.utils.messages.MessageRequest;
@@ -102,6 +103,12 @@ public class LazyLibrary extends Stringable {
 
     public boolean isOwner(long id) {
         return (fileSettings.ownersPrimary != null && fileSettings.ownersPrimary == id) || fileSettings.ownersOther.contains(id);
+    }
+
+    public boolean checkNotOwner(@NotNull IReplyCallback event) {
+        final boolean notOwner = !isOwner(event.getUser().getIdLong());
+        if (notOwner) event.replyComponents(LazyComponent.noPermission()).setEphemeral(true).queue();
+        return notOwner;
     }
 
     /**
