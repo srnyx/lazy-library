@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
+import net.dv8tion.jda.api.utils.messages.MessageRequest;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +15,7 @@ import org.spongepowered.configurate.ConfigurationNode;
 import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.parents.Stringable;
 
+import xyz.srnyx.lazylibrary.LazyComponent;
 import xyz.srnyx.lazylibrary.LazyEmbed;
 
 import java.util.Optional;
@@ -126,7 +128,13 @@ public class LazyRole extends Stringable {
     public boolean checkDontHaveRole(@NotNull IReplyCallback event) {
         final Member member = event.getMember();
         final boolean hasRole = member != null ? hasRole(member) : hasRole(event.getUser().getIdLong());
-        if (!hasRole) event.replyEmbeds(LazyEmbed.noPermission(getMention()).build()).setEphemeral(true).queue();
+        if (!hasRole) {
+            if (MessageRequest.isDefaultUseComponentsV2()) {
+                event.replyComponents(LazyComponent.noPermission(getMention())).setEphemeral(true).queue();
+            } else {
+                event.replyEmbeds(LazyEmbed.noPermission(getMention()).build()).setEphemeral(true).queue();
+            }
+        }
         return !hasRole;
     }
 }
