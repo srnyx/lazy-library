@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.kotlin.dsl.withType
-import xyz.srnyx.gradlegalaxy.data.DependencyConfig
-import xyz.srnyx.gradlegalaxy.data.JavaSetupConfig
+import xyz.srnyx.gradlegalaxy.data.config.DependencyConfig
+import xyz.srnyx.gradlegalaxy.data.config.JavaSetupConfig
 import xyz.srnyx.gradlegalaxy.data.pom.DeveloperData
 import xyz.srnyx.gradlegalaxy.data.pom.LicenseData
 import xyz.srnyx.gradlegalaxy.enums.Repository
@@ -13,8 +13,8 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishing
 plugins {
     application
     `java-library`
-    id("xyz.srnyx.gradle-galaxy") version "2.0.0"
-    id("com.gradleup.shadow") version "8.3.8"
+    id("xyz.srnyx.gradle-galaxy") version "2.0.2"
+    id("com.gradleup.shadow") version "8.3.9"
     id("dev.reformator.stacktracedecoroutinator") version "2.5.6"
 }
 
@@ -24,7 +24,7 @@ setupJda(
         version = "4.0.0",
         description = "A simple library for JDA Discord bots",
         javaVersion = JavaVersion.VERSION_22),
-    jdaConfig = DependencyConfig(version = "6.0.0-rc.5"))
+    jdaConfig = DependencyConfig(version = "6.0.0"))
 
 repository(Repository.JITPACK)
 dependencies {
@@ -33,11 +33,11 @@ dependencies {
     api("io.github.freya022", "BotCommands", "3.0.0-beta.6") // Command framework
     api("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     api("dev.freya02", "jda-emojis", "3.0.0") // Emojis
-    implementation("ch.qos.logback", "logback-classic", "1.5.18") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.5.19") // Logging
     implementation("com.zaxxer", "HikariCP", "7.0.2") // Database
-    implementation("org.flywaydb", "flyway-core", "11.12.0") // Database
-    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.12.0") // Database
-    runtimeOnly("org.postgresql", "postgresql", "42.7.7") // Database
+    implementation("org.flywaydb", "flyway-core", "11.13.2") // Database
+    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.13.2") // Database
+    runtimeOnly("org.postgresql", "postgresql", "42.7.8") // Database
 }
 
 // Fix Java's service loading, which Flyway uses
