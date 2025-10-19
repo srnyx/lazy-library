@@ -22,21 +22,20 @@ setupJda(
     javaSetupConfig = JavaSetupConfig(
         group = "xyz.srnyx",
         version = "4.0.0",
-        description = "A simple library for JDA Discord bots",
-        javaVersion = JavaVersion.VERSION_22),
-    jdaConfig = DependencyConfig(version = "6.0.0"))
+        description = "A simple library for JDA Discord bots"),
+    jdaConfig = DependencyConfig(version = "6.1.0"))
 
 repository(Repository.JITPACK)
 dependencies {
     api("xyz.srnyx", "java-utilities", "5b11020f87") // General Java utility library
     api("com.google.code.gson", "gson", "2.3.1") // Use this specific version for Java Utilities
-    api("io.github.freya022", "BotCommands", "3.0.0-beta.6") // Command framework
+    api("io.github.freya022", "BotCommands", "3.0.0-beta.7") // Command framework
     api("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     api("dev.freya02", "jda-emojis", "3.0.0") // Emojis
     implementation("ch.qos.logback", "logback-classic", "1.5.19") // Logging
     implementation("com.zaxxer", "HikariCP", "7.0.2") // Database
-    implementation("org.flywaydb", "flyway-core", "11.13.2") // Database
-    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.13.2") // Database
+    implementation("org.flywaydb", "flyway-core", "11.14.1") // Database
+    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.14.1") // Database
     runtimeOnly("org.postgresql", "postgresql", "42.7.8") // Database
 }
 
