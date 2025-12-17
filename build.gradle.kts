@@ -23,7 +23,7 @@ setupJda(
         group = "xyz.srnyx",
         version = "4.0.0",
         description = "A simple library for JDA Discord bots"),
-    jdaConfig = DependencyConfig(version = "6.1.3"))
+    jdaConfig = DependencyConfig(version = "6.2.0"))
 
 repository(Repository.JITPACK)
 dependencies {
@@ -32,7 +32,7 @@ dependencies {
     api("io.github.freya022", "BotCommands", "3.0.0-beta.7") // Command framework
     api("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     api("dev.freya02", "jda-emojis", "3.0.0") // Emojis
-    implementation("ch.qos.logback", "logback-classic", "1.5.21") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.5.22") // Logging
     implementation("com.zaxxer", "HikariCP", "7.0.2") // Database
     implementation("org.flywaydb", "flyway-core", "11.19.0") // Database
     runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.19.0") // Database
