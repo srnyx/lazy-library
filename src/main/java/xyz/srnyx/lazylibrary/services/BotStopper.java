@@ -1,23 +1,22 @@
 package xyz.srnyx.lazylibrary.services;
 
-import io.github.freya022.botcommands.api.core.BContext;
 import io.github.freya022.botcommands.api.core.service.annotations.BService;
 
 import org.jetbrains.annotations.NotNull;
 
-import xyz.srnyx.lazylibrary.events.BotStopEvent;
+import java.util.List;
 
 
 @BService
 public class BotStopper {
-    @NotNull private final BContext context;
+    @NotNull protected final List<BotStopListener> listeners;
 
-    public BotStopper(@NotNull BContext context) {
-        this.context = context;
+    public BotStopper(@NotNull List<BotStopListener> listeners) {
+        this.listeners = listeners;
     }
 
     public void stop() {
-        context.getEventDispatcher().dispatchEvent(new BotStopEvent(context));
+        for (final BotStopListener listener : listeners) listener.onStop();
         System.exit(0);
     }
 }
