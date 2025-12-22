@@ -3,9 +3,13 @@ package xyz.srnyx.lazylibrary.utility;
 import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.AutocompleteAlgorithms;
 import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.FuzzyResult;
 import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.ToStringFunction;
+import io.github.freya022.botcommands.api.components.Buttons;
+import io.github.freya022.botcommands.api.components.data.InteractionConstraints;
+import io.github.freya022.botcommands.api.pagination.custom.CustomPagination;
 import io.github.freya022.botcommands.api.pagination.paginator.PaginatorBuilder;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -78,6 +82,47 @@ public class LazyUtilities {
                 .setPreviousContent(LazyEmoji.LEFT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
                 .setNextContent(LazyEmoji.RIGHT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
                 .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY));
+    }
+
+    @NotNull
+    public static ActionRow getComponentsV2PaginatorRow(@NotNull Buttons buttons, @NotNull CustomPagination paginator) {
+        final int currentPage = paginator.getPage();
+        final int maxPages = paginator.getMaxPages();
+        final InteractionConstraints constraints = paginator.getConstraints();
+        return ActionRow.of(
+                buttons.primary(LazyEmoji.BACK_CLEAR_DARK.emoji).ephemeral()
+                        .bindTo(event -> {
+                            paginator.setPage(0);
+                            event.editMessage(paginator.getCurrentMessage()).queue();
+                        })
+                        .constraints(constraints)
+                        .build()
+                        .withDisabled(currentPage == 0),
+                buttons.primary(LazyEmoji.LEFT2_CLEAR_DARK.emoji).ephemeral()
+                        .bindTo(event -> {
+                            paginator.setPage(Math.max(0, currentPage - 1));
+                            event.editMessage(paginator.getCurrentMessage()).queue();
+                        })
+                        .constraints(constraints)
+                        .build()
+                        .withDisabled(currentPage == 0),
+                buttons.secondary((currentPage + 1) + " / " + maxPages).toLabelButton(),
+                buttons.primary(LazyEmoji.RIGHT2_CLEAR_DARK.emoji).ephemeral()
+                        .bindTo(event -> {
+                            paginator.setPage(Math.min(maxPages - 1, currentPage + 1));
+                            event.editMessage(paginator.getCurrentMessage()).queue();
+                        })
+                        .constraints(constraints)
+                        .build()
+                        .withDisabled(currentPage >= maxPages - 1),
+                buttons.primary(LazyEmoji.FORWARD_CLEAR_DARK.emoji).ephemeral()
+                        .bindTo(event -> {
+                            paginator.setPage(maxPages - 1);
+                            event.editMessage(paginator.getCurrentMessage()).queue();
+                        })
+                        .constraints(constraints)
+                        .build()
+                        .withDisabled(currentPage >= maxPages - 1));
     }
 
     /**
