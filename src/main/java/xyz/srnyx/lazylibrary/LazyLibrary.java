@@ -107,7 +107,13 @@ public class LazyLibrary extends Stringable {
 
     public boolean checkNotOwner(@NotNull IReplyCallback event) {
         final boolean notOwner = !isOwner(event.getUser().getIdLong());
-        if (notOwner) event.replyComponents(LazyComponent.noPermission()).setEphemeral(true).queue();
+        if (notOwner) {
+            if (MessageRequest.isDefaultUseComponentsV2()) {
+                event.replyComponents(LazyComponent.noPermission()).useComponentsV2().setEphemeral(true).queue();
+            } else {
+                event.replyEmbeds(LazyEmbed.noPermission().build()).setEphemeral(true).queue();
+            }
+        }
         return notOwner;
     }
 

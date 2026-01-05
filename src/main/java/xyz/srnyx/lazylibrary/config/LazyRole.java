@@ -130,7 +130,7 @@ public class LazyRole extends Stringable {
         final boolean hasRole = member != null ? hasRole(member) : hasRole(event.getUser().getIdLong());
         if (!hasRole) {
             if (MessageRequest.isDefaultUseComponentsV2()) {
-                event.replyComponents(LazyComponent.noPermission(getMention())).setEphemeral(true).queue();
+                event.replyComponents(LazyComponent.noPermission(getMention())).useComponentsV2().setEphemeral(true).queue();
             } else {
                 event.replyEmbeds(LazyEmbed.noPermission(getMention()).build()).setEphemeral(true).queue();
             }
