@@ -9,6 +9,7 @@ import io.github.freya022.botcommands.api.core.service.annotations.BService;
 import org.flywaydb.core.Flyway;
 
 import org.jetbrains.annotations.NotNull;
+
 import xyz.srnyx.lazylibrary.LazyLibrary;
 
 

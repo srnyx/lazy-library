@@ -6,7 +6,7 @@ import io.github.freya022.botcommands.api.core.service.annotations.BService;
 import org.jetbrains.annotations.NotNull;
 
 import xyz.srnyx.lazylibrary.LazyLibrary;
-import xyz.srnyx.lazylibrary.services.BotStopper;
+import xyz.srnyx.lazylibrary.services.stopper.BotStopper;
 
 import java.util.Scanner;
 

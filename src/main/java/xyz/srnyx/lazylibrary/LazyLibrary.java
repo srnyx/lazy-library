@@ -89,8 +89,8 @@ public class LazyLibrary extends Stringable {
             // Disable help text command
             config.textCommands(textCommands -> textCommands.disableHelp(true));
             // Owners
-            if (fileSettings.ownersPrimary != null) config.addPredefinedOwners(fileSettings.ownersPrimary);
-            fileSettings.ownersOther.forEach(config::addPredefinedOwners);
+            if (fileSettings.owners.primary != null) config.addPredefinedOwners(fileSettings.owners.primary);
+            fileSettings.owners.other.forEach(config::addPredefinedOwners);
             // Search paths
             config.addSearchPath(botClass.getPackage().getName());
             searchPaths.forEach(config::addSearchPath);
@@ -101,8 +101,13 @@ public class LazyLibrary extends Stringable {
         });
     }
 
+    @NotNull
+    public String getUserAgent() {
+        return botClass.getSimpleName() + " via LazyLibrary";
+    }
+
     public boolean isOwner(long id) {
-        return (fileSettings.ownersPrimary != null && fileSettings.ownersPrimary == id) || fileSettings.ownersOther.contains(id);
+        return (fileSettings.owners.primary != null && fileSettings.owners.primary == id) || fileSettings.owners.other.contains(id);
     }
 
     public boolean checkNotOwner(@NotNull IReplyCallback event) {

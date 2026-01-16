@@ -1,4 +1,4 @@
-package xyz.srnyx.lazylibrary.services;
+package xyz.srnyx.lazylibrary.services.stopper;
 
 import io.github.freya022.botcommands.api.core.service.annotations.InterfacedService;
 
