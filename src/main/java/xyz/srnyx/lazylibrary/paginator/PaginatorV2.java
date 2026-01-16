@@ -43,7 +43,7 @@ public class PaginatorV2 {
         final List<ComponentReplacer> replacers = new ArrayList<>();
         replacers.add(ComponentReplacer.byUniqueId(ID_BUTTONS, getButtonRow()));
         replacers.add(function.apply(this));
-        event.editComponents(event.getMessage().getComponentTree().replace(ComponentReplacer.all(replacers))).useComponentsV2().queue();
+        event.getHook().editOriginalComponents(event.getMessage().getComponentTree().replace(ComponentReplacer.all(replacers))).useComponentsV2().queue();
     }
 
     @NotNull
@@ -51,6 +51,7 @@ public class PaginatorV2 {
         return ActionRow.of(
                         buttons.primary(LazyEmoji.BACK_CLEAR_DARK.emoji).ephemeral()
                                 .bindTo(event -> {
+                                    event.deferEdit().queue();
                                     currentPage = 0;
                                     updateMessage(event);
                                 })
@@ -59,6 +60,7 @@ public class PaginatorV2 {
                                 .withDisabled(currentPage == 0),
                         buttons.primary(LazyEmoji.LEFT2_CLEAR_DARK.emoji).ephemeral()
                                 .bindTo(event -> {
+                                    event.deferEdit().queue();
                                     currentPage = Math.max(0, currentPage - 1);
                                     updateMessage(event);
                                 })
@@ -68,6 +70,7 @@ public class PaginatorV2 {
                         buttons.secondary((currentPage + 1) + " / " + maxPages).toLabelButton(),
                         buttons.primary(LazyEmoji.RIGHT2_CLEAR_DARK.emoji).ephemeral()
                                 .bindTo(event -> {
+                                    event.deferEdit().queue();
                                     currentPage = Math.min(maxPages - 1, currentPage + 1);
                                     updateMessage(event);
                                 })
@@ -76,6 +79,7 @@ public class PaginatorV2 {
                                 .withDisabled(currentPage >= maxPages - 1),
                         buttons.primary(LazyEmoji.FORWARD_CLEAR_DARK.emoji).ephemeral()
                                 .bindTo(event -> {
+                                    event.deferEdit().queue();
                                     currentPage = maxPages - 1;
                                     updateMessage(event);
                                 })
