@@ -61,9 +61,7 @@ public class FileSettings extends Stringable {
         Pterodactyl newPterodactyl = null;
         try {
             newPterodactyl = new Pterodactyl();
-        } catch (final NullPointerException _) {
-            LazyLibrary.LOGGER.warn("Missing settings for Pterodactyl, integration disabled!");
-        }
+        } catch (final NullPointerException _) {}
         pterodactyl = newPterodactyl;
     }
 
