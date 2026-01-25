@@ -29,14 +29,14 @@ repository(Repository.JITPACK)
 dependencies {
     api("xyz.srnyx", "java-utilities", "5b11020f87") // General Java utility library
     api("com.google.code.gson", "gson", "2.3.1") // Use this specific version for Java Utilities
-    api("io.github.freya022", "BotCommands", "3.0.0-beta.7") // Command framework
+    api("io.github.freya022", "BotCommands", "3.0.0-beta.8") // Command framework
     api("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     api("dev.freya02", "jda-emojis", "3.0.0") // Emojis
-    implementation("ch.qos.logback", "logback-classic", "1.5.22") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.5.25") // Logging
     implementation("com.zaxxer", "HikariCP", "7.0.2") // Database
-    implementation("org.flywaydb", "flyway-core", "11.19.0") // Database
-    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.19.0") // Database
-    runtimeOnly("org.postgresql", "postgresql", "42.7.8") // Database
+    implementation("org.flywaydb", "flyway-core", "11.20.2") // Database
+    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.20.2") // Database
+    runtimeOnly("org.postgresql", "postgresql", "42.7.9") // Database
 }
 
 // Fix Java's service loading, which Flyway uses
