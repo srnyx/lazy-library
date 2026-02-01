@@ -27,7 +27,7 @@ setupJda(
 
 repository(Repository.JITPACK)
 dependencies {
-    api("xyz.srnyx", "java-utilities", "5b11020f87") // General Java utility library
+    api("xyz.srnyx", "java-utilities", "462458b10a") // General Java utility library
     api("com.google.code.gson", "gson", "2.3.1") // Use this specific version for Java Utilities
     api("io.github.freya022", "BotCommands", "3.0.0-beta.8") // Command framework
     api("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
