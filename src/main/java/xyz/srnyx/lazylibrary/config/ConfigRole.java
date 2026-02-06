@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import xyz.srnyx.javautilities.MiscUtility;
-import xyz.srnyx.javautilities.parents.Stringable;
 
 import xyz.srnyx.lazylibrary.LazyComponent;
 import xyz.srnyx.lazylibrary.LazyEmbed;
@@ -26,24 +25,13 @@ import java.util.function.Supplier;
  * A class to hold a role ID and a {@link Supplier} for the {@link Guild}
  * <br>Contains useful utility methods
  */
-public class LazyRole extends Stringable {
-    /**
-     * The {@link Supplier} for the {@link Guild} that owns the role
-     */
-    @NotNull public final Supplier<Guild> guildSupplier;
-    /**
-     * The ID of the role
-     */
-    public final long id;
-
-    public LazyRole(@NotNull Supplier<Guild> guildSupplier, long id) {
-        this.guildSupplier = guildSupplier;
-        this.id = id;
+public class ConfigRole extends ConfigMentionable {
+    public ConfigRole(@NotNull Supplier<Guild> guildSupplier, long id) {
+        super(guildSupplier, id);
     }
 
-    public LazyRole(@NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
-        this.guildSupplier = guildSupplier;
-        this.id = node.getLong();
+    public ConfigRole(@NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
+        super(guildSupplier, node);
     }
 
     /**
@@ -78,6 +66,13 @@ public class LazyRole extends Stringable {
     @NotNull
     public Optional<Role> getRole(@NotNull Guild guild) {
         return Optional.ofNullable(guild.getRoleById(id));
+    }
+
+    @NotNull
+    public String getNameElseNode() {
+        return getRole()
+                .map(Role::getName)
+                .orElse(node != null ? node : "Unknown Role");
     }
 
     /**

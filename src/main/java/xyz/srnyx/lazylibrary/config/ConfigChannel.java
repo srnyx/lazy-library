@@ -7,8 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import org.spongepowered.configurate.ConfigurationNode;
 
-import xyz.srnyx.javautilities.parents.Stringable;
-
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -19,36 +17,25 @@ import java.util.function.Supplier;
  *
  * @param   <T> the type of channel
  */
-public class LazyChannel<T extends Channel> extends Stringable {
+public class ConfigChannel<T extends Channel> extends ConfigMentionable {
     /**
-     * The {@link Supplier} for the {@link Guild} that owns the channel
-     */
-    @NotNull public final Supplier<Guild> guildSupplier;
-    /**
-     * The ID of the channel
-     */
-    public final long id;
-
-    /**
-     * Creates a new {@link LazyChannel}
+     * Creates a new {@link ConfigChannel}
      *
      * @param   guildSupplier   {@link #guildSupplier}
      * @param   id              {@link #id}
      */
-    public LazyChannel(@NotNull Supplier<Guild> guildSupplier, long id) {
-        this.guildSupplier = guildSupplier;
-        this.id = id;
+    public ConfigChannel(@NotNull Supplier<Guild> guildSupplier, long id) {
+        super(guildSupplier, id);
     }
 
     /**
-     * Creates a new {@link LazyChannel}
+     * Creates a new {@link ConfigChannel}
      *
      * @param   guildSupplier   {@link #guildSupplier}
      * @param   node            a {@link ConfigurationNode} containing the channel ID
      */
-    public LazyChannel(@NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
-        this.guildSupplier = guildSupplier;
-        this.id = node.getLong();
+    public ConfigChannel(@NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
+        super(guildSupplier, node);
     }
 
     /**
@@ -83,5 +70,12 @@ public class LazyChannel<T extends Channel> extends Stringable {
     @NotNull
     public Optional<T> getChannel(@NotNull Guild guild) {
         return Optional.ofNullable((T) guild.getGuildChannelById(id));
+    }
+
+    @NotNull
+    public String getNameElseNode() {
+        return getChannel()
+                .map(Channel::getName)
+                .orElse(node != null ? node : "Unknown Channel");
     }
 }
