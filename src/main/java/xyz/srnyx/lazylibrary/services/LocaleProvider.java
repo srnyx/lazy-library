@@ -23,12 +23,7 @@ public class LocaleProvider implements UserLocaleProvider, GuildLocaleProvider, 
     }
 
     @Override @NotNull
-    public DiscordLocale getDiscordLocale(@NotNull Interaction interaction) {
-        return DiscordLocale.ENGLISH_US;
-    }
-
-    @Override @NotNull
-    public DiscordLocale getDiscordLocale(@NotNull MessageReceivedEvent event) {
-        return DiscordLocale.ENGLISH_US;
+    public Locale getLocale(@NotNull MessageReceivedEvent messageReceivedEvent) {
+        return DiscordLocale.ENGLISH_US.toLocale();
     }
 }
