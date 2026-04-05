@@ -15,7 +15,7 @@ plugins {
     `java-library`
     id("xyz.srnyx.gradle-galaxy") version "2.0.2"
     id("com.gradleup.shadow") version "8.3.9"
-    id("dev.reformator.stacktracedecoroutinator") version "2.5.6"
+    id("dev.reformator.stacktracedecoroutinator") version "2.6.2"
 }
 
 setupJda(
@@ -23,20 +23,20 @@ setupJda(
         group = "xyz.srnyx",
         version = "4.0.0",
         description = "A simple library for JDA Discord bots"),
-    jdaConfig = DependencyConfig(version = "6.4.0"))
+    jdaConfig = DependencyConfig(version = "6.4.1"))
 
 repository(Repository.JITPACK)
 dependencies {
-    api("xyz.srnyx", "java-utilities", "462458b10a") // General Java utility library
+    api("xyz.srnyx", "java-utilities", "b10e8b2497") // General Java utility library
     api("com.google.code.gson", "gson", "2.3.1") // Use this specific version for Java Utilities
     api("io.github.freya022", "BotCommands", "3.1.0") // Command framework
     api("org.spongepowered", "configurate-yaml", "4.2.0") // Config manager
     api("dev.freya02", "jda-emojis", "4.1.0") // Emojis
-    implementation("ch.qos.logback", "logback-classic", "1.5.25") // Logging
+    implementation("ch.qos.logback", "logback-classic", "1.5.32") // Logging
     implementation("com.zaxxer", "HikariCP", "7.0.2") // Database
-    implementation("org.flywaydb", "flyway-core", "11.20.2") // Database
-    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "11.20.2") // Database
-    runtimeOnly("org.postgresql", "postgresql", "42.7.9") // Database
+    implementation("org.flywaydb", "flyway-core", "12.3.0") // Database
+    runtimeOnly("org.flywaydb", "flyway-database-postgresql", "12.3.0") // Database
+    runtimeOnly("org.postgresql", "postgresql", "42.7.10") // Database
 }
 
 // Fix Java's service loading, which Flyway uses
