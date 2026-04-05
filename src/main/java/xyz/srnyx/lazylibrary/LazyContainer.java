@@ -2,7 +2,6 @@ package xyz.srnyx.lazylibrary;
 
 import net.dv8tion.jda.api.components.container.Container;
 import net.dv8tion.jda.api.components.container.ContainerChildComponent;
-import net.dv8tion.jda.api.components.section.Section;
 import net.dv8tion.jda.api.components.section.SectionAccessoryComponent;
 import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 
@@ -74,7 +73,7 @@ public class LazyContainer {
 
     @NotNull
     public LazyContainer addSection(@Nullable SectionAccessoryComponent accessory, @NotNull TextDisplay textDisplay) {
-        return addComponents(accessory == null ? textDisplay : Section.of(accessory, textDisplay));
+        return addComponents(LazyComponent.getSectionElseText(accessory, textDisplay));
     }
 
     @NotNull
@@ -90,7 +89,7 @@ public class LazyContainer {
 
     @NotNull
     public LazyContainer insertSection(int index, @Nullable SectionAccessoryComponent accessory, @NotNull TextDisplay textDisplay) {
-        return insertComponents(index, accessory == null ? textDisplay : Section.of(accessory, textDisplay));
+        return insertComponents(index, LazyComponent.getSectionElseText(accessory, textDisplay));
     }
 
     @NotNull

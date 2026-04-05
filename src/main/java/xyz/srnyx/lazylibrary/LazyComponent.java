@@ -1,15 +1,21 @@
 package xyz.srnyx.lazylibrary;
 
 import net.dv8tion.jda.api.components.container.Container;
+import net.dv8tion.jda.api.components.container.ContainerChildComponent;
+import net.dv8tion.jda.api.components.section.Section;
+import net.dv8tion.jda.api.components.section.SectionAccessoryComponent;
 import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-
 
 public class LazyComponent {
+    @NotNull
+    public static ContainerChildComponent getSectionElseText(@Nullable SectionAccessoryComponent accessory, @NotNull TextDisplay textDisplay) {
+        return accessory == null ? textDisplay : Section.of(accessory, textDisplay);
+    }
+
     @NotNull
     public static Container unexpectedError() {
         return Container.of(TextDisplay.of(
