@@ -1,0 +1,15 @@
+name: Maven Publish (Releases)
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: srnyx/tools/.github/workflows/maven_publish.yml@main
+    with:
+      name: Lazy Library
+      java: 22
+      channel: releases
+    secrets: inherit
