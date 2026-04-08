@@ -28,7 +28,7 @@ setupJda(
 
 repository(Repository.SRNYX_RELEASES, Repository.SRNYX_SNAPSHOTS)
 dependencies {
-    api("xyz.srnyx:java-utilities:4a0f974") // General Java utility library
+    implementation("xyz.srnyx:java-utilities:4a0f974") // General Java utility library
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
     api("io.github.freya022:BotCommands:3.1.0") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
@@ -43,9 +43,8 @@ dependencies {
 // Fix Java's service loading, which Flyway uses
 tasks.withType<ShadowJar> { mergeServiceFiles() }
 
-setupPublishingEnv(
-    publishingSimpleConfig(
-        artifactId = "lazy-library",
-        url = "https://lazy-library.srnyx.com",
-        licenses = listOf(LicenseData.MIT),
-        developers = listOf(DeveloperData.srnyx)))
+setupPublishingEnv(publishingSimpleConfig(
+    artifactId = "lazy-library",
+    url = "https://lazy-library.srnyx.com",
+    licenses = listOf(LicenseData.MIT),
+    developers = listOf(DeveloperData.srnyx)))
