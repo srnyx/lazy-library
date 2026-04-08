@@ -2,7 +2,7 @@ name: Maven Publish (Snapshots)
 on:
   push:
     branches:
-      - master
+      - botcommands-v3
     paths:
       - 'gradle/**'
       - 'src/**'
