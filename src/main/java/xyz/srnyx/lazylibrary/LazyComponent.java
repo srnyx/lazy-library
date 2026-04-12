@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import xyz.srnyx.lazylibrary.emoji.LazyEmoji;
+
 
 /**
  * A utility class that provides methods for creating common components used in the bot's responses.

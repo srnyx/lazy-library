@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.javautilities.manipulation.Mapper;
 
-import xyz.srnyx.lazylibrary.LazyEmoji;
+import xyz.srnyx.lazylibrary.emoji.LazyEmoji;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -113,10 +113,10 @@ public class LazyUtilities {
     @NotNull
     public static PaginatorBuilder getDefaultPaginator(@NotNull PaginatorBuilder builder) {
         return builder
-                .setFirstContent(LazyEmoji.BACK_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
-                .setPreviousContent(LazyEmoji.LEFT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
-                .setNextContent(LazyEmoji.RIGHT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
-                .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY));
+                .setFirstContent(LazyEmoji.getButtonContent(LazyEmoji.BACK_CLEAR_DARK, ButtonStyle.PRIMARY))
+                .setPreviousContent(LazyEmoji.getButtonContent(LazyEmoji.LEFT2_CLEAR_DARK, ButtonStyle.PRIMARY))
+                .setNextContent(LazyEmoji.getButtonContent(LazyEmoji.RIGHT2_CLEAR_DARK, ButtonStyle.PRIMARY))
+                .setLastContent(LazyEmoji.getButtonContent(LazyEmoji.FORWARD_CLEAR_DARK, ButtonStyle.PRIMARY));
     }
 
     /**

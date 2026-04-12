@@ -13,6 +13,8 @@ import org.spongepowered.configurate.ConfigurationNode;
 import xyz.srnyx.javautilities.MiscUtility;
 import xyz.srnyx.javautilities.parents.Stringable;
 
+import xyz.srnyx.lazylibrary.emoji.LazyEmoji;
+
 import java.awt.*;
 import java.time.Instant;
 import java.time.temporal.ChronoField;

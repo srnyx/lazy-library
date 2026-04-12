@@ -170,6 +170,8 @@ public class LazyLibrary extends Stringable {
             searchPaths.forEach(config::addSearchPath);
             // Enable components
             config.components(components -> components.enable(true));
+            // Enable emoji service
+            config.appEmojis(emojis -> emojis.enable(true));
             // Custom config
             builder.accept(config);
         });
