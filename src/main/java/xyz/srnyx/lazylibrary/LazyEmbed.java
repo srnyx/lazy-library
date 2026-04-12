@@ -36,6 +36,9 @@ public class LazyEmbed extends Stringable {
      * Replacements for all values that will be replaced when building the {@link MessageEmbed}
      */
     @NotNull public final Map<String, String> replacements = new HashMap<>();
+    /**
+     * The default values that are disabled for this {@link LazyEmbed}
+     */
     @NotNull public final Set<Key> disabledDefaults = new HashSet<>();
 
     /**
@@ -337,22 +340,50 @@ public class LazyEmbed extends Stringable {
         return this;
     }
 
+    /**
+     * Disables the specified default values for this {@link LazyEmbed}, preventing them from being applied when building the {@link MessageEmbed}
+     *
+     * @param   keys    the default keys to disable
+     *
+     * @return          this
+     */
     @NotNull
     public LazyEmbed disableDefaults(@NotNull Key... keys) {
         return disableDefaults(Arrays.asList(keys));
     }
 
+    /**
+     * Disables the specified default values for this {@link LazyEmbed}, preventing them from being applied when building the {@link MessageEmbed}
+     *
+     * @param   keys    the default keys to disable
+     *
+     * @return          this
+     */
     @NotNull
     public LazyEmbed disableDefaults(@NotNull Collection<Key> keys) {
         disabledDefaults.addAll(keys);
         return this;
     }
 
+    /**
+     * Enables the specified default values for this {@link LazyEmbed}, allowing them to be applied when building the {@link MessageEmbed} if they were previously disabled
+     *
+     * @param   keys    the default keys to enable
+     *
+     * @return          this
+     */
     @NotNull
     public LazyEmbed enableDefaults(@NotNull Key... keys) {
         return enableDefaults(Arrays.asList(keys));
     }
 
+    /**
+     * Enables the specified default values for this {@link LazyEmbed}, allowing them to be applied when building the {@link MessageEmbed} if they were previously disabled
+     *
+     * @param   keys    the default keys to enable
+     *
+     * @return          this
+     */
     @NotNull
     public LazyEmbed enableDefaults(@NotNull Collection<Key> keys) {
         disabledDefaults.removeAll(keys);
@@ -369,6 +400,11 @@ public class LazyEmbed extends Stringable {
         return new Factory(this);
     }
 
+    /**
+     * Builds the {@link MessageEmbed} from this {@link LazyEmbed}, applying any replacements and defaults
+     *
+     * @return  the built {@link MessageEmbed}
+     */
     @NotNull
     public MessageEmbed build() {
         // Replacements
@@ -984,6 +1020,9 @@ public class LazyEmbed extends Stringable {
         }
     }
 
+    /**
+     * An enum representing keys that can be used for default values in {@link LazyLibrary#embedDefaults}
+     */
     public enum Key {
         /**
          * {@link LazyEmbed#color}

@@ -64,6 +64,11 @@ public class LazyMessage {
         return map;
     }
 
+    /**
+     * Converts the {@link LazyMessage} to a {@link MessageCreateBuilder}
+     *
+     * @return  the {@link MessageCreateBuilder} representation of the {@link LazyMessage}
+     */
     @NotNull
     public MessageCreateBuilder toBuilder() {
         final MessageCreateBuilder builder = new MessageCreateBuilder();
@@ -113,6 +118,11 @@ public class LazyMessage {
         return this;
     }
 
+    /**
+     * Gets the built {@link MessageEmbed embeds} of the {@link LazyMessage}
+     *
+     * @return  the built {@link MessageEmbed embeds} of the {@link LazyMessage}
+     */
     @NotNull
     public List<MessageEmbed> getBuiltEmbeds() {
         return embeds.stream()

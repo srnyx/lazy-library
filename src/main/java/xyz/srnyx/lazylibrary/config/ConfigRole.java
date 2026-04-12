@@ -26,10 +26,22 @@ import java.util.function.Supplier;
  * <br>Contains useful utility methods
  */
 public class ConfigRole extends ConfigMentionable {
+    /**
+     * Creates a new {@link ConfigRole}
+     *
+     * @param   guildSupplier   {@link #guildSupplier}
+     * @param   id              {@link #id}
+     */
     public ConfigRole(@NotNull Supplier<Guild> guildSupplier, long id) {
         super(guildSupplier, id);
     }
 
+    /**
+     * Creates a new {@link ConfigRole}
+     *
+     * @param   guildSupplier   {@link #guildSupplier}
+     * @param   node            a {@link ConfigurationNode} containing the role ID
+     */
     public ConfigRole(@NotNull Supplier<Guild> guildSupplier, @NotNull ConfigurationNode node) {
         super(guildSupplier, node);
     }
@@ -68,6 +80,11 @@ public class ConfigRole extends ConfigMentionable {
         return Optional.ofNullable(guild.getRoleById(id));
     }
 
+    /**
+     * Gets the name of the role, or the node if the role doesn't exist
+     *
+     * @return  the name of the role, or the node if the role doesn't exist
+     */
     @NotNull
     public String getNameElseNode() {
         return getRole()

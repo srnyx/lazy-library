@@ -15,8 +15,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 
+/**
+ * A service that provides locale information for interactions, guilds, and text commands. This implementation currently returns English as the default locale for all cases.
+ */
 @BService
 public class LocaleProvider implements UserLocaleProvider, GuildLocaleProvider, TextCommandLocaleProvider {
+    /**
+     * Constructs a new LocaleProvider instance. This constructor is empty as there are no initialization steps required for this implementation.
+     */
+    public LocaleProvider() {}
+
     @Override @NotNull
     public Locale getLocale(@NotNull Interaction interaction) {
         return Locale.ENGLISH;

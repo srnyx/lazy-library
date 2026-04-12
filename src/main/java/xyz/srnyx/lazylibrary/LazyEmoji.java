@@ -312,11 +312,28 @@ public enum LazyEmoji {
         this(id, false);
     }
 
+    /**
+     * Gets a {@link ButtonContent} for this {@link LazyEmoji} with the specified {@link ButtonStyle} and optional text.
+     * <p>
+     * If the text parameter is null, the ButtonContent will only include the emoji without any text.
+     *
+     * @param   style   the ButtonStyle to use for the ButtonContent
+     * @param   text    the optional text to include in the ButtonContent (can be null)
+     *
+     * @return          a ButtonContent containing this LazyEmoji with the specified style and optional text
+     */
     @NotNull
     public ButtonContent getButtonContent(@NotNull ButtonStyle style, @Nullable String text) {
         return text == null ? ButtonContent.fromEmoji(style, emoji) : ButtonContent.fromEmoji(style, text, emoji);
     }
 
+    /**
+     * Gets a {@link ButtonContent} for this {@link LazyEmoji} with the specified {@link ButtonStyle} and no text.
+     *
+     * @param   style   the ButtonStyle to use for the ButtonContent
+     *
+     * @return          a ButtonContent containing this LazyEmoji with the specified style and no text
+     */
     @NotNull
     public ButtonContent getButtonContent(@NotNull ButtonStyle style) {
         return getButtonContent(style, null);

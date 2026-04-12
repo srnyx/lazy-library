@@ -84,6 +84,14 @@ public class LazyUtilities {
                 .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY));
     }
 
+    /**
+     * Gets an {@link ActionRow} containing the default paginator buttons for the given {@link CustomPagination paginator}, with the buttons disabled based on the current page and max pages
+     *
+     * @param   buttons     the {@link Buttons} instance to create the buttons with
+     * @param   paginator   the {@link CustomPagination} to get the current page, max pages, and constraints from
+     *
+     * @return              an {@link ActionRow} containing the default paginator buttons for the given {@link CustomPagination paginator}
+     */
     @NotNull
     public static ActionRow getComponentsV2PaginatorRow(@NotNull Buttons buttons, @NotNull CustomPagination paginator) {
         final int currentPage = paginator.getPage();

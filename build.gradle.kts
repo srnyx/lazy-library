@@ -43,6 +43,9 @@ dependencies {
 // Fix Java's service loading, which Flyway uses
 tasks.withType<ShadowJar> { mergeServiceFiles() }
 
+// Show warnings for missing Javadocs
+tasks.withType<Javadoc> { (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:all", "-quiet") }
+
 setupPublishingEnv(publishingSimpleConfig(
     artifactId = "lazy-library",
     url = "https://lazy-library.srnyx.com",

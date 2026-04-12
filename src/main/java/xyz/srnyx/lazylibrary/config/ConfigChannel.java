@@ -72,6 +72,11 @@ public class ConfigChannel<T extends Channel> extends ConfigMentionable {
         return Optional.ofNullable((T) guild.getGuildChannelById(id));
     }
 
+    /**
+     * Gets the name of the channel, or the node if the channel is not found, or "Unknown Channel" if neither are available
+     *
+     * @return  the name of the channel, or the node if the channel is not found, or "Unknown Channel" if neither are available
+     */
     @NotNull
     public String getNameElseNode() {
         return getChannel()
