@@ -3,13 +3,10 @@ package xyz.srnyx.lazylibrary.utility;
 import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.AutocompleteAlgorithms;
 import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.FuzzyResult;
 import io.github.freya022.botcommands.api.commands.application.slash.autocomplete.ToStringFunction;
-import io.github.freya022.botcommands.api.components.Buttons;
-import io.github.freya022.botcommands.api.components.data.InteractionConstraints;
-import io.github.freya022.botcommands.api.pagination.custom.CustomPagination;
 import io.github.freya022.botcommands.api.pagination.paginator.PaginatorBuilder;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -22,14 +19,19 @@ import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.internal.utils.Helpers;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.javautilities.manipulation.Mapper;
 
 import xyz.srnyx.lazylibrary.LazyEmoji;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 
@@ -38,6 +40,10 @@ import java.util.function.Function;
  */
 public class LazyUtilities {
     /**
+     * A set of whitespace characters that are not considered blank by {@link Helpers#isBlank(CharSequence)}, but should be
+     */
+    @NotNull public static final Set<Character> WHITESPACE = Set.of('\u200E');
+    /**
      * An empty set of {@link Message.MentionType mention types}
      */
     @NotNull public static final Set<Message.MentionType> NO_MENTIONS = Collections.emptySet();
@@ -45,6 +51,10 @@ public class LazyUtilities {
      * An {@link ErrorHandler} that ignores {@link ErrorResponse#UNKNOWN_MESSAGE} errors
      */
     @NotNull public static final ErrorHandler IGNORE_UNKNOWN_MESSAGE = new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE);
+    /**
+     * An {@link ErrorHandler} that ignores {@link ErrorResponse#UNKNOWN_CHANNEL} errors
+     */
+    @NotNull public static final ErrorHandler IGNORE_UNKNOWN_CHANNEL = new ErrorHandler().ignore(ErrorResponse.UNKNOWN_CHANNEL);
     /**
      * An {@link ErrorHandler} that ignores {@link ErrorResponse#CANNOT_SEND_TO_USER} errors
      */
@@ -61,6 +71,31 @@ public class LazyUtilities {
      * An {@link ErrorHandler} that ignores {@link ErrorResponse#MISSING_PERMISSIONS} errors
      */
     @NotNull public static final ErrorHandler IGNORE_MISSING_PERMISSIONS = new ErrorHandler().ignore(ErrorResponse.MISSING_PERMISSIONS);
+
+    /**
+     * Checks if a {@link CharSequence} is blank (empty or only contains whitespace characters, including {@link #WHITESPACE})
+     *
+     * @param   sequence    the {@link CharSequence} to check
+     *
+     * @return              true if the {@link CharSequence} is blank, false otherwise
+     */
+    public static boolean isBlank(@Nullable CharSequence sequence) {
+        if (Helpers.isBlank(sequence)) return true;
+        for (int i = 0; i < sequence.length(); i++) if (!WHITESPACE.contains(sequence.charAt(i))) return false;
+        return true;
+    }
+
+    /**
+     * Gets the invite link for the bot with the given {@link JDA} instance
+     *
+     * @param   jda the {@link JDA} instance to get the invite link for
+     *
+     * @return      the invite link for the bot
+     */
+    @NotNull
+    public String getInstallLink(@NotNull JDA jda) {
+        return "https://discord.com/oauth2/authorize?client_id=" + jda.getSelfUser().getApplicationId();
+    }
 
     /**
      * Apply some default paginator settings to the given {@link PaginatorBuilder builder}
@@ -82,55 +117,6 @@ public class LazyUtilities {
                 .setPreviousContent(LazyEmoji.LEFT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
                 .setNextContent(LazyEmoji.RIGHT2_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY))
                 .setLastContent(LazyEmoji.FORWARD_CLEAR_DARK.getButtonContent(ButtonStyle.PRIMARY));
-    }
-
-    /**
-     * Gets an {@link ActionRow} containing the default paginator buttons for the given {@link CustomPagination paginator}, with the buttons disabled based on the current page and max pages
-     *
-     * @param   buttons     the {@link Buttons} instance to create the buttons with
-     * @param   paginator   the {@link CustomPagination} to get the current page, max pages, and constraints from
-     *
-     * @return              an {@link ActionRow} containing the default paginator buttons for the given {@link CustomPagination paginator}
-     */
-    @NotNull
-    public static ActionRow getComponentsV2PaginatorRow(@NotNull Buttons buttons, @NotNull CustomPagination paginator) {
-        final int currentPage = paginator.getPage();
-        final int maxPages = paginator.getMaxPages();
-        final InteractionConstraints constraints = paginator.getConstraints();
-        return ActionRow.of(
-                buttons.primary(LazyEmoji.BACK_CLEAR_DARK.emoji).ephemeral()
-                        .bindTo(event -> {
-                            paginator.setPage(0);
-                            event.editMessage(paginator.getCurrentMessage()).queue();
-                        })
-                        .constraints(constraints)
-                        .build()
-                        .withDisabled(currentPage == 0),
-                buttons.primary(LazyEmoji.LEFT2_CLEAR_DARK.emoji).ephemeral()
-                        .bindTo(event -> {
-                            paginator.setPage(Math.max(0, currentPage - 1));
-                            event.editMessage(paginator.getCurrentMessage()).queue();
-                        })
-                        .constraints(constraints)
-                        .build()
-                        .withDisabled(currentPage == 0),
-                buttons.secondary((currentPage + 1) + " / " + maxPages).toLabelButton(),
-                buttons.primary(LazyEmoji.RIGHT2_CLEAR_DARK.emoji).ephemeral()
-                        .bindTo(event -> {
-                            paginator.setPage(Math.min(maxPages - 1, currentPage + 1));
-                            event.editMessage(paginator.getCurrentMessage()).queue();
-                        })
-                        .constraints(constraints)
-                        .build()
-                        .withDisabled(currentPage >= maxPages - 1),
-                buttons.primary(LazyEmoji.FORWARD_CLEAR_DARK.emoji).ephemeral()
-                        .bindTo(event -> {
-                            paginator.setPage(maxPages - 1);
-                            event.editMessage(paginator.getCurrentMessage()).queue();
-                        })
-                        .constraints(constraints)
-                        .build()
-                        .withDisabled(currentPage >= maxPages - 1));
     }
 
     /**
@@ -178,7 +164,7 @@ public class LazyUtilities {
 		final String input = inputQuery.getValue().toLowerCase();
         final ToStringFunction<Command.Choice> toStringFunction = choice -> choice.getName().toLowerCase();
 
-		// Sort results by similarities but taking into account an incomplete input
+		//TODO Sort results by similarities but taking into account an incomplete input
 //		final List<Command.Choice> list = collection.stream()
 //				.sorted(Comparator.comparing(toStringFunction::toString))
 //				.toList();
