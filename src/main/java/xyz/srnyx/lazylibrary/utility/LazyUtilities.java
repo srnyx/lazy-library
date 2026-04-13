@@ -19,10 +19,8 @@ import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import net.dv8tion.jda.internal.utils.Helpers;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.javautilities.manipulation.Mapper;
 
@@ -39,10 +37,6 @@ import java.util.function.Function;
  * Class for miscellaneous utilities
  */
 public class LazyUtilities {
-    /**
-     * A set of whitespace characters that are not considered blank by {@link Helpers#isBlank(CharSequence)}, but should be
-     */
-    @NotNull public static final Set<Character> WHITESPACE = Set.of('\u200E');
     /**
      * An empty set of {@link Message.MentionType mention types}
      */
@@ -71,19 +65,6 @@ public class LazyUtilities {
      * An {@link ErrorHandler} that ignores {@link ErrorResponse#MISSING_PERMISSIONS} errors
      */
     @NotNull public static final ErrorHandler IGNORE_MISSING_PERMISSIONS = new ErrorHandler().ignore(ErrorResponse.MISSING_PERMISSIONS);
-
-    /**
-     * Checks if a {@link CharSequence} is blank (empty or only contains whitespace characters, including {@link #WHITESPACE})
-     *
-     * @param   sequence    the {@link CharSequence} to check
-     *
-     * @return              true if the {@link CharSequence} is blank, false otherwise
-     */
-    public static boolean isBlank(@Nullable CharSequence sequence) {
-        if (Helpers.isBlank(sequence)) return true;
-        for (int i = 0; i < sequence.length(); i++) if (!WHITESPACE.contains(sequence.charAt(i))) return false;
-        return true;
-    }
 
     /**
      * Gets the invite link for the bot with the given {@link JDA} instance
