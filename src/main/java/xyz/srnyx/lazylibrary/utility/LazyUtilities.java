@@ -74,7 +74,7 @@ public class LazyUtilities {
      * @return      the invite link for the bot
      */
     @NotNull
-    public String getInstallLink(@NotNull JDA jda) {
+    public static String getInstallLink(@NotNull JDA jda) {
         return "https://discord.com/oauth2/authorize?client_id=" + jda.getSelfUser().getApplicationId();
     }
 
