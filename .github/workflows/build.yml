@@ -17,6 +17,6 @@ jobs:
     uses: srnyx/tools/.github/workflows/maven_publish.yml@main
     with:
       name: Lazy Library
-      java: 22
+      java: 26
       channel: snapshots
     secrets: inherit
