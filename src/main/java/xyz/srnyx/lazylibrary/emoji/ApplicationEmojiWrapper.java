@@ -1,66 +1,36 @@
 package xyz.srnyx.lazylibrary.emoji;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.emoji.ApplicationEmoji;
-import net.dv8tion.jda.api.managers.ApplicationEmojiManager;
-import net.dv8tion.jda.api.requests.RestAction;
-import net.dv8tion.jda.api.utils.data.DataObject;
+import net.dv8tion.jda.api.entities.emoji.*;
+import net.dv8tion.jda.internal.JDAImpl;
+import net.dv8tion.jda.internal.entities.emoji.ApplicationEmojiImpl;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
- * A wrapper for {@link ApplicationEmoji} that adds a custom {@link #toString()} method
+ * A wrapper for {@link ApplicationEmojiImpl} that adds a custom {@link #toString()} method
  *
- * @param   emoji   the emoji to wrap
  */
-public record ApplicationEmojiWrapper(@NotNull ApplicationEmoji emoji) implements ApplicationEmoji {
+public final class ApplicationEmojiWrapper extends ApplicationEmojiImpl {
+    @NotNull private final ApplicationEmoji emoji;
+
+    /**
+     * Constructs a new ApplicationEmojiWrapper with the provided ApplicationEmoji
+     *
+     * @param   emoji   the ApplicationEmoji to wrap
+     */
+    public ApplicationEmojiWrapper(@NotNull ApplicationEmoji emoji) {
+        super(emoji.getIdLong(), (JDAImpl) emoji.getJDA(), emoji.getOwner());
+        this.emoji = emoji;
+    }
+
     /**
      * Returns the mention of the emoji (e.g. {@code <:emoji_name:emoji_id>})
      *
-     * @return  the mention of the emoji
+     * @return the mention of the emoji
      */
     @Override @NotNull
     public String toString() {
         return emoji.getAsMention();
-    }
-
-    @Override @NotNull
-    public JDA getJDA() {
-        return emoji.getJDA();
-    }
-    @Override @Nullable
-    public User getOwner() {
-        return emoji.getOwner();
-    }
-    @Override @NotNull
-    public RestAction<Void> delete() {
-        return emoji.delete();
-    }
-    @Override @NotNull
-    public ApplicationEmojiManager getManager() {
-        return emoji.getManager();
-    }
-    @Override
-    public boolean isAnimated() {
-        return emoji.isAnimated();
-    }
-    @Override
-    public long getIdLong() {
-        return emoji.getIdLong();
-    }
-    @Override @NotNull
-    public String getName() {
-        return emoji.getName();
-    }
-    @Override @NotNull
-    public String getAsReactionCode() {
-        return emoji.getAsReactionCode();
-    }
-    @Override @NotNull
-    public DataObject toData() {
-        return emoji.toData();
     }
 }

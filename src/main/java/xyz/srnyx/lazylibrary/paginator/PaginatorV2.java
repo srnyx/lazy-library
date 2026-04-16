@@ -83,7 +83,7 @@ public class PaginatorV2 {
     @NotNull
     public ActionRow getButtonRow() {
         return ActionRow.of(
-                        buttons.primary(LazyEmoji.BACK_CLEAR_DARK.emoji()).ephemeral()
+                        buttons.primary(LazyEmoji.BACK_CLEAR_DARK).ephemeral()
                                 .bindTo(event -> {
                                     event.deferEdit().queue();
                                     currentPage = 0;
@@ -92,7 +92,7 @@ public class PaginatorV2 {
                                 .constraints(constraints)
                                 .build()
                                 .withDisabled(currentPage == 0),
-                        buttons.primary(LazyEmoji.LEFT2_CLEAR_DARK.emoji()).ephemeral()
+                        buttons.primary(LazyEmoji.LEFT2_CLEAR_DARK).ephemeral()
                                 .bindTo(event -> {
                                     event.deferEdit().queue();
                                     currentPage = Math.max(0, currentPage - 1);
@@ -102,7 +102,7 @@ public class PaginatorV2 {
                                 .build()
                                 .withDisabled(currentPage == 0),
                         buttons.secondary((currentPage + 1) + " / " + maxPages).toLabelButton(),
-                        buttons.primary(LazyEmoji.RIGHT2_CLEAR_DARK.emoji()).ephemeral()
+                        buttons.primary(LazyEmoji.RIGHT2_CLEAR_DARK).ephemeral()
                                 .bindTo(event -> {
                                     event.deferEdit().queue();
                                     currentPage = Math.min(maxPages - 1, currentPage + 1);
@@ -111,7 +111,7 @@ public class PaginatorV2 {
                                 .constraints(constraints)
                                 .build()
                                 .withDisabled(currentPage >= maxPages - 1),
-                        buttons.primary(LazyEmoji.FORWARD_CLEAR_DARK.emoji()).ephemeral()
+                        buttons.primary(LazyEmoji.FORWARD_CLEAR_DARK).ephemeral()
                                 .bindTo(event -> {
                                     event.deferEdit().queue();
                                     currentPage = maxPages - 1;
