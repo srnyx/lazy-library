@@ -12,8 +12,6 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public final class ApplicationEmojiWrapper extends ApplicationEmojiImpl {
-    @NotNull private final ApplicationEmoji emoji;
-
     /**
      * Constructs a new ApplicationEmojiWrapper with the provided ApplicationEmoji
      *
@@ -21,16 +19,15 @@ public final class ApplicationEmojiWrapper extends ApplicationEmojiImpl {
      */
     public ApplicationEmojiWrapper(@NotNull ApplicationEmoji emoji) {
         super(emoji.getIdLong(), (JDAImpl) emoji.getJDA(), emoji.getOwner());
-        this.emoji = emoji;
     }
 
     /**
-     * Returns the mention of the emoji (e.g. {@code <:emoji_name:emoji_id>})
+     * Returns {@link #getAsMention the mention} of the emoji (e.g. {@code <:emoji_name:emoji_id>})
      *
      * @return the mention of the emoji
      */
     @Override @NotNull
     public String toString() {
-        return emoji.getAsMention();
+        return getAsMention();
     }
 }
