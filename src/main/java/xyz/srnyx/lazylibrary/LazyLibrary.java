@@ -188,6 +188,18 @@ public class LazyLibrary extends Stringable {
     }
 
     /**
+     * Get all owners (primary and others) of the bot
+     *
+     * @return  a set of all owner IDs of the bot
+     */
+    @NotNull
+    public Set<Long> getOwners() {
+        final Set<Long> owners = new HashSet<>(fileSettings.owners.other);
+        if (fileSettings.owners.primary != null) owners.add(fileSettings.owners.primary);
+        return owners;
+    }
+
+    /**
      * Checks if the given user ID is an owner of the bot.
      *
      * @param   id  the user ID to check
