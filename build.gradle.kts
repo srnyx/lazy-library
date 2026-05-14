@@ -32,7 +32,7 @@ dependencies {
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
     api("io.github.freya022:BotCommands:3.1.0") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
-    api("dev.freya02:jda-emojis:4.1.0") // Emojis
+    api("dev.freya02:jda-emojis:4.3.0") // Emojis
     implementation("ch.qos.logback:logback-classic:1.5.32") // Logging
     implementation("com.zaxxer:HikariCP:7.0.2") // Database
     implementation("org.flywaydb:flyway-core:12.3.0") // Database
