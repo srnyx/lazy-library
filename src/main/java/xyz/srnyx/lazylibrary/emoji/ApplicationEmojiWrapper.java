@@ -19,6 +19,8 @@ public final class ApplicationEmojiWrapper extends ApplicationEmojiImpl {
      */
     public ApplicationEmojiWrapper(@NotNull ApplicationEmoji emoji) {
         super(emoji.getIdLong(), (JDAImpl) emoji.getJDA(), emoji.getOwner());
+        setName(emoji.getName());
+        setAnimated(emoji.isAnimated());
     }
 
     /**

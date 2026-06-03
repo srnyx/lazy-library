@@ -100,7 +100,7 @@ public class ConfigRole extends ConfigMentionable {
      * @return          {@code true} if the given {@link Member} has the role, {@code false} otherwise
      */
     public boolean hasRole(@NotNull Member member) {
-        for (final Role role : member.getRoles()) if (role.getIdLong() == id) return true;
+        for (final Role role : member.getUnsortedRoles()) if (role.getIdLong() == id) return true;
         return false;
     }
 
