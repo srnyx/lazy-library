@@ -1,4 +1,4 @@
-# Lazy Library [![Release](https://repo.srnyx.com/api/badge/latest/releases/xyz/srnyx/lazy-library?color=006d82&name=Reposilite)](https://repo.srnyx.com/#/releases/xyz/srnyx/lazy-library)
+# Lazy Library [![Release](https://repo.srnyx.com/api/badge/latest/releases/xyz/srnyx/lazy-library?color=006d82&name=Release)](https://repo.srnyx.com/#/releases/xyz/srnyx/lazy-library) [![Snapshot](https://repo.srnyx.com/api/badge/latest/snapshots/xyz/srnyx/lazy-library?color=006d82&name=Snapshot)](https://repo.srnyx.com/#/snapshots/xyz/srnyx/lazy-library)
 
 A Discord bot library for srnyx's JDA Discord bots ([Cobalt](https://github.com/Venox-Network/cobalt), [srnyx's Bot](https://github.com/srnyx/srnyx-bot), [Creator Laser Tag](https://github.com/Venox-Network/laser-tag-bot), etc...)
 
