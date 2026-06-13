@@ -41,7 +41,12 @@ dependencies {
 }
 
 // Fix Java's service loading, which Flyway uses
-tasks.withType<ShadowJar> { mergeServiceFiles() }
+tasks.withType<ShadowJar> {
+    mergeServiceFiles {
+        include("META-INF/services/**")
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
 
 // Show warnings for missing Javadocs
 tasks.withType<Javadoc> { (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:all", "-quiet") }
