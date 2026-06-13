@@ -52,7 +52,9 @@ public class LazyUtilities {
     /**
      * An {@link ErrorHandler} that ignores {@link ErrorResponse#CANNOT_SEND_TO_USER} errors
      */
-    @NotNull public static final ErrorHandler IGNORE_CANNOT_SEND_TO_USER = new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER);
+    @NotNull public static final ErrorHandler IGNORE_CANNOT_SEND_TO_USER = new ErrorHandler().ignore(
+            ErrorResponse.CANNOT_SEND_TO_USER,
+            ErrorResponse.NO_MUTUAL_GUILDS);
     /**
      * An {@link ErrorHandler} that ignores {@link ErrorResponse#UNKNOWN_MEMBER} errors
      */
