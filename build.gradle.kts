@@ -36,7 +36,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.34") // Logging
     implementation("com.zaxxer:HikariCP:7.0.2") // Database
     implementation("org.flywaydb:flyway-core:12.3.0") // Database
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.8.1") // Database
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.3.0") // Database
     runtimeOnly("org.postgresql:postgresql:42.7.11") // Database
 }
 
