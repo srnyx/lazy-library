@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * A wrapper for {@link ApplicationEmojiImpl} that adds a custom {@link #toString()} method
  *
  */
-public final class ApplicationEmojiWrapper extends ApplicationEmojiImpl {
+public class ApplicationEmojiWrapper extends ApplicationEmojiImpl {
     /**
      * Constructs a new ApplicationEmojiWrapper with the provided ApplicationEmoji
      *
