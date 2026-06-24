@@ -27,24 +27,11 @@ setupJda(
     jdaConfig = DependencyConfig(version = "6.4.2"))
 
 repository(Repository.SRNYX_RELEASES, Repository.SRNYX_SNAPSHOTS)
-repositories {
-    exclusiveContent {
-        forRepository {
-            maven("https://repo.freya02.dev/snapshots") {
-                mavenContent { snapshotsOnly() }
-            }
-        }
-
-        filter {
-            includeVersionByRegex("""\Qio.github.freya022\E""", ".+", "[a-f0-9]{40}-SNAPSHOT")
-        }
-    }
-}
 
 dependencies {
     api("xyz.srnyx:java-utilities:c53df5b") // General Java utility library
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
-    api("io.github.freya022:BotCommands:02443b9abf4f0e18c10ff3f75b922f419c669908-SNAPSHOT") // Command framework
+    api("io.github.freya022:BotCommands:3.2.1") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
     api("dev.freya02:jda-emojis:4.3.0") // Emojis
     implementation("ch.qos.logback:logback-classic:1.5.34") // Logging
