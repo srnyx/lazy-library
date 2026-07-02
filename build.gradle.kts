@@ -14,7 +14,7 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishingEnv
 plugins {
     application
     `java-library`
-    id("xyz.srnyx.gradle-galaxy") version "3.1.0"
+    id("xyz.srnyx.gradle-galaxy") version "cf22393"
     id("com.gradleup.shadow") version "9.4.3"
     id("dev.reformator.stacktracedecoroutinator") version "2.6.2"
 }
@@ -22,7 +22,6 @@ plugins {
 setupJda(
     javaSetupConfig = JavaSetupConfig(
         group = "xyz.srnyx",
-        version = "4.0.0",
         description = "A simple library for JDA Discord bots"),
     jdaConfig = DependencyConfig(version = "6.4.2"))
 
