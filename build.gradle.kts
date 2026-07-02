@@ -14,8 +14,8 @@ import xyz.srnyx.gradlegalaxy.utility.setupPublishingEnv
 plugins {
     application
     `java-library`
-    id("xyz.srnyx.gradle-galaxy") version "3.0.1"
-    id("com.gradleup.shadow") version "9.4.2"
+    id("xyz.srnyx.gradle-galaxy") version "3.1.0"
+    id("com.gradleup.shadow") version "9.4.3"
     id("dev.reformator.stacktracedecoroutinator") version "2.6.2"
 }
 
@@ -31,7 +31,7 @@ repository(Repository.SRNYX_RELEASES, Repository.SRNYX_SNAPSHOTS)
 dependencies {
     api("xyz.srnyx:java-utilities:c53df5b") // General Java utility library
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
-    api("io.github.freya022:BotCommands:3.2.1") // Command framework
+    api("io.github.freya022:BotCommands:3.3.0") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
     api("dev.freya02:jda-emojis:4.3.0") // Emojis
     implementation("ch.qos.logback:logback-classic:1.5.34") // Logging
