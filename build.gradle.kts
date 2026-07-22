@@ -15,7 +15,7 @@ plugins {
     application
     `java-library`
     id("xyz.srnyx.gradle-galaxy") version "cf22393"
-    id("com.gradleup.shadow") version "9.4.3"
+    id("com.gradleup.shadow") version "9.6.1"
     id("dev.reformator.stacktracedecoroutinator") version "2.6.2"
 }
 
@@ -23,14 +23,15 @@ setupJda(
     javaSetupConfig = JavaSetupConfig(
         group = "xyz.srnyx",
         description = "A simple library for JDA Discord bots"),
-    jdaConfig = DependencyConfig(version = "6.4.2"))
+    jdaConfig = DependencyConfig(version = "6.5.0"))
 
+repository("https://repo.freya02.dev/snapshots/")
 repository(Repository.SRNYX_RELEASES, Repository.SRNYX_SNAPSHOTS)
 
 dependencies {
-    api("xyz.srnyx:java-utilities:c53df5b") // General Java utility library
+    api("xyz.srnyx:java-utilities:3575647") // General Java utility library
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
-    api("io.github.freya022:BotCommands:3.3.0") // Command framework
+    api("io.github.freya022:BotCommands:f0ad2285af7cee42871295f28af750593f1f2de4-SNAPSHOT") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
     api("dev.freya02:jda-emojis:4.3.0") // Emojis
     implementation("ch.qos.logback:logback-classic:1.5.34") // Logging
@@ -42,9 +43,10 @@ dependencies {
 
 // Fix Java's service loading, which Flyway uses
 tasks.withType<ShadowJar> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    
     mergeServiceFiles {
         include("META-INF/services/**")
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 }
 
