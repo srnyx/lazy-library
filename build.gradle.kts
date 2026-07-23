@@ -29,16 +29,16 @@ repository("https://repo.freya02.dev/snapshots/")
 repository(Repository.SRNYX_RELEASES, Repository.SRNYX_SNAPSHOTS)
 
 dependencies {
-    api("xyz.srnyx:java-utilities:3575647") // General Java utility library
+    api("xyz.srnyx:java-utilities:ad5794a") // General Java utility library
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
     api("io.github.freya022:BotCommands:f0ad2285af7cee42871295f28af750593f1f2de4-SNAPSHOT") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
     api("dev.freya02:jda-emojis:4.3.0") // Emojis
-    implementation("ch.qos.logback:logback-classic:1.5.34") // Logging
-    implementation("com.zaxxer:HikariCP:7.0.2") // Database
+    implementation("ch.qos.logback:logback-classic:1.5.38") // Logging
+    implementation("com.zaxxer:HikariCP:7.1.0") // Database
     implementation("org.flywaydb:flyway-core:12.3.0") // Database
     runtimeOnly("org.flywaydb:flyway-database-postgresql:12.3.0") // Database
-    runtimeOnly("org.postgresql:postgresql:42.7.11") // Database
+    runtimeOnly("org.postgresql:postgresql:42.7.13") // Database
 }
 
 // Fix Java's service loading, which Flyway uses
