@@ -108,9 +108,12 @@ public class LazyUtilities {
      * @param   interaction the {@link Interaction} to get the {@link Member member} and {@link GuildChannel channel} from
      * @param   permissions the {@link Permission permissions} to check for
      *
-     * @return              true if the {@link Member member} has the {@link Permission permissions} in the {@link GuildChannel channel}, false if not or if the {@link Member member}/{@link GuildChannel channel} is null (not executed in a {@link GuildChannel})
+     * @return  true if the {@link Member member} has the {@link Permission permissions} in the {@link GuildChannel channel}, false if otherwise
+     *
+     * @throws  IllegalStateException   if the {@link Interaction} is not from a guild
      */
     public static boolean userHasChannelPermission(@NotNull Interaction interaction, @NotNull Permission... permissions) {
+        if (!interaction.isFromGuild()) throw new IllegalStateException("Interaction is not from a guild");
         final Member member = interaction.getMember();
         return member != null && Mapper.to(interaction.getChannel(), GuildChannel.class)
                 .map(channel -> member.hasPermission(channel, permissions))
