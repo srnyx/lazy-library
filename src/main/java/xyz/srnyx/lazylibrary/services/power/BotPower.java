@@ -1,17 +1,13 @@
 package xyz.srnyx.lazylibrary.services.power;
 
 import com.google.gson.JsonObject;
-
 import io.github.freya022.botcommands.api.core.service.annotations.BService;
-
 import org.jetbrains.annotations.NotNull;
-
-import xyz.srnyx.javautilities.HttpUtility;
-
+import xyz.srnyx.javautilities.http.Http;
+import xyz.srnyx.javautilities.http.Response;
 import xyz.srnyx.lazylibrary.LazyLibrary;
 
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -24,6 +20,8 @@ public class BotPower {
     @NotNull private final LazyLibrary library;
     @NotNull private final List<BotStopListener> listeners;
 
+    @NotNull private final Http http;
+
     /**
      * Creates the service
      *
@@ -33,6 +31,11 @@ public class BotPower {
     public BotPower(@NotNull LazyLibrary library, @NotNull List<BotStopListener> listeners) {
         this.library = library;
         this.listeners = listeners;
+
+        this.http = new Http.Builder()
+                .userAgent(library.getUserAgent())
+                .debug(true)
+                .build();
     }
 
     /**
@@ -72,8 +75,7 @@ public class BotPower {
         // Send signal to Pterodactyl
         final JsonObject body = new JsonObject();
         body.addProperty("signal", signal);
-        final Optional<HttpUtility.Response> response = HttpUtility.postJson(
-                library.getUserAgent(),
+        final Response response = http.postJson(
                 PTERODACTYL_URL.formatted(
                         library.fileSettings.pterodactyl.panelUrl,
                         library.fileSettings.pterodactyl.serverId),
@@ -84,8 +86,8 @@ public class BotPower {
                 });
 
         // Check response
-        if (response.isPresent() && response.get().code == 204) {
-             LazyLibrary.LOGGER.info("Sent {} signal to Pterodactyl panel", signal);
+        if (response.code != null && response.code == 204) {
+            LazyLibrary.LOGGER.info("Sent {} signal to Pterodactyl panel", signal);
             return true;
         }
 
