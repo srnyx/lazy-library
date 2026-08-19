@@ -29,7 +29,7 @@ repository("https://repo.freya02.dev/snapshots/")
 repository(Repository.SRNYX_RELEASES, Repository.SRNYX_SNAPSHOTS)
 
 dependencies {
-    api("xyz.srnyx:java-utilities:89d3e8c") // General Java utility library
+    api("xyz.srnyx:java-utilities:7d9ad0d") // General Java utility library
     api("com.google.code.gson:gson:2.3.1") // Use this specific version for Java Utilities
     api("io.github.freya022:BotCommands:f0ad2285af7cee42871295f28af750593f1f2de4-SNAPSHOT") // Command framework
     api("org.spongepowered:configurate-yaml:4.2.0") // Config manager
